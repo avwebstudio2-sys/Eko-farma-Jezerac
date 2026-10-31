@@ -37,9 +37,9 @@ assets/img/       logo, sivi logo za pozadinu, fotografije i ikone
 
 ## Objavljivanje
 
-Stranica radi na svakom statičkom hostingu. Za GitHub Pages: **Settings → Pages → Deploy from a branch → `main` / root**.
+Glavna adresa stranice je https://eko-farma-jezerac.vercel.app (Vercel, grana `main`).
 
-U obje HTML datoteke polje `og:image` pokazuje na GitHub Pages adresu. Ako stranica dobije drugu domenu, treba ga promijeniti.
+U obje HTML datoteke polje `og:image` pokazuje na tu adresu. Ako stranica dobije drugu domenu, treba ga promijeniti.
 
 ## Fotografije
 

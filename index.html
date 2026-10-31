@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Eko farma "Jezerac" | Domaća jaja s Velike Bukovice, Travnik</title>
   <meta name="description" content="Konzumna jaja iz slobodnog uzgoja s Velike Bukovice iznad Travnika. Besplatna dostava na kućnu adresu, plaćanje pri preuzimanju.">
-  <meta name="theme-color" content="#fbfbf7">
+  <meta name="theme-color" content="#fdfcf8">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Eko farma &quot;Jezerac&quot;">
@@ -20,6 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="preload" as="image" href="assets/img/hero-farma.webp">
 
   <script type="application/ld+json">
   {
@@ -52,7 +53,8 @@
       <img src="assets/img/logo.webp" alt="" width="480" height="266">
     </a>
     <nav class="top-nav" aria-label="Glavna navigacija">
-      <a class="nav-extra" href="#farma">O farmi</a>
+      <a class="nav-extra" href="#o-nama">O nama</a>
+      <a class="nav-extra" href="#galerija">Galerija</a>
       <a class="nav-extra" href="#kontakt">Kontakt</a>
       <a class="nav-shop" href="webshop.html">Webshop <span class="count" data-cart-count hidden>0</span></a>
     </nav>
@@ -61,21 +63,42 @@
   <main>
     <div class="first">
       <section class="intro">
-        <h1>Domaća jaja<br>s&nbsp;Velike Bukovice</h1>
-        <div class="intro-row">
-          <p>Dostava na kućnu adresu je besplatna, a plaćate pri preuzimanju.</p>
-          <a class="btn" href="webshop.html">Naruči jaja</a>
+        <div class="intro-copy">
+          <h1>Domaća jaja<br>s&nbsp;Velike Bukovice</h1>
+          <div class="intro-row">
+            <p>Dostava na kućnu adresu je besplatna, a plaćate pri preuzimanju.</p>
+            <a class="btn" href="webshop.html">Naruči jaja</a>
+          </div>
         </div>
+        <figure class="hero-egg">
+          <span class="hero-sun" aria-hidden="true"></span>
+          <span class="hero-mask"><img src="assets/img/hero-farma.webp" width="960" height="1148" fetchpriority="high" alt="Farma na Velikoj Bukovici, iznad magle koja prekriva dolinu"></span>
+        </figure>
       </section>
 
       <ul class="strip" data-strip aria-label="Cjenovnik jaja"></ul>
     </div>
 
-    <section class="farm" id="farma" aria-labelledby="farm-title">
-      <h2 id="farm-title">Negdje iznad magle</h2>
-      <div>
+    <section class="about" id="o-nama" aria-labelledby="about-title">
+      <figure class="about-photo">
+        <img src="assets/img/o-nama.webp" width="800" height="1065" loading="lazy" alt="Sunce iznad magle, pogled s farme">
+      </figure>
+      <div class="about-text">
+        <h2 id="about-title">Negdje iznad magle</h2>
         <p>Farma je na lokalitetu Velika Bukovica iznad Travnika, odmah poslije istoimenog naselja. Bavimo se slobodnim uzgojem koka pasmine Leghorn, prodajom i dostavom konzumnih jaja.</p>
-        <p class="farm-since">Osnovano 2025.</p>
+        <p class="about-since">Osnovano 2025.</p>
+      </div>
+    </section>
+
+    <section class="gallery" id="galerija" aria-labelledby="gallery-title">
+      <h2 id="gallery-title">Galerija</h2>
+      <div class="gallery-grid" data-gallery>
+        <button class="g-item" type="button" data-full="assets/img/galerija/farma.webp"><img src="assets/img/galerija/farma.webp" width="1300" height="887" loading="lazy" alt="Objekti farme sa snijegom na krovu, iznad magle u dolini"><span>Farma iznad magle</span></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/pilici.webp"><img src="assets/img/galerija/pilici.webp" width="1000" height="750" loading="lazy" alt="Tek izleženi pilići u žičanoj korpi"><span>Tek izleženi pilići</span></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/koke.webp"><img src="assets/img/galerija/koke.webp" width="800" height="601" loading="lazy" alt="Smeđe koke na podu objekta"><span>Koke na farmi</span></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/jaja-inkubator.webp"><img src="assets/img/galerija/jaja-inkubator.webp" width="1000" height="750" loading="lazy" alt="Smeđa jaja u žičanoj korpi inkubatora"><span>Jaja u inkubatoru</span></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/objekat.webp"><img src="assets/img/galerija/objekat.webp" width="800" height="601" loading="lazy" alt="Dugi objekat od blokova s kokama na podu"><span>Objekat za koke</span></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/pilici-grijanje.webp"><img src="assets/img/galerija/pilici-grijanje.webp" width="800" height="600" loading="lazy" alt="Pilići oko pojilice pod toplom svjetlošću"><span>Pilići pod grijanjem</span></button>
       </div>
     </section>
 
@@ -98,6 +121,17 @@
     <p>© <span data-year>2026</span> Eko farma "Jezerac"</p>
     <a href="https://avstudio.site/" target="_blank" rel="noopener">Izradio i održava A&amp;V Web Studio</a>
   </footer>
+
+  <!-- Pregled fotografije iz galerije -->
+  <dialog class="lightbox" id="lightbox" aria-label="Pregled fotografije">
+    <button class="lb-btn lb-close" type="button" data-lb-close aria-label="Zatvori">×</button>
+    <button class="lb-btn lb-prev" type="button" data-lb-prev aria-label="Prethodna fotografija">‹</button>
+    <figure>
+      <img data-lb-img alt="">
+      <figcaption data-lb-caption></figcaption>
+    </figure>
+    <button class="lb-btn lb-next" type="button" data-lb-next aria-label="Sljedeća fotografija">›</button>
+  </dialog>
 
   <script src="js/config.js" defer></script>
   <script src="js/site.js" defer></script>

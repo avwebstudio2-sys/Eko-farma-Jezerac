@@ -44,7 +44,7 @@
   /* ---------- Polja sa školjkama ---------- */
 
   $('[data-tiles]').innerHTML = products.map((p) => `
-    <article class="tile" id="p-${p.id}" data-product="${p.id}" style="--c:var(--${p.color})">
+    <article class="tile tone-${p.tone}" id="p-${p.id}" data-product="${p.id}">
       <div class="tile-art">
         <svg class="egg" viewBox="0 0 100 126" style="--scale:${p.egg}" aria-hidden="true"><use href="#egg"/><text x="50" y="88" text-anchor="middle">${p.mark}</text></svg>
       </div>
@@ -121,7 +121,7 @@
       if (!row) {
         row = document.createElement('li');
         row.dataset.row = p.id;
-        row.style.setProperty('--c', `var(--${p.color})`);
+        row.className = `tone-${p.tone}`;
         row.innerHTML = `<span class="order-name">${p.name}<small data-row-detail></small></span>
           <b data-row-price></b>
           <button type="button" data-remove aria-label="Ukloni: ${p.name}">×</button>`;
@@ -168,6 +168,8 @@
     el.classList.remove(name);
     void el.offsetWidth;
     el.classList.add(name);
+    // Klasa se skida poslije animacije, da hover ponovo može pokrenuti svoju.
+    el.addEventListener('animationend', () => el.classList.remove(name), { once: true });
   }
 
   /* ---------- Događaji u poljima i korpi ---------- */

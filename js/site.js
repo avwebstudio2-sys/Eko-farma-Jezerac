@@ -1,25 +1,63 @@
-/* Zajedničko za obje stranice: broj u korpi, cjenovnik na početnoj i godina u podnožju. */
+/* Zajedničko za obje stranice: cjenovnik, galerija, broj u korpi i godina u podnožju. */
 (function () {
   'use strict';
 
   const { products, whatsapp } = window.FARMA;
-  const $ = (selector) => document.querySelector(selector);
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
   /* ---------- Cjenovnik na početnoj stranici ---------- */
 
   const strip = $('[data-strip]');
   if (strip) {
-    strip.innerHTML = products.map((p, i) => `
-      <li style="--c:var(--${p.color});--i:${i}">
-        <a class="strip-item" href="webshop.html#p-${p.id}">
+    strip.innerHTML = products.map((p) => `
+      <li>
+        <a class="strip-item tone-${p.tone}" href="webshop.html#p-${p.id}">
           <span class="strip-text">
             <span class="strip-name">${p.name}</span>
             <span class="strip-desc">${p.desc}</span>
           </span>
           <b class="strip-price">${p.price} KM</b>
           <svg class="egg" viewBox="0 0 100 126" style="--scale:${p.egg}" aria-hidden="true"><use href="#egg"/><text x="50" y="88" text-anchor="middle">${p.mark}</text></svg>
+          <span class="strip-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
       </li>`).join('');
+  }
+
+  /* ---------- Galerija ---------- */
+
+  const lightbox = $('#lightbox');
+  if (lightbox) {
+    const image = $('[data-lb-img]', lightbox);
+    const caption = $('[data-lb-caption]', lightbox);
+    const items = $$('[data-gallery] .g-item');
+    let current = 0;
+
+    const show = (index) => {
+      current = (index + items.length) % items.length;
+      image.src = items[current].dataset.full;
+      image.alt = $('img', items[current]).alt;
+      caption.textContent = $('span', items[current]).textContent;
+    };
+
+    items.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        show(index);
+        lightbox.showModal();
+      });
+    });
+
+    $('[data-lb-close]', lightbox).addEventListener('click', () => lightbox.close());
+    $('[data-lb-prev]', lightbox).addEventListener('click', () => show(current - 1));
+    $('[data-lb-next]', lightbox).addEventListener('click', () => show(current + 1));
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox || event.target.matches('figure')) lightbox.close();
+    });
+    lightbox.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') show(current - 1);
+      if (event.key === 'ArrowRight') show(current + 1);
+    });
+    lightbox.addEventListener('close', () => items[current].focus({ preventScroll: true }));
   }
 
   /* ---------- Broj u korpi (na webshopu ga vodi shop.js) ---------- */

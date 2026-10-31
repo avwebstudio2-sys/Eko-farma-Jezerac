@@ -26,13 +26,13 @@ Sve je u [`js/config.js`](js/config.js):
 ## Struktura
 
 ```
-index.html        početna: uvod, cjenovnik, o farmi, kontakt
+index.html        početna: hero, cjenovnik, o nama, galerija, kontakt
 webshop.html      webshop: školjke, podaci za dostavu, narudžba
 css/styles.css    izgled i animacije obje stranice
 js/config.js      školjke, cijene i kontakt
-js/site.js        cjenovnik na početnoj i broj u korpi
+js/site.js        cjenovnik i galerija na početnoj, broj u korpi
 js/shop.js        korpa, forma i poruka za WhatsApp
-assets/img/       logo, sivi logo za pozadinu i ikone
+assets/img/       logo, sivi logo za pozadinu, fotografije i ikone
 ```
 
 ## Objavljivanje
@@ -43,4 +43,10 @@ U obje HTML datoteke polje `og:image` pokazuje na GitHub Pages adresu. Ako stran
 
 ## Fotografije
 
-Stranica trenutno nema fotografija. Vlasnik ih šalje naknadno.
+Sve fotografije su privremeno preuzete s Facebook stranice farme, dok vlasnik ne pošalje svoje.
+
+| Gdje | Datoteka |
+| --- | --- |
+| Hero, u obliku jajeta | `assets/img/hero-farma.webp` (uspravna, oko 5:6) |
+| O nama | `assets/img/o-nama.webp` (uspravna, oko 4:5) |
+| Galerija | `assets/img/galerija/`, jedan `button.g-item` po slici u `index.html` |

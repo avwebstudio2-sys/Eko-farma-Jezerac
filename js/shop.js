@@ -65,7 +65,7 @@
         + `<use href="#egg-${tone}" transform="rotate(${tilt}) scale(${p.eggScale})"/></g></g>`;
     }
     return `<svg class="tray" viewBox="0 0 ${width} ${height}" aria-hidden="true">`
-      + `<rect class="tray-base" width="${width}" height="${height}" rx="12"/>${eggs}</svg>`;
+      + `<rect class="tray-base" width="${width}" height="${height}" rx="3"/>${eggs}</svg>`;
   }
 
   /* ---------- Kartice proizvoda ---------- */
@@ -86,7 +86,7 @@
         <span class="pcard-count" aria-hidden="true" data-badge hidden></span>
       </div>
       <div class="pcard-body">
-        <h3>${p.name}</h3>
+        <h2>${p.name}</h2>
         <p class="pcard-desc">${p.desc}</p>
         <p class="pcard-price">${money(p.price)}<small>${perEgg(p)}</small></p>
         <div class="pcard-action">

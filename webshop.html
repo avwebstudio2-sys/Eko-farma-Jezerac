@@ -57,25 +57,11 @@
   </header>
 
   <main>
-    <div class="shop-head">
-      <nav class="crumbs" aria-label="Putanja">
-        <a href="index.html">Početna</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">Webshop</span>
-      </nav>
-      <h1>Webshop</h1>
-      <p>Svježa domaća jaja iz slobodnog uzgoja, u dvije veličine školjke.</p>
-      <ul class="trust">
-        <li><svg class="icon" aria-hidden="true"><use href="#i-truck"/></svg>Besplatna dostava</li>
-        <li><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg>Plaćanje pri preuzimanju</li>
-        <li><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg>Narudžba preko WhatsAppa</li>
-      </ul>
-    </div>
-
     <div class="shop-layout">
       <div class="shop-main">
-        <section id="proizvodi" aria-labelledby="products-title">
-          <h2 id="products-title">Odaberite školjku</h2>
+        <h1>Webshop</h1>
+
+        <section id="proizvodi" aria-label="Školjke s jajima">
           <div class="products" data-products></div>
         </section>
 
@@ -132,16 +118,19 @@
         </form>
       </div>
 
-      <aside class="panel cart" id="narudzba" aria-labelledby="cart-title" data-checkout>
+      <aside class="cart" id="narudzba" aria-labelledby="cart-title" data-checkout>
         <div class="cart-head">
           <h2 id="cart-title" tabindex="-1">Vaša korpa</h2>
           <button class="cart-clear" type="button" data-clear hidden>Isprazni</button>
         </div>
         <p class="cart-empty" data-empty>Korpa je prazna. Odaberite školjku i ona će se pojaviti ovdje.</p>
         <ul class="cart-list" data-items></ul>
+        <ul class="cart-perks">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-truck"/></svg>Dostava je besplatna</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg>Plaćanje pouzećem</li>
+        </ul>
         <dl class="cart-lines">
           <div data-line-eggs hidden><dt>Broj jaja</dt><dd data-egg-count>0</dd></div>
-          <div><dt>Dostava</dt><dd>Besplatna</dd></div>
           <div class="cart-total"><dt>Ukupno</dt><dd data-total>0 KM</dd></div>
         </dl>
         <button class="btn btn-wide" type="submit" form="order-form" data-send hidden>

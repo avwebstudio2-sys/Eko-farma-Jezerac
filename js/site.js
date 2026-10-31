@@ -6,11 +6,6 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  /* ---------- Najniža cijena u pozivu na početnoj ---------- */
-
-  const minPrice = $('[data-min-price]');
-  if (minPrice) minPrice.textContent = `${Math.min(...products.map((p) => p.price))} KM`;
-
   /* ---------- Galerija ---------- */
 
   const lightbox = $('#lightbox');

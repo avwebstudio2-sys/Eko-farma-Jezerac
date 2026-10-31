@@ -65,7 +65,7 @@
         + `<use href="#egg-${tone}" transform="rotate(${tilt}) scale(${p.eggScale})"/></g></g>`;
     }
     return `<svg class="tray" viewBox="0 0 ${width} ${height}" aria-hidden="true">`
-      + `<rect class="tray-base" width="${width}" height="${height}" rx="3"/>${eggs}</svg>`;
+      + `<rect class="tray-base" width="${width}" height="${height}" rx="12"/>${eggs}</svg>`;
   }
 
   /* ---------- Kartice proizvoda ---------- */

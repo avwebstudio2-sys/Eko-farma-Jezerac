@@ -99,12 +99,11 @@ a { color: inherit; }
 .btn-send { background: linear-gradient(var(--forest), var(--forest)) left / 0 100% no-repeat, var(--orange); color: var(--ink); }
 .btn-send:hover, .btn-send:active { color: var(--white); }
 .btn-light { background: linear-gradient(var(--orange), var(--orange)) left / 0 100% no-repeat, var(--white); color: var(--forest); }
-.btn-accent { background: linear-gradient(var(--white), var(--white)) left / 0 100% no-repeat, var(--orange); color: var(--ink); }
 .btn-ghost { background: linear-gradient(var(--orange), var(--orange)) left / 0 100% no-repeat, transparent; box-shadow: inset 0 0 0 2px var(--forest); color: var(--forest); }
 .btn-ghost:hover, .btn-ghost:active { box-shadow: inset 0 0 0 2px var(--orange); }
 .btn-big { flex: none; min-height: 62px; padding: 12px 34px; font-size: 1.2rem; }
 .btn .icon { transition: transform .25s ease-out; }
-.btn-big:hover .icon { transform: translateX(5px); }
+.btn-big:hover .icon, .about-actions .btn:hover .icon { transform: translateX(5px); }
 
 /* ---------- Zaglavlje i podnožje ---------- */
 
@@ -183,67 +182,129 @@ a { color: inherit; }
 
 /* ---------- Početna: hero s fotografijom u pozadini ---------- */
 
+/* Fotografija, cesta i traka zajedno zauzimaju cijeli prvi ekran. */
+.first-screen { display: flex; flex-direction: column; min-height: 100vh; min-height: 100svh; }
+
 .hero {
+  --road-h: clamp(46px, 6.5vh, 64px);
+  --truck-w: min(100vw - var(--gutter) * 2, clamp(330px, min(30vw, 48vh), 460px));
+  --truck-h: calc(var(--truck-w) * .356);
   position: relative;
-  z-index: 1;
   isolation: isolate;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  min-height: 100vh;
-  min-height: 100svh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   overflow: hidden;
-  border-radius: 0 0 var(--radius-big) var(--radius-big);
   color: var(--white);
 }
-.hero-photo { position: absolute; inset: 0; z-index: -2; }
+.hero-photo { position: absolute; inset: 0 0 var(--road-h); z-index: -2; overflow: hidden; }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 62%; transition: transform 1.6s cubic-bezier(.2, .7, .2, 1); }
 .hero::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 0 0 var(--road-h);
   z-index: -1;
   background:
     linear-gradient(180deg, rgb(20 38 26 / .62) 0, rgb(20 38 26 / 0) 180px),
     linear-gradient(95deg, rgb(20 38 26 / .84) 0%, rgb(20 38 26 / .68) 46%, rgb(20 38 26 / .06) 100%);
 }
 .hero:hover .hero-photo img { transform: scale(1.05); }
-.hero-copy { padding: calc(var(--top-h) + clamp(20px, 4vh, 48px)) var(--gutter) clamp(32px, 6vh, 64px); }
+/* Donji razmak ostavlja mjesta kamionu, da nikad ne pređe preko teksta. */
+.hero-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: calc(var(--top-h) + clamp(12px, 3vh, 40px)) var(--gutter) calc(var(--truck-h) - var(--road-h) * .8 + 12px);
+}
 .hero h1 { color: var(--white); font-size: clamp(3rem, 7vw, 7.2rem); line-height: .98; text-shadow: 0 2px 30px rgb(20 38 26 / .35); }
 .hero h1 em { color: var(--orange-light); font-style: normal; }
 .hero-copy p { max-width: 24em; margin-top: 20px; font-size: clamp(1.2rem, 2vw, 1.65rem); line-height: 1.3; text-wrap: balance; }
 .hero-copy .btn { margin-top: clamp(20px, 2.6vw, 32px); }
 
-/* Poziv na webshop u uglu heroa: mali, da ne prekriva fotografiju */
-.hero-card {
-  --ring: var(--white);
-  align-self: end;
-  width: clamp(300px, 27vw, 380px);
-  margin: 0 var(--gutter) clamp(28px, 5vh, 56px) 0;
-  padding: clamp(18px, 1.7vw, 24px) clamp(20px, 1.9vw, 28px);
-  border-radius: var(--radius);
-  background: rgb(28 71 39 / .9);
-  box-shadow: 0 18px 44px rgb(20 38 26 / .35);
-  backdrop-filter: blur(8px);
-  animation: card-in .7s cubic-bezier(.2, .7, .2, 1) .25s backwards;
-  transition: transform .25s ease-out;
-}
-.hero-card:hover { transform: translateY(-5px); }
-.hero-card h2 { color: var(--orange-light); font-size: clamp(1.75rem, 2.3vw, 2.2rem); }
-.hero-card p { margin-top: 6px; font-size: 1.1rem; line-height: 1.3; }
-.hero-card .btn { width: 100%; min-height: 54px; margin-top: 14px; font-size: 1.1rem; animation: cta-pulse 2.4s ease-out 1.2s infinite; }
-.hero-card .btn:hover { animation: none; }
-@keyframes card-in { from { opacity: 0; transform: translateY(20px); } }
-@keyframes cta-pulse {
-  from { box-shadow: 0 0 0 0 rgb(232 134 43 / .6); }
-  70%, to { box-shadow: 0 0 0 14px rgb(232 134 43 / 0); }
+/* ---------- Početna: cesta i kamion koji vodi u webshop ---------- */
+
+.road {
+  position: relative;
+  flex: none;
+  height: var(--road-h);
+  border-top: 4px solid var(--forest);
+  background:
+    linear-gradient(90deg, var(--white) 0 40px, transparent 40px) left center / 88px 4px repeat-x,
+    var(--sand);
 }
 
-/* ---------- Početna: pokretna traka ispod heroa ---------- */
+/* Bez animacije kamion stoji desno, spreman za klik. */
+.truck-lane {
+  --truck-time: 20s;
+  --truck-delay: -2s;
+  --wheel-turns: 3600deg;
+  position: absolute;
+  bottom: calc(var(--road-h) * .2);
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  transform: translateX(calc(100% - var(--truck-w) - var(--gutter)));
+  animation: truck-drive var(--truck-time) var(--truck-delay) infinite;
+}
+.truck { --ring: var(--forest); display: block; width: var(--truck-w); border-radius: 16px; pointer-events: auto; }
+.truck svg { display: block; width: 100%; height: auto; overflow: visible; }
+.truck-shadow { fill: rgb(20 38 26 / .28); }
+.truck-dark { fill: var(--ink); }
+.truck-cargo { fill: var(--forest); stroke: rgb(255 255 255 / .22); stroke-width: 1.5; }
+.truck-cab { fill: var(--white); }
+.truck-window { fill: var(--forest); }
+.truck-shine { fill: rgb(255 255 255 / .16); }
+.truck-sun { fill: var(--orange); }
+.truck-sand { fill: var(--sand); }
+.truck-spoke { stroke: var(--ink); stroke-width: 2.4; }
+.truck text { font-weight: 500; }
+.truck-title { fill: var(--orange-light); font-size: 31px; letter-spacing: -.01em; }
+.truck-sub { fill: var(--white); font-size: 18px; font-weight: 400 !important; }
+.truck-go { fill: var(--ink); font-size: 17.5px; }
+.truck-pill { fill: var(--orange); transition: fill .2s; }
+.truck-arrow { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s ease-out; }
+.truck:hover .truck-pill, .truck:focus-visible .truck-pill { fill: var(--white); }
+.truck:hover .truck-arrow, .truck:focus-visible .truck-arrow { transform: translateX(5px); }
+.puff { fill: var(--white); transform-box: fill-box; transform-origin: center; animation: puff 1.3s ease-out infinite; }
+.puff + .puff { animation-delay: .6s; }
+.truck-tilt { transform-box: fill-box; transform-origin: 50% 100%; animation: truck-tilt var(--truck-time) var(--truck-delay) infinite; }
+.truck-body { transform-box: fill-box; transform-origin: 50% 100%; animation: truck-bump .36s ease-in-out infinite alternate; }
+.wheel { transform-box: fill-box; transform-origin: center; animation: wheel-roll var(--truck-time) var(--truck-delay) infinite; }
+
+/* Kamion stane kad se pređe mišem preko njega, da se lakše klikne. */
+.truck-lane:hover, .truck-lane:hover .truck-tilt, .truck-lane:hover .wheel,
+.truck-lane:focus-within, .truck-lane:focus-within .truck-tilt, .truck-lane:focus-within .wheel { animation-play-state: paused; }
+
+/* Dolazak s lijeve strane, stajanje desno, pa odlazak: točkovi prate isti ritam. */
+@keyframes truck-drive {
+  0% { transform: translateX(calc(var(--truck-w) * -1.05)); animation-timing-function: cubic-bezier(.35, .35, .45, 1); }
+  36% { transform: translateX(calc(100% - var(--truck-w) - var(--gutter))); }
+  74% { transform: translateX(calc(100% - var(--truck-w) - var(--gutter))); animation-timing-function: cubic-bezier(.6, 0, .85, .7); }
+  100% { transform: translateX(105%); }
+}
+@keyframes wheel-roll {
+  0% { transform: rotate(0); animation-timing-function: cubic-bezier(.35, .35, .45, 1); }
+  36% { transform: rotate(var(--wheel-turns)); }
+  74% { transform: rotate(var(--wheel-turns)); animation-timing-function: cubic-bezier(.6, 0, .85, .7); }
+  100% { transform: rotate(calc(var(--wheel-turns) * 1.5)); }
+}
+@keyframes truck-tilt {
+  0%, 33%, 39%, 74%, 81%, 100% { transform: none; }
+  36% { transform: rotate(1.3deg); }
+  76% { transform: rotate(-1.1deg); }
+}
+@keyframes truck-bump { to { transform: translateY(-1.8px) rotate(-.22deg); } }
+@keyframes puff {
+  from { opacity: .75; transform: none; }
+  to { opacity: 0; transform: translate(-22px, -12px) scale(1.9); }
+}
+
+/* ---------- Početna: pokretna traka ispod ceste ---------- */
 
 .ticker {
-  margin-top: calc(var(--radius-big) * -1);
-  padding-top: var(--radius-big);
+  flex: none;
   overflow: hidden;
   border-radius: 0 0 var(--radius-big) var(--radius-big);
   background: var(--forest);
@@ -273,11 +334,11 @@ a { color: inherit; }
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-columns: minmax(0, .72fr) minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 40px clamp(36px, 6vw, 96px);
+  gap: 20px clamp(28px, 4.4vw, 72px);
   margin: clamp(48px, 7vw, 96px) var(--gutter) 0;
-  padding: clamp(36px, 6vw, 88px) clamp(20px, 4vw, 56px);
+  padding: clamp(24px, 3vw, 44px) clamp(20px, 4vw, 64px);
   overflow: hidden;
   border-radius: var(--radius-big);
   background: var(--beige) var(--eggs-dark);
@@ -289,7 +350,7 @@ a { color: inherit; }
   z-index: -1;
   top: 50%;
   right: 1%;
-  width: min(62vw, 1020px);
+  width: min(46vw, 640px);
   aspect-ratio: 1300 / 721;
   background: url("../assets/img/logo-sivi.webp") center / contain no-repeat;
   opacity: .13;
@@ -299,7 +360,7 @@ a { color: inherit; }
   pointer-events: none;
 }
 /* Dvije fotografije u obliku jajeta, manja preko veće, i narandžasti obris iza njih */
-.about-photo { --egg: 50% 50% 50% 50% / 60% 60% 40% 40%; position: relative; width: 100%; max-width: 560px; aspect-ratio: 1 / 1.08; margin-inline: auto; }
+.about-photo { --egg: 50% 50% 50% 50% / 60% 60% 40% 40%; position: relative; width: clamp(210px, 21vw, 290px); aspect-ratio: 1 / 1.08; margin-inline: auto; }
 .about-photo::before {
   content: "";
   position: absolute;
@@ -319,7 +380,7 @@ a { color: inherit; }
   right: 0;
   bottom: 0;
   width: 44%;
-  border: clamp(5px, .6vw, 8px) solid var(--white);
+  border: 5px solid var(--white);
   box-shadow: 0 14px 34px rgb(20 38 26 / .25);
   transform: rotate(12deg);
   transition: transform .45s cubic-bezier(.3, 1.5, .6, 1);
@@ -329,23 +390,23 @@ a { color: inherit; }
 .about-photo:hover img { transform: scale(1.06); }
 .about-badge {
   position: absolute;
-  top: 10%;
-  right: 6%;
-  padding: 12px 20px;
-  border-radius: 18px;
+  top: 6%;
+  right: 0;
+  padding: 7px 14px;
+  border-radius: 14px;
   background: var(--orange);
   color: var(--ink);
-  font-size: 1rem;
+  font-size: .85rem;
   line-height: 1.15;
   box-shadow: 0 10px 26px rgb(20 38 26 / .22);
   transition: transform .35s cubic-bezier(.3, 1.5, .6, 1);
 }
-.about-badge b { display: block; font-size: 1.7rem; font-weight: 600; }
+.about-badge b { display: block; font-size: 1.25rem; font-weight: 600; }
 .about-photo:hover .about-badge { transform: translateY(-8px) rotate(-3deg); }
 
-.about h2 { font-size: clamp(2.8rem, 5.8vw, 6rem); line-height: 1; }
-.about-text > p { max-width: 28em; margin-top: clamp(16px, 1.8vw, 26px); font-size: clamp(1.25rem, 1.9vw, 1.75rem); line-height: 1.32; }
-.about-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(24px, 2.8vw, 40px); }
+.about h2 { font-size: clamp(2.1rem, 3.4vw, 3.4rem); }
+.about-text > p { max-width: 36em; margin-top: 10px; font-size: clamp(1.05rem, 1.3vw, 1.25rem); line-height: 1.4; }
+.about-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(16px, 1.6vw, 24px); }
 
 /* ---------- Početna: galerija i pregled slika, namjerno bez zaobljenih ivica ---------- */
 
@@ -436,30 +497,73 @@ a { color: inherit; }
   color: var(--white);
 }
 .contact h2 { color: var(--orange-light); font-size: clamp(2.6rem, 5.4vw, 5.4rem); }
-.contact-phones { display: grid; justify-items: start; margin-top: 14px; }
-.contact-phones a {
-  font-size: clamp(2.4rem, 4.4vw, 4.4rem);
+.contact-lead { margin-top: 8px; font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.35; }
+
+/* Brojevi kao velika dugmad: glavni je narandžast, drugi bijeli */
+.contact-phones { display: grid; gap: 12px; margin-top: clamp(18px, 2vw, 28px); }
+.phone {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.2vw, 18px);
+  padding: 9px clamp(18px, 2vw, 28px) 9px 9px;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--forest);
+  font-size: clamp(1.8rem, 3vw, 3rem);
   font-weight: 500;
-  letter-spacing: -.025em;
-  line-height: 1.2;
-  background: linear-gradient(var(--orange), var(--orange)) left bottom / 0 .06em no-repeat;
+  letter-spacing: -.02em;
+  line-height: 1.1;
   text-decoration: none;
   white-space: nowrap;
-  transition: background-size .35s ease-out, color .2s;
+  box-shadow: 0 10px 26px rgb(10 24 15 / .28);
+  transition: transform .3s cubic-bezier(.3, 1.5, .6, 1), background-color .2s, color .2s;
 }
-.contact-phones a:hover { background-size: 100% .06em; color: var(--orange-light); }
-.contact-address { display: flex; align-items: center; gap: 8px; margin-top: 16px; color: rgb(255 255 255 / .85); font-size: 1.1rem; font-style: normal; }
-.contact-map { min-width: 0; }
-.contact-map iframe {
-  display: block;
-  width: 100%;
-  height: clamp(340px, 34vw, 500px);
-  border: 0;
-  border-radius: var(--radius);
-  background: var(--beige);
-  transition: box-shadow .25s;
+.phone-main { background: var(--orange); color: var(--ink); }
+.phone:hover { background: var(--orange); color: var(--ink); transform: translateX(8px); }
+.phone-main:hover { background: var(--white); color: var(--forest); }
+.phone-icon { display: grid; flex: none; place-items: center; width: 1.45em; height: 1.45em; border-radius: 50%; background: var(--forest); color: var(--white); }
+.phone-icon .icon { width: .62em; height: .62em; }
+.phone:hover .icon { animation: phone-ring .7s ease-in-out; }
+@keyframes phone-ring {
+  20% { transform: rotate(-16deg); }
+  40% { transform: rotate(14deg); }
+  60% { transform: rotate(-9deg); }
+  80% { transform: rotate(6deg); }
 }
-.contact-map:hover iframe { box-shadow: 0 0 0 4px var(--orange); }
+
+/* Mapa kao uokvirena slika: bijeli okvir, nakrivljena bež podloga i pile koje viri iza okvira */
+.contact-map { position: relative; isolation: isolate; min-width: 0; margin: 0; }
+.contact-map::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: var(--radius-big);
+  background: var(--sand);
+  transform: rotate(2.4deg);
+  transition: transform .45s cubic-bezier(.3, 1.5, .6, 1);
+}
+.contact-map:hover::before { transform: rotate(-1.6deg); }
+.map-chick { position: absolute; top: -52px; right: 12%; z-index: -1; width: 74px; animation: chick-peek 3.4s ease-in-out infinite; }
+@keyframes chick-peek {
+  0%, 62%, 100% { transform: none; }
+  72%, 90% { transform: translateY(-9px) rotate(-5deg); }
+}
+.map-frame { padding: clamp(8px, .8vw, 12px) clamp(8px, .8vw, 12px) 0; border-radius: var(--radius-big); background: var(--white); color: var(--forest); box-shadow: 0 18px 44px rgb(10 24 15 / .35); }
+.map-frame iframe { display: block; width: 100%; height: clamp(280px, 27vw, 400px); border: 0; border-radius: var(--radius); background: var(--beige); }
+.map-frame figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 16px; padding: 6px 10px; }
+.map-frame address { display: flex; align-items: center; gap: 8px; font-style: normal; font-weight: 500; }
+.map-frame address .icon { color: var(--orange); }
+.map-frame a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  background: linear-gradient(var(--orange), var(--orange)) left bottom 8px / 0 2px no-repeat;
+  text-decoration: none;
+  transition: background-size .25s ease-out;
+}
+.map-frame a:hover { background-size: 100% 2px; }
+
 .contact-more { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
 .contact-more a {
   display: inline-flex;
@@ -636,7 +740,7 @@ a { color: inherit; }
 }
 .cart h2:focus { outline: 0; }
 .cart-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
-.cart-clear, .cart-remove {
+.cart-clear {
   min-height: 44px;
   padding: 0 4px;
   border: 0;
@@ -649,7 +753,21 @@ a { color: inherit; }
   cursor: pointer;
   transition: color .18s;
 }
-.cart-clear:hover, .cart-remove:hover { color: var(--error); text-decoration-color: var(--orange); }
+.cart-clear:hover { color: var(--error); text-decoration-color: var(--orange); }
+.cart-remove {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--grey);
+  cursor: pointer;
+  transition: background-color .18s, color .18s, transform .2s;
+}
+.cart-remove:hover { background: rgb(168 54 10 / .1); color: var(--error); transform: rotate(-8deg); }
 .cart-empty { flex: 1 0 auto; margin-top: 12px; color: var(--grey); }
 
 .cart-list { flex: 1 1 auto; min-height: 120px; margin-top: 6px; overflow-y: auto; }
@@ -804,13 +922,12 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
 }
 
 @media (max-width: 859px) {
-  .hero { grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr auto; align-items: start; }
-  .hero-card { justify-self: end; width: min(100% - var(--gutter) * 2, 380px); }
   .about, .contact { grid-template-columns: minmax(0, 1fr); }
   .about::before { top: auto; right: 0; bottom: 3%; width: 100%; transform: none; }
-  .about-photo { max-width: 460px; }
-  .about h2 { font-size: clamp(2.6rem, 9vw, 4.6rem); }
-  .about-text > p { font-size: clamp(1.2rem, 3.2vw, 1.5rem); }
+  .about-photo { width: min(58vw, 230px); }
+  .about h2 { font-size: clamp(2rem, 7vw, 3rem); }
+  .about-text > p { font-size: clamp(1.02rem, 2.6vw, 1.2rem); }
+  .contact-map { margin-top: 44px; }
 }
 
 @media (max-width: 759px) {
@@ -820,8 +937,9 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   .hero::before { background: linear-gradient(180deg, rgb(20 38 26 / .72) 0%, rgb(20 38 26 / .46) 58%, rgb(20 38 26 / .2) 100%); }
   .hero-photo img { object-position: center bottom; }
   .hero h1 { font-size: clamp(2.5rem, 12vw, 5rem); }
-  .hero-card p { font-size: 1rem; }
-  .about-actions .btn { width: 100%; }
+  .hero-copy { justify-content: flex-start; }
+  .truck-lane { --wheel-turns: 1440deg; }
+  .about-actions .btn { flex: 1 1 auto; padding-inline: 16px; }
   .form-grid { grid-template-columns: minmax(0, 1fr); }
 
   /* Pregled slike na telefonu: strelice ispod fotografije, da je ne prekrivaju */
@@ -849,7 +967,7 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   .g-item:nth-child(1) { grid-column: span 6; grid-row: span 3; }
   .g-item:nth-child(2), .g-item:nth-child(4) { grid-row: span 4; }
   .g-item:nth-child(6) { grid-column: span 6; grid-row: span 2; }
-  .contact-phones a { font-size: clamp(2.4rem, 13vw, 4rem); }
+  .phone { font-size: clamp(1.6rem, 8.4vw, 2.4rem); }
   .contact-more a { width: 100%; }
   .contact-more li { width: 100%; }
 }

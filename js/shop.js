@@ -162,7 +162,7 @@
         row.innerHTML = `<span class="cart-name">${p.name}<small>${p.desc} · ${money(p.price)}</small></span>
           <b data-row-price></b>
           ${stepperMarkup(p)}
-          <button class="cart-remove" type="button" data-remove>Ukloni<span class="sr-only">: ${p.name}</span></button>`;
+          <button class="cart-remove" type="button" data-remove aria-label="Ukloni: ${p.name}" title="Ukloni"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg></button>`;
         rows.set(p.id, row);
       }
       const next = current[index + 1] ? rows.get(current[index + 1].id) : null;

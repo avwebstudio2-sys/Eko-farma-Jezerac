@@ -13,7 +13,8 @@
   <meta property="og:image" content="https://eko-farma-jezerac.vercel.app/assets/img/og.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -76,6 +77,7 @@
   </header>
 
   <main>
+    <div class="first-screen">
     <section class="hero">
       <picture class="hero-photo">
         <source media="(min-width: 760px)" srcset="assets/img/hero-siroka.webp" width="1536" height="900">
@@ -89,13 +91,45 @@
           Kontaktirajte nas
         </a>
       </div>
-      <div class="hero-card">
-        <h2>Naručite svježa jaja</h2>
-        <p>Besplatna dostava i plaćanje pouzećem.</p>
-        <a class="btn btn-big btn-accent" href="webshop.html">
-          Idi u webshop
-          <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
-        </a>
+      <div class="road">
+        <div class="truck-lane">
+          <a class="truck" href="webshop.html" aria-label="Naručite svježa jaja, besplatna dostava na adresu. Idi u webshop.">
+            <svg viewBox="-34 0 494 176" aria-hidden="true" focusable="false">
+              <ellipse class="truck-shadow" cx="222" cy="171" rx="226" ry="5"/>
+              <circle class="puff" cx="-16" cy="130" r="7"/>
+              <circle class="puff" cx="-16" cy="130" r="7"/>
+              <g class="truck-tilt">
+                <g class="truck-body">
+                  <rect class="truck-dark" x="-8" y="127" width="26" height="6" rx="3"/>
+                  <rect class="truck-dark" x="10" y="124" width="434" height="18" rx="6"/>
+                  <rect class="truck-cargo" x="6" y="6" width="306" height="122" rx="16"/>
+                  <text class="truck-title" x="26" y="46">Naručite svježa jaja</text>
+                  <text class="truck-sub" x="26" y="71">Besplatna dostava na adresu</text>
+                  <rect class="truck-pill" x="26" y="84" width="178" height="32" rx="16"/>
+                  <text class="truck-go" x="44" y="106">Idi u webshop</text>
+                  <path class="truck-arrow" d="M168 100h18m-6-6 6 6-6 6"/>
+                  <path class="truck-cab" transform="translate(232 100)" d="M0-15c6 0 11 9 11 17S6 14 0 14-11 10-11 2-6-15 0-15Z"/>
+                  <path class="truck-sand" transform="translate(258 100)" d="M0-15c6 0 11 9 11 17S6 14 0 14-11 10-11 2-6-15 0-15Z"/>
+                  <path class="truck-sun" transform="translate(284 100)" d="M0-15c6 0 11 9 11 17S6 14 0 14-11 10-11 2-6-15 0-15Z"/>
+                  <path class="truck-cab" d="M316 128V50a12 12 0 0 1 12-12h54a16 16 0 0 1 12.600 6.100L438 92c8 2 14 8 14 16v20Z"/>
+                  <path class="truck-window" d="M334 52h46a6 6 0 0 1 4.700 2.300L416 92H334a6 6 0 0 1-6-6V58a6 6 0 0 1 6-6Z"/>
+                  <path class="truck-shine" d="M392 62 410 92H396L378 62Z"/>
+                  <circle class="truck-sun" cx="358" cy="80" r="16"/>
+                  <circle class="truck-dark" cx="364" cy="75" r="2.600"/>
+                  <path class="truck-dark" d="M372 78l9 3-9 4Z"/>
+                  <rect class="truck-cab" x="322" y="92" width="116" height="36"/>
+                  <rect class="truck-sand" x="336" y="102" width="20" height="5" rx="2.500"/>
+                  <rect class="truck-sun" x="442" y="104" width="10" height="12" rx="3"/>
+                  <rect class="truck-dark" x="430" y="124" width="28" height="14" rx="6"/>
+                  <circle class="truck-dark" cx="92" cy="148" r="29"/>
+                  <circle class="truck-dark" cx="372" cy="148" r="29"/>
+                </g>
+              </g>
+              <g transform="translate(92 148)"><g class="wheel"><circle class="truck-dark" r="24"/><circle class="truck-sand" r="12"/><path class="truck-spoke" d="M-12 0H12M0-12V12"/><circle class="truck-cab" cy="-18" r="2.400"/></g></g>
+              <g transform="translate(372 148)"><g class="wheel"><circle class="truck-dark" r="24"/><circle class="truck-sand" r="12"/><path class="truck-spoke" d="M-12 0H12M0-12V12"/><circle class="truck-cab" cy="-18" r="2.400"/></g></g>
+            </svg>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -117,6 +151,7 @@
         </ul>
       </div>
     </div>
+    </div>
 
     <section class="about" id="o-nama" aria-labelledby="about-title">
       <figure class="about-photo">
@@ -128,11 +163,11 @@
         <h2 id="about-title">Negdje iznad magle</h2>
         <p>Farma je na lokalitetu Velika Bukovica iznad Travnika, odmah poslije istoimenog naselja. Bavimo se slobodnim uzgojem koka, prodajom i dostavom konzumnih jaja.</p>
         <div class="about-actions">
-          <a class="btn btn-big" href="webshop.html">
+          <a class="btn" href="webshop.html">
             Naručite jaja
             <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
           </a>
-          <a class="btn btn-big btn-ghost" href="#galerija">Pogledajte galeriju</a>
+          <a class="btn btn-ghost" href="#galerija">Galerija</a>
         </div>
       </div>
     </section>
@@ -152,21 +187,32 @@
     <section class="contact" id="kontakt" aria-labelledby="contact-title">
       <div class="contact-info">
         <h2 id="contact-title">Kontakt</h2>
-        <p class="contact-phones">
-          <a href="tel:+38761366168">061 366 168</a>
-          <a href="tel:+38761278300">061 278 300</a>
-        </p>
-        <address class="contact-address"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Velika Bukovica bb, Travnik</address>
+        <p class="contact-lead">Za narudžbe i sva pitanja slobodno nas kontaktirajte.</p>
+        <div class="contact-phones">
+          <a class="phone phone-main" href="tel:+38761366168"><span class="phone-icon"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span>061 366 168</a>
+          <a class="phone" href="tel:+38761278300"><span class="phone-icon"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span>061 278 300</a>
+        </div>
         <ul class="contact-more">
           <li><a data-wa-contact href="https://wa.me/38761366168" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a></li>
           <li><a href="mailto:ekofarma.jezerac@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>ekofarma.jezerac@gmail.com</a></li>
           <li><a href="https://www.facebook.com/p/Eko-farma-Jezerac-61575950756251/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg>Facebook</a></li>
-          <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Velika+Bukovica%2C+Travnik" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Otvori u Google mapama</a></li>
         </ul>
       </div>
-      <div class="contact-map">
-        <iframe title="Mapa: Velika Bukovica, Travnik" src="https://www.google.com/maps?q=Velika+Bukovica,+Travnik,+Bosna+i+Hercegovina&amp;z=13&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-      </div>
+      <figure class="contact-map">
+        <svg class="map-chick" viewBox="0 0 80 80" aria-hidden="true" focusable="false">
+          <circle cx="40" cy="46" r="31" fill="#e8862b"/>
+          <circle cx="29" cy="40" r="3.800" fill="#14261a"/>
+          <circle cx="51" cy="40" r="3.800" fill="#14261a"/>
+          <path d="M34 47h12l-6 8z" fill="#14261a"/>
+        </svg>
+        <div class="map-frame">
+          <iframe title="Mapa: Velika Bukovica, Travnik" src="https://www.google.com/maps?q=Velika+Bukovica,+Travnik,+Bosna+i+Hercegovina&amp;z=13&amp;hl=bs&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          <figcaption>
+            <address><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Velika Bukovica bb, Travnik</address>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Velika+Bukovica%2C+Travnik" target="_blank" rel="noopener">Otvori u Google mapama</a>
+          </figcaption>
+        </div>
+      </figure>
     </section>
   </main>
 

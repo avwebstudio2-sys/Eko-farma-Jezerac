@@ -26,7 +26,8 @@ Sve je u [`js/config.js`](js/config.js):
 ## Struktura
 
 ```
-index.html        početna: hero s pozivom na webshop, pokretna traka, o nama, galerija, kontakt s mapom
+favicon.ico       ikona za starije preglednike (izvor je assets/img/favicon.svg)
+index.html        početna: hero s kamionom koji vodi u webshop, pokretna traka, o nama, galerija, kontakt s mapom
 webshop.html      webshop: kartice školjki, korpa, podaci za dostavu
 css/styles.css    izgled i animacije obje stranice
 js/config.js      školjke, cijene i kontakt

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="bs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Webshop | Eko farma "Jezerac"</title>
+  <meta name="description" content="Naručite školjku domaćih jaja s Velike Bukovice. Besplatna dostava na kućnu adresu, plaćanje pri preuzimanju, narudžba preko WhatsAppa.">
+  <meta name="theme-color" content="#fbfbf7">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Webshop | Eko farma &quot;Jezerac&quot;">
+  <meta property="og:description" content="Naručite školjku domaćih jaja s Velike Bukovice. Besplatna dostava na kućnu adresu.">
+  <meta property="og:image" content="https://avwebstudio2-sys.github.io/Eko-farma-Jezerac/assets/img/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" href="assets/img/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-shop>
+  <a class="skip-link" href="#proizvodi">Preskoči na proizvode</a>
+
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <symbol id="egg" viewBox="0 0 100 126"><path d="M50 2C73 2 94 42 94 76 94 106 74 124 50 124S6 106 6 76C6 42 27 2 50 2Z"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></symbol>
+  </svg>
+
+  <header class="top">
+    <a class="top-logo" href="index.html" aria-label='Eko farma "Jezerac", početna'>
+      <img src="assets/img/logo.webp" alt="" width="480" height="266">
+    </a>
+    <nav class="top-nav" aria-label="Glavna navigacija">
+      <a class="nav-extra" href="index.html#farma">O farmi</a>
+      <a class="nav-extra" href="index.html#kontakt">Kontakt</a>
+      <a class="nav-shop" href="#narudzba">Korpa <span class="count" data-cart-count hidden>0</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="shop-head">
+      <h1>Naručite jaja</h1>
+      <p>Odaberite školjku, upišite adresu i pošaljite narudžbu na WhatsApp.</p>
+    </div>
+
+    <div class="tiles" id="proizvodi" data-tiles></div>
+
+    <noscript>
+      <p class="noscript">Za narudžbu preko stranice potreban je JavaScript. Možete nas i pozvati: <a href="tel:+38761366168">061 366 168</a> ili <a href="tel:+38761278300">061 278 300</a>.</p>
+    </noscript>
+
+    <div class="checkout">
+      <form class="form" id="order-form" novalidate data-checkout hidden>
+        <h2 id="podaci">Podaci za dostavu</h2>
+
+        <div class="form-grid">
+          <div class="field" data-field="ime">
+            <label for="ime">Ime i prezime</label>
+            <input id="ime" name="ime" type="text" autocomplete="name" maxlength="100" required aria-describedby="err-ime">
+            <p class="field-error" id="err-ime"></p>
+          </div>
+          <div class="field" data-field="telefon">
+            <label for="telefon">Broj telefona</label>
+            <input id="telefon" name="telefon" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" required aria-describedby="err-telefon">
+            <p class="field-error" id="err-telefon"></p>
+          </div>
+          <div class="field" data-field="adresa">
+            <label for="adresa">Kućna adresa</label>
+            <input id="adresa" name="adresa" type="text" autocomplete="street-address" maxlength="200" required aria-describedby="err-adresa">
+            <p class="field-error" id="err-adresa"></p>
+          </div>
+          <div class="field" data-field="grad">
+            <label for="grad">Grad ili mjesto</label>
+            <input id="grad" name="grad" type="text" autocomplete="address-level2" maxlength="80" required aria-describedby="err-grad">
+            <p class="field-error" id="err-grad"></p>
+          </div>
+          <div class="field" data-field="datum">
+            <label for="datum">Datum dostave</label>
+            <input id="datum" name="datum" type="date" required aria-describedby="err-datum">
+            <p class="field-error" id="err-datum"></p>
+          </div>
+          <fieldset class="field" data-field="vrijeme" aria-describedby="err-vrijeme">
+            <legend>Vrijeme dostave</legend>
+            <div class="time-range">
+              <label class="sr-only" for="vrijemeOd">Dostava od</label>
+              <select id="vrijemeOd" name="vrijemeOd" required></select>
+              <span aria-hidden="true">do</span>
+              <label class="sr-only" for="vrijemeDo">Dostava do</label>
+              <select id="vrijemeDo" name="vrijemeDo" required></select>
+            </div>
+            <p class="field-error" id="err-vrijeme"></p>
+          </fieldset>
+          <div class="field field-full" data-field="napomena">
+            <label for="napomena">Napomena <small>(nije obavezno)</small></label>
+            <textarea id="napomena" name="napomena" rows="2" maxlength="500"></textarea>
+          </div>
+        </div>
+        <p class="form-privacy">Ime, telefon i adresu pamtimo samo na vašem uređaju, da ih sljedeći put ne morate ponovo unositi.</p>
+      </form>
+
+      <aside class="order" id="narudzba" aria-labelledby="order-title" data-checkout>
+        <h2 id="order-title" tabindex="-1">Narudžba</h2>
+        <p class="order-empty" data-empty>Još ništa nije odabrano.</p>
+        <ul class="order-list" data-items></ul>
+        <div class="order-total" data-total-row hidden>
+          <span>Ukupno</span>
+          <b data-total>0 KM</b>
+        </div>
+        <p class="order-note">Dostava je besplatna. Plaćate pri preuzimanju.</p>
+        <button class="btn btn-wide" type="submit" form="order-form" data-send hidden>
+          <svg class="wa" aria-hidden="true" data-send-icon hidden><use href="#i-whatsapp"/></svg>
+          <span data-send-label>Dalje</span>
+        </button>
+        <p class="order-error" role="alert" data-send-error hidden></p>
+        <p class="order-fine" data-send-fine hidden>Otvorit će se WhatsApp s gotovom porukom. Vi samo pritisnete „Pošalji”.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="bottom">
+    <p>© <span data-year>2026</span> Eko farma "Jezerac"</p>
+    <a href="https://avstudio.site/" target="_blank" rel="noopener">Izradio i održava A&amp;V Web Studio</a>
+  </footer>
+
+  <!-- Traka s iznosom na telefonu -->
+  <div class="bar" data-bar>
+    <p><b data-bar-total>0 KM</b> <small data-bar-count></small></p>
+    <a class="btn" href="#podaci" tabindex="-1" data-bar-next>Dalje</a>
+  </div>
+
+  <!-- Potvrda nakon slanja -->
+  <dialog class="sent" id="sent-dialog" aria-labelledby="sent-title">
+    <svg class="hatch" viewBox="0 -28 160 188" aria-hidden="true">
+      <g class="hatch-all">
+        <g class="hatch-chick">
+          <circle cx="80" cy="84" r="31" fill="#ffc72c"/>
+          <circle cx="69" cy="78" r="3.6" fill="#15140f"/>
+          <circle cx="91" cy="78" r="3.6" fill="#15140f"/>
+          <path d="M74 85h12l-6 8z" fill="#ff6b3d"/>
+        </g>
+        <path d="M42 94 52 82 62 94 72 82 82 94 92 82 102 94 112 82 118 94C118 126 100 142 80 142S42 126 42 94Z" fill="#fff"/>
+        <path class="hatch-top" d="M42 94 52 82 62 94 72 82 82 94 92 82 102 94 112 82 118 94C118 60 100 34 80 34S42 60 42 94Z" fill="#fff"/>
+      </g>
+    </svg>
+    <h2 id="sent-title">Još samo jedan klik</h2>
+    <p>U WhatsAppu vas čeka gotova poruka. <b>Pritisnite „Pošalji” da narudžba stigne na farmu.</b></p>
+    <a class="btn btn-wide btn-send" data-sent-wa target="_blank" rel="noopener">
+      <svg class="wa" aria-hidden="true"><use href="#i-whatsapp"/></svg> Otvori WhatsApp ponovo
+    </a>
+    <p class="sent-alt">Nemate WhatsApp? <a data-sent-mail>Pošaljite e-mailom</a> ili pozovite <a href="tel:+38761366168">061 366 168</a>.</p>
+    <div class="sent-actions">
+      <button type="button" data-sent-close>Nazad</button>
+      <button type="button" data-sent-new>Nova narudžba</button>
+    </div>
+  </dialog>
+
+  <div class="sr-only" aria-live="polite" data-live></div>
+
+  <script src="js/config.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/shop.js" defer></script>
+</body>
+</html>

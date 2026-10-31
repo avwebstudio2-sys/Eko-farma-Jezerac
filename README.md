@@ -1,7 +1,7 @@
 # Eko farma "Jezerac"
 
-Web stranica s mini webshopom za Eko farmu "Jezerac" iz Velike Bukovice kod Travnika.
-Kupac odabere proizvode i unese podatke, a stranica otvori WhatsApp s gotovom porukom za farmu.
+Web stranica i mini webshop za Eko farmu "Jezerac" iz Velike Bukovice kod Travnika.
+Kupac odabere školjke i unese podatke, a stranica otvori WhatsApp s gotovom porukom za farmu.
 
 Čisti HTML, CSS i JavaScript: nema instalacije ni koraka izgradnje.
 
@@ -20,28 +20,27 @@ Sve je u [`js/config.js`](js/config.js):
 | Šta | Polje |
 | --- | --- |
 | Broj na koji stižu narudžbe | `whatsapp` (međunarodni format, bez `+` i razmaka) |
-| Cijene jaja | `price` kod proizvoda |
-| Cijena za piliće, pilenke i ovce | `price` (sada `null`, što se prikazuje kao "Po dogovoru") |
+| Cijene školjki | `price` kod proizvoda |
 | Sati u polju za dostavu | `deliveryHours` |
 
 ## Struktura
 
 ```
-index.html        sadržaj stranice
-css/styles.css    izgled i animacije
-js/config.js      proizvodi, cijene i kontakt
+index.html        početna: uvod, cjenovnik, o farmi, kontakt
+webshop.html      webshop: školjke, podaci za dostavu, narudžba
+css/styles.css    izgled i animacije obje stranice
+js/config.js      školjke, cijene i kontakt
+js/site.js        cjenovnik na početnoj i broj u korpi
 js/shop.js        korpa, forma i poruka za WhatsApp
-js/site.js        meni, otkrivanje sekcija i galerija
-assets/img/       logo i fotografije
+assets/img/       logo, sivi logo za pozadinu i ikone
 ```
 
 ## Objavljivanje
 
 Stranica radi na svakom statičkom hostingu. Za GitHub Pages: **Settings → Pages → Deploy from a branch → `main` / root**.
 
-U `index.html` polje `og:image` pokazuje na GitHub Pages adresu. Ako stranica dobije drugu domenu, treba ga promijeniti.
+U obje HTML datoteke polje `og:image` pokazuje na GitHub Pages adresu. Ako stranica dobije drugu domenu, treba ga promijeniti.
 
-## Porijeklo fotografija
+## Fotografije
 
-- Facebook stranica farme: `farma-magla`, `pogled-magla`, `pilici-blizu`, `pilici-1`, `pilenke`
-- Postojeća Lovable stranica: `farma-jutro`, `jaja`, `kokosi`, `ovce`, `janje`, `kuca`, logo
+Stranica trenutno nema fotografija. Vlasnik ih šalje naknadno.

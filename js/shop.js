@@ -5,7 +5,6 @@
   const { products, whatsapp, email, deliveryHours } = window.FARMA;
   const byId = Object.fromEntries(products.map((p) => [p.id, p]));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const desktop = window.matchMedia('(min-width: 1000px)');
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -31,124 +30,82 @@
 
   const qtyOf = (id) => cart[id] || 0;
   const lines = () => products.filter((p) => qtyOf(p.id) > 0);
-  const hasEggs = () => lines().some((p) => p.group === 'jaja');
-  const hasAgreed = () => lines().some((p) => p.group === 'dogovor');
-  const total = () => lines().reduce((sum, p) => sum + (p.price || 0) * qtyOf(p.id), 0);
-  const eggCount = () => lines().reduce((sum, p) => sum + (p.eggs || 0) * qtyOf(p.id), 0);
+  const total = () => lines().reduce((sum, p) => sum + p.price * qtyOf(p.id), 0);
+  const eggCount = () => lines().reduce((sum, p) => sum + p.eggs * qtyOf(p.id), 0);
   const itemCount = () => lines().reduce((sum, p) => sum + qtyOf(p.id), 0);
 
   const money = (n) => `${Number.isInteger(n) ? n : n.toFixed(2).replace('.', ',')} KM`;
-  const fullName = (p) => (p.klasa ? `${p.name} — ${p.klasa}` : p.name);
-  const piecesLabel = (n) => (n % 10 === 1 && n % 100 !== 11 ? `${n} komad` : `${n} komada`);
+  const shellsLabel = (n) => {
+    if (n % 10 === 1 && n % 100 !== 11) return `${n} školjka`;
+    if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) return `${n} školjke`;
+    return `${n} školjki`;
+  };
 
-  /* ---------- Crtež školjke s jajima ---------- */
+  /* ---------- Polja sa školjkama ---------- */
 
-  const EGG_TONES = ['cream', 'tan', 'brown', 'tan', 'cream'];
-
-  function trayMarkup(p) {
-    const [cols, rows] = p.tray;
-    const cell = 24;
-    const pad = 8;
-    const width = cols * cell + pad * 2;
-    const height = rows * cell + pad * 2;
-    let eggs = '';
-    for (let i = 0; i < cols * rows; i += 1) {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      const x = pad + cell * col + cell / 2;
-      const y = pad + cell * row + cell / 2;
-      const tone = EGG_TONES[(i * 7 + row * 3) % EGG_TONES.length];
-      const tilt = ((i * 47) % 50) - 25;
-      eggs += `<circle class="tray-well" cx="${x}" cy="${y}" r="11"/>`
-        + `<g transform="translate(${x} ${y})"><g class="tray-egg" style="--i:${i}">`
-        + `<use href="#egg-${tone}" transform="rotate(${tilt}) scale(${p.eggScale})"/></g></g>`;
-    }
-    return `<svg class="tray" viewBox="0 0 ${width} ${height}" aria-hidden="true">`
-      + `<rect class="tray-base" width="${width}" height="${height}" rx="12"/>${eggs}</svg>`;
-  }
-
-  /* ---------- Kartice proizvoda ---------- */
-
-  function cardMarkup(p) {
-    const media = p.image
-      ? `<img src="${p.image}" width="${p.imageSize[0]}" height="${p.imageSize[1]}" alt="${p.alt}" loading="lazy">`
-      : trayMarkup(p);
-    const price = p.price === null
-      ? '<p class="pcard-price pcard-price--agree">Po dogovoru</p>'
-      : `<p class="pcard-price">${money(p.price)}</p>`;
-    const klasa = p.klasa ? ` <span class="klasa">${p.klasa}</span>` : '';
-    const classes = ['pcard', p.image ? 'pcard--photo' : 'pcard--egg', p.wide ? 'pcard--wide' : ''].join(' ');
-    return `<article class="${classes}" data-product="${p.id}" data-state="empty">
-      <div class="pcard-media">${media}<span class="pcard-badge" aria-hidden="true" data-badge></span></div>
-      <div class="pcard-body">
-        <div class="pcard-text">
-          <h4 class="pcard-name">${p.name}${klasa}</h4>
-          <p class="pcard-desc">${p.desc}</p>
-        </div>
-        ${price}
-        <div class="pcard-action">
-          <button class="btn-add" type="button" data-add><svg class="icon"><use href="#i-plus"/></svg> Dodaj<span class="sr-only">: ${fullName(p)}</span></button>
-          ${stepperMarkup(p)}
+  $('[data-tiles]').innerHTML = products.map((p) => `
+    <article class="tile" id="p-${p.id}" data-product="${p.id}" style="--c:var(--${p.color})">
+      <div class="tile-art">
+        <svg class="egg" viewBox="0 0 100 126" style="--scale:${p.egg}" aria-hidden="true"><use href="#egg"/><text x="50" y="88" text-anchor="middle">${p.mark}</text></svg>
+      </div>
+      <div class="tile-text">
+        <h2>${p.name}</h2>
+        <p>${p.desc}</p>
+      </div>
+      <p class="tile-price">${money(p.price)}</p>
+      <div class="tile-action">
+        <button class="add" type="button" data-add>Dodaj<span class="sr-only">: ${p.name}</span></button>
+        <div class="stepper" role="group" aria-label="Količina: ${p.name}" data-stepper hidden>
+          <button type="button" data-step="-1" aria-label="Smanji količinu: ${p.name}">−</button>
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="0" aria-label="Količina: ${p.name}" data-qty>
+          <button type="button" data-step="1" aria-label="Povećaj količinu: ${p.name}">+</button>
         </div>
       </div>
-    </article>`;
-  }
-
-  function stepperMarkup(p) {
-    return `<div class="stepper" role="group" aria-label="Količina: ${fullName(p)}">
-      <button class="step" type="button" data-step="-1" aria-label="Smanji količinu: ${fullName(p)}"><svg class="icon"><use href="#i-minus"/></svg></button>
-      <input class="step-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" value="0" aria-label="Količina: ${fullName(p)}" data-qty>
-      <button class="step" type="button" data-step="1" aria-label="Povećaj količinu: ${fullName(p)}"><svg class="icon"><use href="#i-plus"/></svg></button>
-    </div>`;
-  }
-
-  $$('[data-grid]').forEach((grid) => {
-    grid.innerHTML = products.filter((p) => p.group === grid.dataset.grid).map(cardMarkup).join('');
-  });
+    </article>`).join('');
 
   /* ---------- Reference na elemente ---------- */
 
   const form = $('#order-form');
   const live = $('[data-live]');
   const itemsEl = $('[data-items]');
-  const pill = $('[data-cart-pill]');
-  const bar = $('[data-cart-bar]');
+  const bar = $('[data-bar]');
+  const sendButton = $('[data-send]');
   const sendError = $('[data-send-error]');
-  const summaryTotal = $('[data-total]');
+  const totalEl = $('[data-total]');
   const rows = new Map();
 
   /* ---------- Promjena količine ---------- */
 
-  function setQty(id, value, { fly = null, announce = true } = {}) {
+  function setQty(id, value, { announce = true } = {}) {
     const p = byId[id];
     const previous = qtyOf(id);
     const next = Math.max(0, Math.min(p.max, Number.isFinite(value) ? value : 0));
     if (next > 0) cart[id] = next; else delete cart[id];
 
-    renderCard(p);
-    renderSummary();
+    renderTile(p);
+    renderOrder();
     store.set(STORE_CART, cart);
 
     if (next > previous) {
-      playTrayWave(id);
-      if (fly) flyToCart(fly, p);
+      replay($('.tile-art', $(`[data-product="${id}"]`)), 'hop');
+      replay(totalEl, 'bump');
       hideSendError();
     }
     if (announce && next !== previous) {
-      const text = next === 0 ? `${fullName(p)} uklonjeno iz korpe.` : `${fullName(p)}: ${piecesLabel(next)}.`;
+      const text = next === 0 ? `${p.name} uklonjena iz korpe.` : `${p.name}: ${next}.`;
       live.textContent = `${text} Ukupno ${money(total())}.`;
     }
   }
 
-  function renderCard(p) {
-    const card = $(`[data-product="${p.id}"]`);
+  function renderTile(p) {
+    const tile = $(`[data-product="${p.id}"]`);
     const qty = qtyOf(p.id);
-    card.dataset.state = qty > 0 ? 'active' : 'empty';
-    $('[data-qty]', card).value = qty;
-    $('[data-badge]', card).textContent = qty > 0 ? `× ${qty}` : '';
+    $('[data-add]', tile).hidden = qty > 0;
+    $('[data-stepper]', tile).hidden = qty === 0;
+    $('[data-qty]', tile).value = qty;
   }
 
-  function renderSummary() {
+  function renderOrder() {
     const current = lines();
     const empty = current.length === 0;
 
@@ -159,190 +116,84 @@
         row.remove();
       }
     }
-    for (const p of current) {
+    current.forEach((p, index) => {
       let row = rows.get(p.id);
       if (!row) {
         row = document.createElement('li');
-        row.className = 'summary-item';
         row.dataset.row = p.id;
-        row.innerHTML = `<div class="summary-item-text"><b>${fullName(p)}</b><small>${p.eggs ? `${p.desc} · ` : ''}${p.price === null ? 'po dogovoru' : `${money(p.price)} / kom`}</small></div>
-          <p class="summary-item-price" data-row-price></p>${stepperMarkup(p)}`;
+        row.style.setProperty('--c', `var(--${p.color})`);
+        row.innerHTML = `<span class="order-name">${p.name}<small data-row-detail></small></span>
+          <b data-row-price></b>
+          <button type="button" data-remove aria-label="Ukloni: ${p.name}">×</button>`;
         rows.set(p.id, row);
       }
-      const before = current[current.indexOf(p) + 1];
-      const anchor = before ? rows.get(before.id) : null;
-      if (row.parentNode !== itemsEl || (anchor && anchor.parentNode === itemsEl && row.nextSibling !== anchor)) {
-        itemsEl.insertBefore(row, anchor && anchor.parentNode === itemsEl ? anchor : null);
-      }
-      $('[data-qty]', row).value = qtyOf(p.id);
-      $('[data-row-price]', row).textContent = p.price === null ? '—' : money(p.price * qtyOf(p.id));
-    }
+      const next = current[index + 1] ? rows.get(current[index + 1].id) : null;
+      const anchor = next && next.parentNode === itemsEl ? next : null;
+      if (row.parentNode !== itemsEl || row.nextSibling !== anchor) itemsEl.insertBefore(row, anchor);
+      $('[data-row-detail]', row).textContent = `${qtyOf(p.id)} × ${money(p.price)}`;
+      $('[data-row-price]', row).textContent = money(p.price * qtyOf(p.id));
+    });
 
     $('[data-empty]').hidden = !empty;
-    $('[data-clear]').hidden = empty;
+    $('[data-total-row]').hidden = empty;
+    totalEl.textContent = money(total());
+    sendButton.hidden = empty;
+    form.hidden = empty;
 
-    const sum = total();
-    const eggs = eggCount();
-    summaryTotal.textContent = !empty && !hasEggs() ? 'Po dogovoru' : money(sum);
-    $('[data-line-eggs]').hidden = eggs === 0;
-    $('[data-egg-count]').textContent = `${eggs} kom`;
-    $('[data-agree]').hidden = !hasAgreed();
-    $('[data-delivery-line]').textContent = !empty && !hasEggs() ? 'Po dogovoru' : 'Besplatna';
-
-    const label = !empty && hasEggs() ? `Pošalji narudžbu · ${money(sum)}` : 'Pošalji narudžbu';
-    $('[data-send-label]').textContent = label;
-
-    renderPill(empty, sum);
-    renderBar(empty, sum);
-    syncDeliveryFields();
-  }
-
-  function renderPill(empty, sum) {
-    pill.href = empty ? '#webshop' : '#narudzba';
-    pill.classList.toggle('has-items', !empty);
-    $('[data-pill-text]').textContent = empty ? 'Naruči jaja' : (hasEggs() ? money(sum) : 'Korpa');
-    const count = $('[data-pill-count]');
-    count.hidden = empty;
+    const count = $('[data-cart-count]');
     count.textContent = itemCount();
-    pill.setAttribute('aria-label', empty ? 'Naruči jaja' : `Korpa: ${piecesLabel(itemCount())}, ukupno ${money(sum)}`);
-  }
+    count.hidden = empty;
 
-  function renderBar(empty, sum) {
     bar.classList.toggle('has-items', !empty);
-    $('[data-bar-total]').textContent = !empty && !hasEggs() ? 'Po dogovoru' : money(sum);
-    $('[data-bar-count]').textContent = empty ? '' : piecesLabel(itemCount());
+    $('[data-bar-total]').textContent = money(total());
+    $('[data-bar-count]').textContent = empty ? '' : shellsLabel(itemCount());
     $('[data-bar-next]').tabIndex = empty ? -1 : 0;
+
+    renderSend();
   }
 
-  /* ---------- Dostava: adresa i termin trebaju samo za jaja ---------- */
-
-  function syncDeliveryFields() {
-    const onlyAgreed = hasAgreed() && !hasEggs();
-    $$('[data-delivery]').forEach((el) => { el.hidden = onlyAgreed; });
-    $('[data-form-title]').textContent = onlyAgreed ? 'Vaši podaci' : 'Podaci za dostavu';
-
-    const note = $('[data-form-note]');
-    if (onlyAgreed) {
-      note.textContent = 'Za piliće, pilenke i ovce dovoljni su nam ime i telefon. Javljamo vam se radi dogovora o cijeni i preuzimanju.';
-    } else if (hasAgreed()) {
-      note.textContent = 'Jaja dostavljamo na unesenu adresu i termin. Za piliće, pilenke i ovce javljamo vam se radi dogovora.';
-    }
-    note.hidden = !hasAgreed();
+  // Dugme vodi kroz korake: prvo do podataka, a kad su popunjeni, šalje.
+  function renderSend() {
+    const ready = isReady();
+    sendButton.classList.toggle('btn-send', ready);
+    $('[data-send-icon]').hidden = !ready;
+    $('[data-send-fine]').hidden = !ready;
+    $('[data-send-label]').textContent = ready ? `Pošalji na WhatsApp · ${money(total())}` : 'Dalje: podaci za dostavu';
   }
 
   /* ---------- Animacije ---------- */
 
-  function bump(el) {
+  function replay(el, name) {
     if (!el || reduceMotion.matches) return;
-    el.classList.remove('bump');
+    el.classList.remove(name);
     void el.offsetWidth;
-    el.classList.add('bump');
+    el.classList.add(name);
   }
 
-  function playTrayWave(id) {
-    if (reduceMotion.matches) return;
-    const card = $(`[data-product="${id}"]`);
-    card.classList.remove('is-wave');
-    void card.offsetWidth;
-    card.classList.add('is-wave');
-    window.clearTimeout(card.waveTimer);
-    card.waveTimer = window.setTimeout(() => card.classList.remove('is-wave'), 1100);
-    bump($('[data-badge]', card));
-  }
-
-  function flightTarget() {
-    if (!desktop.matches) {
-      return { x: 44, y: window.innerHeight - 40, onLand: () => bump($('[data-bar-icon]')) };
-    }
-    const rect = summaryTotal.getBoundingClientRect();
-    if (rect.top > 80 && rect.bottom < window.innerHeight) {
-      return { x: rect.right - 20, y: rect.top + rect.height / 2, onLand: () => bump(summaryTotal) };
-    }
-    const pillRect = pill.getBoundingClientRect();
-    return { x: pillRect.left + 24, y: pillRect.top + pillRect.height / 2, onLand: () => bump(pill) };
-  }
-
-  // Jaje iskoči iz kartice i lukom doleti do korpe.
-  function flyToCart(from, p) {
-    const target = flightTarget();
-    if (reduceMotion.matches || !from.animate) {
-      target.onLand();
-      return;
-    }
-    const start = from.getBoundingClientRect();
-    const x0 = start.left + start.width / 2;
-    const y0 = start.top + start.height / 2;
-    const dx = target.x - x0;
-    const dy = target.y - y0;
-    const lift = Math.max(70, Math.abs(dy) * 0.3);
-
-    const egg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    egg.setAttribute('class', 'fly-egg');
-    egg.setAttribute('viewBox', '-11 -12 22 24');
-    egg.setAttribute('aria-hidden', 'true');
-    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    use.setAttribute('href', p.group === 'jaja' ? '#egg-tan' : '#egg-chick');
-    egg.appendChild(use);
-    egg.style.left = `${x0 - 16}px`;
-    egg.style.top = `${y0 - 18}px`;
-    document.body.appendChild(egg);
-
-    const frames = [];
-    const steps = 16;
-    for (let i = 0; i <= steps; i += 1) {
-      const t = i / steps;
-      const x = dx * t;
-      const y = dy * t - lift * 4 * t * (1 - t);
-      const stretch = 1 + 0.18 * Math.sin(Math.PI * t);
-      const size = 1.15 - 0.6 * t;
-      frames.push({
-        transform: `translate(${x}px, ${y}px) rotate(${t * 320}deg) scale(${size / stretch}, ${size * stretch})`,
-        opacity: t > 0.92 ? 0.4 : 1,
-      });
-    }
-    const flight = egg.animate(frames, { duration: 620, easing: 'cubic-bezier(.35,.1,.55,1)' });
-    flight.onfinish = () => {
-      egg.remove();
-      target.onLand();
-    };
-  }
-
-  /* ---------- Događaji na karticama i u korpi ---------- */
-
-  function idFromControl(el) {
-    const host = el.closest('[data-product],[data-row]');
-    return host ? (host.dataset.product || host.dataset.row) : null;
-  }
+  /* ---------- Događaji u poljima i korpi ---------- */
 
   document.addEventListener('click', (event) => {
     const add = event.target.closest('[data-add]');
     if (add) {
-      const id = idFromControl(add);
-      const card = add.closest('[data-product]');
-      setQty(id, 1, { fly: $('.pcard-media', card) });
-      $('[data-step="1"]', card).focus({ preventScroll: true });
+      const tile = add.closest('[data-product]');
+      setQty(tile.dataset.product, 1);
+      $('[data-step="1"]', tile).focus({ preventScroll: true });
       return;
     }
 
     const step = event.target.closest('[data-step]');
     if (step) {
-      const id = idFromControl(step);
-      const delta = Number(step.dataset.step);
-      const host = step.closest('[data-product],[data-row]');
-      const inCard = host.matches('[data-product]');
-      const next = qtyOf(id) + delta;
-      setQty(id, next, { fly: delta > 0 && inCard ? $('.pcard-media', host) : null });
-      if (next <= 0) {
-        // Stepper nestaje, pa fokus prelazi na najbliži smisleni element.
-        (inCard ? $('[data-add]', host) : $('#summary-title')).focus({ preventScroll: true });
-      }
+      const tile = step.closest('[data-product]');
+      const next = qtyOf(tile.dataset.product) + Number(step.dataset.step);
+      setQty(tile.dataset.product, next);
+      if (next <= 0) $('[data-add]', tile).focus({ preventScroll: true });
       return;
     }
 
-    if (event.target.closest('[data-clear]')) {
-      lines().forEach((p) => setQty(p.id, 0, { announce: false }));
-      live.textContent = 'Korpa je ispražnjena.';
-      $('#summary-title').focus({ preventScroll: true });
+    const remove = event.target.closest('[data-remove]');
+    if (remove) {
+      setQty(remove.closest('[data-row]').dataset.row, 0);
+      $('#order-title').focus({ preventScroll: true });
     }
   });
 
@@ -354,15 +205,14 @@
 
   document.addEventListener('change', (event) => {
     if (event.target.matches('[data-qty]')) {
-      const id = idFromControl(event.target);
-      const host = event.target.closest('[data-product],[data-row]');
+      const tile = event.target.closest('[data-product]');
       const next = Number.parseInt(event.target.value, 10) || 0;
-      setQty(id, next);
-      if (next === 0 && host.matches('[data-product]')) $('[data-add]', host).focus({ preventScroll: true });
+      setQty(tile.dataset.product, next);
+      if (next === 0) $('[data-add]', tile).focus({ preventScroll: true });
     }
   });
 
-  /* ---------- Traka na telefonu se krije dok su forma i sažetak na ekranu ---------- */
+  /* ---------- Traka na telefonu se krije dok su forma i korpa na ekranu ---------- */
 
   if ('IntersectionObserver' in window) {
     const visible = new Set();
@@ -377,6 +227,7 @@
 
   /* ---------- Forma ---------- */
 
+  const REQUIRED = ['ime', 'telefon', 'adresa', 'grad', 'datum', 'vrijeme'];
   const pad2 = (n) => String(n).padStart(2, '0');
 
   function localToday() {
@@ -426,7 +277,7 @@
       case 'vrijeme': {
         const from = form.elements.vrijemeOd.value;
         const to = form.elements.vrijemeDo.value;
-        if (!from || !to) return 'Odaberite period dostave';
+        if (!from || !to) return 'Odaberite vrijeme dostave';
         return Number(to) > Number(from) ? '' : 'Krajnji sat mora biti veći od početnog';
       }
       default:
@@ -444,11 +295,11 @@
     });
   }
 
-  function requiredFields() {
-    return hasAgreed() && !hasEggs()
-      ? ['ime', 'telefon']
-      : ['ime', 'telefon', 'adresa', 'grad', 'datum', 'vrijeme'];
+  function isReady() {
+    return lines().length > 0 && REQUIRED.every((name) => !validateField(name));
   }
+
+  const isUntouched = () => $$('input, select', form).every((control) => !control.value);
 
   form.addEventListener('focusout', (event) => {
     const field = event.target.closest('[data-field]');
@@ -458,12 +309,16 @@
     if (touched) showFieldError(name, validateField(name));
   });
 
-  form.addEventListener('input', (event) => {
+  function onFormChange(event) {
     const field = event.target.closest('[data-field]');
     if (field && field.classList.contains('is-invalid')) {
       showFieldError(field.dataset.field, validateField(field.dataset.field));
     }
-  });
+    renderSend();
+  }
+
+  form.addEventListener('input', onFormChange);
+  form.addEventListener('change', onFormChange);
 
   function showSendError(message) {
     sendError.textContent = message;
@@ -472,6 +327,12 @@
 
   function hideSendError() {
     sendError.hidden = true;
+  }
+
+  function goToField(name) {
+    const control = $(`[data-field="${name}"] input, [data-field="${name}"] select`);
+    control.focus({ preventScroll: true });
+    control.closest('[data-field]').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'center' });
   }
 
   /* ---------- Poruka za WhatsApp ---------- */
@@ -485,30 +346,18 @@
   }
 
   function buildMessage() {
-    const eggLines = lines().filter((p) => p.group === 'jaja');
-    const agreedLines = lines().filter((p) => p.group === 'dogovor');
-    const out = ['*Nova narudžba — Eko farma "Jezerac"*', ''];
+    const out = ['*Nova narudžba, Eko farma "Jezerac"*', ''];
 
-    if (eggLines.length) {
-      out.push('*Jaja*');
-      eggLines.forEach((p) => out.push(`• ${fullName(p)} (${p.desc}) × ${qtyOf(p.id)} = ${money(p.price * qtyOf(p.id))}`));
-      out.push(`*Ukupno: ${money(total())}* (${eggCount()} jaja)`);
-      out.push('Dostava besplatna, plaćanje pouzećem.', '');
-    }
-    if (agreedLines.length) {
-      out.push('*Po dogovoru*');
-      agreedLines.forEach((p) => out.push(`• ${fullName(p)} × ${qtyOf(p.id)}`));
-      out.push('Cijena i termin po dogovoru.', '');
-    }
+    lines().forEach((p) => out.push(`• ${p.name} (${p.desc}) × ${qtyOf(p.id)} = ${money(p.price * qtyOf(p.id))}`));
+    out.push(`*Ukupno: ${money(total())}* (${eggCount()} jaja)`);
+    out.push('Dostava besplatna, plaćanje pri preuzimanju.', '');
 
     out.push('*Podaci kupca*');
     out.push(`Ime: ${clean('ime')}`);
     out.push(`Telefon: ${clean('telefon')}`);
-    if (eggLines.length) {
-      out.push(`Adresa: ${clean('adresa')}, ${clean('grad')}`);
-      out.push(`Datum dostave: ${formatDate(form.elements.datum.value)}`);
-      out.push(`Vremenski period dostave: ${pad2(form.elements.vrijemeOd.value)}:00 – ${pad2(form.elements.vrijemeDo.value)}:00`);
-    }
+    out.push(`Adresa: ${clean('adresa')}, ${clean('grad')}`);
+    out.push(`Datum dostave: ${formatDate(form.elements.datum.value)}`);
+    out.push(`Vrijeme dostave: ${pad2(form.elements.vrijemeOd.value)}:00 do ${pad2(form.elements.vrijemeDo.value)}:00`);
     const note = form.elements.napomena.value.trim();
     if (note) out.push(`Napomena: ${note}`);
 
@@ -533,26 +382,17 @@
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-
-    if (lines().length === 0) {
-      showSendError('Odaberite barem jedno pakovanje.');
-      $('#proizvodi').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
-      return;
-    }
+    if (lines().length === 0) return;
     hideSendError();
 
-    const fields = requiredFields();
-    let firstInvalid = null;
-    ['ime', 'telefon', 'adresa', 'grad', 'datum', 'vrijeme'].forEach((name) => {
-      const message = fields.includes(name) ? validateField(name) : '';
-      showFieldError(name, message);
-      if (message && !firstInvalid) firstInvalid = name;
-    });
-    if (firstInvalid) {
-      showSendError('Provjerite unesene podatke.');
-      const control = $(`[data-field="${firstInvalid}"] input, [data-field="${firstInvalid}"] select`);
-      control.focus({ preventScroll: true });
-      control.closest('[data-field]').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'center' });
+    const invalid = REQUIRED.filter((name) => validateField(name));
+    if (invalid.length) {
+      // Prazna forma nije greška: kupac je tek stigao do ovog koraka.
+      if (!isUntouched()) {
+        REQUIRED.forEach((name) => showFieldError(name, validateField(name)));
+        showSendError('Provjerite unesene podatke.');
+      }
+      goToField(invalid[0]);
       return;
     }
 
@@ -571,7 +411,7 @@
     openExternal(url);
 
     $('[data-sent-wa]').href = url;
-    const subject = hasEggs() ? `Nova narudžba (${eggCount()} jaja · ${money(total())})` : 'Nova narudžba';
+    const subject = `Nova narudžba (${eggCount()} jaja, ${money(total())})`;
     $('[data-sent-mail]').href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text.replace(/\*/g, ''))}`;
     sentDialog.showModal();
   });
@@ -584,8 +424,9 @@
     form.elements.vrijemeOd.value = '';
     form.elements.vrijemeDo.value = '';
     form.elements.napomena.value = '';
+    renderSend();
     sentDialog.close();
-    $('#webshop').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
+    window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
   });
 
   sentDialog.addEventListener('click', (event) => {
@@ -594,9 +435,10 @@
 
   /* ---------- Početno iscrtavanje ---------- */
 
-  products.forEach(renderCard);
-  renderSummary();
+  products.forEach(renderTile);
+  renderOrder();
 
-  const contactLink = $('[data-wa-contact]');
-  contactLink.href = `https://wa.me/${whatsapp}?text=${encodeURIComponent('Zdravo, imam pitanje u vezi s Eko farmom "Jezerac".')}`;
+  // Polja nastaju tek ovdje, pa preglednik sam ne može skočiti na školjku iz linka s početne.
+  const linked = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+  if (linked) linked.scrollIntoView({ block: 'center', behavior: 'instant' });
 })();

@@ -1,4 +1,4 @@
-/* Zajedničko za obje stranice: cjenovnik, galerija, broj u korpi i godina u podnožju. */
+/* Zajedničko za obje stranice: galerija, broj u korpi i godina u podnožju. */
 (function () {
   'use strict';
 
@@ -6,23 +6,10 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  /* ---------- Cjenovnik na početnoj stranici ---------- */
+  /* ---------- Najniža cijena u pozivu na početnoj ---------- */
 
-  const strip = $('[data-strip]');
-  if (strip) {
-    strip.innerHTML = products.map((p) => `
-      <li>
-        <a class="strip-item tone-${p.tone}" href="webshop.html#p-${p.id}">
-          <span class="strip-text">
-            <span class="strip-name">${p.name}</span>
-            <span class="strip-desc">${p.desc}</span>
-          </span>
-          <b class="strip-price">${p.price} KM</b>
-          <svg class="egg" viewBox="0 0 100 126" style="--scale:${p.egg}" aria-hidden="true"><use href="#egg"/><text x="50" y="88" text-anchor="middle">${p.mark}</text></svg>
-          <span class="strip-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
-      </li>`).join('');
-  }
+  const minPrice = $('[data-min-price]');
+  if (minPrice) minPrice.textContent = `${Math.min(...products.map((p) => p.price))} KM`;
 
   /* ---------- Galerija ---------- */
 
@@ -37,7 +24,7 @@
       current = (index + items.length) % items.length;
       image.src = items[current].dataset.full;
       image.alt = $('img', items[current]).alt;
-      caption.textContent = $('span', items[current]).textContent;
+      caption.textContent = items[current].dataset.caption;
     };
 
     items.forEach((item, index) => {

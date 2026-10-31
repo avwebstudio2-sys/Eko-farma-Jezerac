@@ -1,4 +1,4 @@
-/* Webshop: korpa, forma i slanje narudžbe na WhatsApp. */
+/* Webshop: kartice, korpa, forma i slanje narudžbe na WhatsApp. */
 (function () {
   'use strict';
 
@@ -35,30 +35,63 @@
   const itemCount = () => lines().reduce((sum, p) => sum + qtyOf(p.id), 0);
 
   const money = (n) => `${Number.isInteger(n) ? n : n.toFixed(2).replace('.', ',')} KM`;
+  const perEgg = (p) => `${(p.price / p.eggs).toFixed(2).replace('.', ',')} KM po jajetu`;
   const shellsLabel = (n) => {
     if (n % 10 === 1 && n % 100 !== 11) return `${n} školjka`;
     if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) return `${n} školjke`;
     return `${n} školjki`;
   };
 
-  /* ---------- Polja sa školjkama ---------- */
+  /* ---------- Crtež školjke s jajima ---------- */
 
-  $('[data-tiles]').innerHTML = products.map((p) => `
-    <article class="tile tone-${p.tone}" id="p-${p.id}" data-product="${p.id}">
-      <div class="tile-art">
-        <svg class="egg" viewBox="0 0 100 126" style="--scale:${p.egg}" aria-hidden="true"><use href="#egg"/><text x="50" y="88" text-anchor="middle">${p.mark}</text></svg>
+  const EGG_TONES = ['cream', 'tan', 'brown', 'tan', 'cream'];
+
+  function trayMarkup(p) {
+    const [cols, rows] = p.tray;
+    const cell = 24;
+    const pad = 8;
+    const width = cols * cell + pad * 2;
+    const height = rows * cell + pad * 2;
+    let eggs = '';
+    for (let i = 0; i < cols * rows; i += 1) {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      const x = pad + cell * col + cell / 2;
+      const y = pad + cell * row + cell / 2;
+      const tone = EGG_TONES[(i * 7 + row * 3) % EGG_TONES.length];
+      const tilt = ((i * 47) % 50) - 25;
+      eggs += `<circle class="tray-well" cx="${x}" cy="${y}" r="11"/>`
+        + `<g transform="translate(${x} ${y})"><g class="tray-egg" style="--i:${i}">`
+        + `<use href="#egg-${tone}" transform="rotate(${tilt}) scale(${p.eggScale})"/></g></g>`;
+    }
+    return `<svg class="tray" viewBox="0 0 ${width} ${height}" aria-hidden="true">`
+      + `<rect class="tray-base" width="${width}" height="${height}" rx="12"/>${eggs}</svg>`;
+  }
+
+  /* ---------- Kartice proizvoda ---------- */
+
+  function stepperMarkup(p) {
+    return `<div class="stepper" role="group" aria-label="Količina: ${p.name}" data-stepper>
+      <button type="button" data-step="-1" aria-label="Smanji količinu: ${p.name}">−</button>
+      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="0" aria-label="Količina: ${p.name}" data-qty>
+      <button type="button" data-step="1" aria-label="Povećaj količinu: ${p.name}">+</button>
+    </div>`;
+  }
+
+  $('[data-products]').innerHTML = products.map((p) => `
+    <article class="pcard" data-product="${p.id}">
+      <div class="pcard-media">
+        ${trayMarkup(p)}
+        <span class="pcard-badge">${p.badge}</span>
+        <span class="pcard-count" aria-hidden="true" data-badge hidden></span>
       </div>
-      <div class="tile-text">
-        <h2>${p.name}</h2>
-        <p>${p.desc}</p>
-      </div>
-      <p class="tile-price">${money(p.price)}</p>
-      <div class="tile-action">
-        <button class="add" type="button" data-add>Dodaj<span class="sr-only">: ${p.name}</span></button>
-        <div class="stepper" role="group" aria-label="Količina: ${p.name}" data-stepper hidden>
-          <button type="button" data-step="-1" aria-label="Smanji količinu: ${p.name}">−</button>
-          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="0" aria-label="Količina: ${p.name}" data-qty>
-          <button type="button" data-step="1" aria-label="Povećaj količinu: ${p.name}">+</button>
+      <div class="pcard-body">
+        <h3>${p.name}</h3>
+        <p class="pcard-desc">${p.desc}</p>
+        <p class="pcard-price">${money(p.price)}<small>${perEgg(p)}</small></p>
+        <div class="pcard-action">
+          <button class="btn btn-wide" type="button" data-add>Dodaj u korpu<span class="sr-only">: ${p.name}</span></button>
+          ${stepperMarkup(p)}
         </div>
       </div>
     </article>`).join('');
@@ -72,6 +105,7 @@
   const sendButton = $('[data-send]');
   const sendError = $('[data-send-error]');
   const totalEl = $('[data-total]');
+  const countEl = $('[data-cart-count]');
   const rows = new Map();
 
   /* ---------- Promjena količine ---------- */
@@ -82,13 +116,14 @@
     const next = Math.max(0, Math.min(p.max, Number.isFinite(value) ? value : 0));
     if (next > 0) cart[id] = next; else delete cart[id];
 
-    renderTile(p);
-    renderOrder();
+    renderCard(p);
+    renderCart();
     store.set(STORE_CART, cart);
 
     if (next > previous) {
-      replay($('.tile-art', $(`[data-product="${id}"]`)), 'hop');
+      replay($(`[data-product="${id}"]`), 'is-wave');
       replay(totalEl, 'bump');
+      replay(countEl, 'bump');
       hideSendError();
     }
     if (announce && next !== previous) {
@@ -97,15 +132,18 @@
     }
   }
 
-  function renderTile(p) {
-    const tile = $(`[data-product="${p.id}"]`);
+  function renderCard(p) {
+    const card = $(`[data-product="${p.id}"]`);
     const qty = qtyOf(p.id);
-    $('[data-add]', tile).hidden = qty > 0;
-    $('[data-stepper]', tile).hidden = qty === 0;
-    $('[data-qty]', tile).value = qty;
+    $('[data-add]', card).hidden = qty > 0;
+    $('[data-stepper]', card).hidden = qty === 0;
+    $('[data-qty]', card).value = qty;
+    const badge = $('[data-badge]', card);
+    badge.hidden = qty === 0;
+    badge.textContent = `× ${qty}`;
   }
 
-  function renderOrder() {
+  function renderCart() {
     const current = lines();
     const empty = current.length === 0;
 
@@ -121,28 +159,29 @@
       if (!row) {
         row = document.createElement('li');
         row.dataset.row = p.id;
-        row.className = `tone-${p.tone}`;
-        row.innerHTML = `<span class="order-name">${p.name}<small data-row-detail></small></span>
+        row.innerHTML = `<span class="cart-name">${p.name}<small>${p.desc} · ${money(p.price)}</small></span>
           <b data-row-price></b>
-          <button type="button" data-remove aria-label="Ukloni: ${p.name}">×</button>`;
+          ${stepperMarkup(p)}
+          <button class="cart-remove" type="button" data-remove>Ukloni<span class="sr-only">: ${p.name}</span></button>`;
         rows.set(p.id, row);
       }
       const next = current[index + 1] ? rows.get(current[index + 1].id) : null;
       const anchor = next && next.parentNode === itemsEl ? next : null;
       if (row.parentNode !== itemsEl || row.nextSibling !== anchor) itemsEl.insertBefore(row, anchor);
-      $('[data-row-detail]', row).textContent = `${qtyOf(p.id)} × ${money(p.price)}`;
+      $('[data-qty]', row).value = qtyOf(p.id);
       $('[data-row-price]', row).textContent = money(p.price * qtyOf(p.id));
     });
 
     $('[data-empty]').hidden = !empty;
-    $('[data-total-row]').hidden = empty;
+    $('[data-clear]').hidden = empty;
+    $('[data-line-eggs]').hidden = empty;
+    $('[data-egg-count]').textContent = eggCount();
     totalEl.textContent = money(total());
     sendButton.hidden = empty;
     form.hidden = empty;
 
-    const count = $('[data-cart-count]');
-    count.textContent = itemCount();
-    count.hidden = empty;
+    countEl.textContent = itemCount();
+    countEl.hidden = empty;
 
     bar.classList.toggle('has-items', !empty);
     $('[data-bar-total]').textContent = money(total());
@@ -158,7 +197,7 @@
     sendButton.classList.toggle('btn-send', ready);
     $('[data-send-icon]').hidden = !ready;
     $('[data-send-fine]').hidden = !ready;
-    $('[data-send-label]').textContent = ready ? `Pošalji na WhatsApp · ${money(total())}` : 'Dalje: podaci za dostavu';
+    $('[data-send-label]').textContent = ready ? `Pošalji na WhatsApp · ${money(total())}` : 'Nastavi: podaci za dostavu';
   }
 
   /* ---------- Animacije ---------- */
@@ -168,36 +207,58 @@
     el.classList.remove(name);
     void el.offsetWidth;
     el.classList.add(name);
-    // Klasa se skida poslije animacije, da hover ponovo može pokrenuti svoju.
-    el.addEventListener('animationend', () => el.classList.remove(name), { once: true });
+    window.clearTimeout(el.replayTimer);
+    // Klasa se skida poslije animacije, da se može ponovo pokrenuti.
+    el.replayTimer = window.setTimeout(() => el.classList.remove(name), 1300);
   }
 
-  /* ---------- Događaji u poljima i korpi ---------- */
+  /* ---------- Događaji na karticama i u korpi ---------- */
+
+  function hostOf(el) {
+    return el.closest('[data-product],[data-row]');
+  }
+
+  function idOf(host) {
+    return host.dataset.product || host.dataset.row;
+  }
 
   document.addEventListener('click', (event) => {
     const add = event.target.closest('[data-add]');
     if (add) {
-      const tile = add.closest('[data-product]');
-      setQty(tile.dataset.product, 1);
-      $('[data-step="1"]', tile).focus({ preventScroll: true });
+      const card = hostOf(add);
+      setQty(idOf(card), 1);
+      $('[data-step="1"]', card).focus({ preventScroll: true });
       return;
     }
 
     const step = event.target.closest('[data-step]');
     if (step) {
-      const tile = step.closest('[data-product]');
-      const next = qtyOf(tile.dataset.product) + Number(step.dataset.step);
-      setQty(tile.dataset.product, next);
-      if (next <= 0) $('[data-add]', tile).focus({ preventScroll: true });
+      const host = hostOf(step);
+      const next = qtyOf(idOf(host)) + Number(step.dataset.step);
+      setQty(idOf(host), next);
+      if (next <= 0) focusAfterRemoval(host);
       return;
     }
 
     const remove = event.target.closest('[data-remove]');
     if (remove) {
-      setQty(remove.closest('[data-row]').dataset.row, 0);
-      $('#order-title').focus({ preventScroll: true });
+      setQty(idOf(hostOf(remove)), 0);
+      $('#cart-title').focus({ preventScroll: true });
+      return;
+    }
+
+    if (event.target.closest('[data-clear]')) {
+      lines().forEach((p) => setQty(p.id, 0, { announce: false }));
+      live.textContent = 'Korpa je ispražnjena.';
+      $('#cart-title').focus({ preventScroll: true });
     }
   });
+
+  // Stepper nestaje, pa fokus prelazi na najbliži smisleni element.
+  function focusAfterRemoval(host) {
+    const target = host.matches('[data-product]') ? $('[data-add]', host) : $('#cart-title');
+    target.focus({ preventScroll: true });
+  }
 
   document.addEventListener('input', (event) => {
     if (event.target.matches('[data-qty]')) {
@@ -207,10 +268,10 @@
 
   document.addEventListener('change', (event) => {
     if (event.target.matches('[data-qty]')) {
-      const tile = event.target.closest('[data-product]');
+      const host = hostOf(event.target);
       const next = Number.parseInt(event.target.value, 10) || 0;
-      setQty(tile.dataset.product, next);
-      if (next === 0) $('[data-add]', tile).focus({ preventScroll: true });
+      setQty(idOf(host), next);
+      if (next === 0) focusAfterRemoval(host);
     }
   });
 
@@ -437,10 +498,6 @@
 
   /* ---------- Početno iscrtavanje ---------- */
 
-  products.forEach(renderTile);
-  renderOrder();
-
-  // Polja nastaju tek ovdje, pa preglednik sam ne može skočiti na školjku iz linka s početne.
-  const linked = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
-  if (linked) linked.scrollIntoView({ block: 'center', behavior: 'instant' });
+  products.forEach(renderCard);
+  renderCart();
 })();

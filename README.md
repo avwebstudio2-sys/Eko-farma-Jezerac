@@ -26,12 +26,12 @@ Sve je u [`js/config.js`](js/config.js):
 ## Struktura
 
 ```
-index.html        početna: hero, cjenovnik, o nama, galerija, kontakt
-webshop.html      webshop: školjke, podaci za dostavu, narudžba
+index.html        početna: hero, poziv na webshop, o nama, galerija, kontakt s mapom
+webshop.html      webshop: kartice školjki, korpa, podaci za dostavu
 css/styles.css    izgled i animacije obje stranice
 js/config.js      školjke, cijene i kontakt
-js/site.js        cjenovnik i galerija na početnoj, broj u korpi
-js/shop.js        korpa, forma i poruka za WhatsApp
+js/site.js        galerija na početnoj, najniža cijena, broj u korpi
+js/shop.js        kartice, korpa, forma i poruka za WhatsApp
 assets/img/       logo, sivi logo za pozadinu, fotografije i ikone
 ```
 
@@ -47,6 +47,7 @@ Sve fotografije su privremeno preuzete s Facebook stranice farme, dok vlasnik ne
 
 | Gdje | Datoteka |
 | --- | --- |
-| Hero, u obliku jajeta | `assets/img/hero-farma.webp` (uspravna, oko 5:6) |
+| Hero, pozadina na računaru | `assets/img/hero-siroka.webp` (položena, oko 16:9) |
+| Hero, pozadina na telefonu | `assets/img/hero-farma.webp` (uspravna, oko 5:6) |
 | O nama | `assets/img/o-nama.webp` (uspravna, oko 4:5) |
 | Galerija | `assets/img/galerija/`, jedan `button.g-item` po slici u `index.html` |

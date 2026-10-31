@@ -1,8 +1,8 @@
-/* Eko farma "Jezerac": zelena i bež, zaobljene ivice, narandžasta samo za detalje. */
+/* Eko farma "Jezerac": bež je glavna boja, bijela sporedna, uz zelenu i narandžastu za detalje. */
 
 :root {
   --paper: #f1e9d8;
-  --cream: #f7f1e3;
+  --white: #fff;
   --beige: #e8dcc3;
   --sand: #dccdae;
   --mint: #e0e9cf;
@@ -21,7 +21,7 @@
   --radius-big: clamp(24px, 3vw, 40px);
   --top-h: 76px;
   --eggs-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%231c4727' stroke-opacity='.09' stroke-width='1.5'%3E%3Cpath d='M30 12c9 0 16 14 16 25 0 9-7 15-16 15s-16-6-16-15c0-11 7-25 16-25Z'/%3E%3Cpath transform='rotate(24 90 88)' d='M90 62c8 0 14 12 14 22 0 8-6 14-14 14s-14-6-14-14c0-10 6-22 14-22Z'/%3E%3C/g%3E%3C/svg%3E");
-  --eggs-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23f7f1e3' stroke-opacity='.1' stroke-width='1.5'%3E%3Cpath d='M30 12c9 0 16 14 16 25 0 9-7 15-16 15s-16-6-16-15c0-11 7-25 16-25Z'/%3E%3Cpath transform='rotate(24 90 88)' d='M90 62c8 0 14 12 14 22 0 8-6 14-14 14s-14-6-14-14c0-10 6-22 14-22Z'/%3E%3C/g%3E%3C/svg%3E");
+  --eggs-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.1' stroke-width='1.5'%3E%3Cpath d='M30 12c9 0 16 14 16 25 0 9-7 15-16 15s-16-6-16-15c0-11 7-25 16-25Z'/%3E%3Cpath transform='rotate(24 90 88)' d='M90 62c8 0 14 12 14 22 0 8-6 14-14 14s-14-6-14-14c0-10 6-22 14-22Z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 @view-transition { navigation: auto; }
@@ -66,7 +66,7 @@ a { color: inherit; }
 .svg-defs { position: absolute; width: 0; height: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-.skip-link { position: absolute; left: 8px; top: -60px; z-index: 40; padding: 10px 18px; border-radius: 999px; background: var(--forest); color: var(--cream); }
+.skip-link { position: absolute; left: 8px; top: -60px; z-index: 40; padding: 10px 18px; border-radius: 999px; background: var(--forest); color: var(--white); }
 .skip-link:focus { top: 8px; }
 
 .icon { flex: none; width: 1.25em; height: 1.25em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -84,7 +84,7 @@ a { color: inherit; }
   border: 0;
   border-radius: 999px;
   background: linear-gradient(var(--orange), var(--orange)) left / 0 100% no-repeat, var(--forest);
-  color: var(--cream);
+  color: var(--white);
   font: inherit;
   font-size: 1.1rem;
   font-weight: 500;
@@ -97,8 +97,8 @@ a { color: inherit; }
 .btn:active { transform: scale(.98); }
 .btn-wide { width: 100%; }
 .btn-send { background: linear-gradient(var(--forest), var(--forest)) left / 0 100% no-repeat, var(--orange); color: var(--ink); }
-.btn-send:hover, .btn-send:active { color: var(--cream); }
-.btn-light { background: linear-gradient(var(--orange), var(--orange)) left / 0 100% no-repeat, var(--cream); color: var(--forest); }
+.btn-send:hover, .btn-send:active { color: var(--white); }
+.btn-light { background: linear-gradient(var(--orange), var(--orange)) left / 0 100% no-repeat, var(--white); color: var(--forest); }
 .btn-ghost { background: linear-gradient(var(--orange), var(--orange)) left / 0 100% no-repeat, transparent; box-shadow: inset 0 0 0 2px var(--forest); color: var(--forest); }
 .btn-ghost:hover, .btn-ghost:active { box-shadow: inset 0 0 0 2px var(--orange); }
 .btn-big { flex: none; min-height: 62px; padding: 12px 34px; font-size: 1.2rem; }
@@ -118,13 +118,16 @@ a { color: inherit; }
   min-height: var(--top-h);
   padding: 8px var(--gutter);
   border-bottom: 1px solid var(--line);
-  background: rgb(247 241 227 / .95);
-  backdrop-filter: blur(10px);
+  background-color: var(--paper);
+  box-shadow: 0 8px 24px rgb(28 71 39 / .08);
+  transition: background-color .25s, border-color .25s, box-shadow .25s, color .25s;
   view-transition-name: top;
 }
-.top-logo { display: block; border-radius: 12px; }
-.top-logo img { width: auto; height: 56px; transition: transform .3s cubic-bezier(.3, 1.5, .6, 1); }
+.top-over { margin-bottom: calc(var(--top-h) * -1); }
+.top-logo { position: relative; display: block; border-radius: 12px; }
+.top-logo img { width: auto; height: 56px; transition: transform .3s cubic-bezier(.3, 1.5, .6, 1), opacity .25s; }
 .top-logo:hover img { transform: rotate(-3deg) scale(1.05); }
+.top-logo .top-logo-light { position: absolute; top: 0; left: 0; opacity: 0; }
 
 .top-nav { display: flex; align-items: center; gap: clamp(16px, 2.6vw, 36px); font-weight: 500; }
 .nav-link {
@@ -136,7 +139,19 @@ a { color: inherit; }
   transition: background-size .25s ease-out;
 }
 .nav-link:hover { background-size: 100% 2px; }
-.btn-nav { min-height: 46px; padding: 6px 20px; font-size: 1rem; }
+.btn-nav { min-height: 46px; padding: 6px 20px; font-size: 1rem; transition: background-color .25s, background-size .3s ease-out, color .18s, transform .2s; }
+
+/* Dok stranica nije skrolana, zaglavlje nema pozadinu. Bez JavaScripta ostaje puno. */
+@media (scripting: enabled) {
+  .top:not(.is-scrolled) { border-color: transparent; background-color: transparent; box-shadow: none; }
+
+  /* Na početnoj leži preko fotografije, pa je svijetlo. */
+  .top-over:not(.is-scrolled) { --ring: var(--white); color: var(--white); }
+  .top-over:not(.is-scrolled) .btn-nav { background-color: var(--white); color: var(--forest); }
+  .top-over:not(.is-scrolled) .btn-nav:hover { color: var(--ink); }
+  .top-over:not(.is-scrolled) .top-logo img { opacity: 0; }
+  .top-over:not(.is-scrolled) .top-logo .top-logo-light { opacity: 1; }
+}
 
 .count {
   display: inline-grid;
@@ -172,10 +187,10 @@ a { color: inherit; }
   isolation: isolate;
   display: flex;
   align-items: center;
-  min-height: clamp(460px, 72svh, 720px);
+  min-height: clamp(520px, 74svh, 800px);
   overflow: hidden;
   border-radius: 0 0 var(--radius-big) var(--radius-big);
-  color: var(--cream);
+  color: var(--white);
 }
 .hero-photo { position: absolute; inset: 0; z-index: -2; }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 62%; transition: transform 1.6s cubic-bezier(.2, .7, .2, 1); }
@@ -184,20 +199,22 @@ a { color: inherit; }
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(95deg, rgb(20 38 26 / .82) 0%, rgb(20 38 26 / .62) 46%, rgb(20 38 26 / .06) 100%);
+  background:
+    linear-gradient(180deg, rgb(20 38 26 / .62) 0, rgb(20 38 26 / 0) 180px),
+    linear-gradient(95deg, rgb(20 38 26 / .84) 0%, rgb(20 38 26 / .68) 46%, rgb(20 38 26 / .06) 100%);
 }
 .hero:hover .hero-photo img { transform: scale(1.05); }
-.hero-copy { padding: clamp(48px, 9vh, 96px) var(--gutter) clamp(88px, 13vh, 130px); }
-.hero h1 { color: var(--cream); font-size: clamp(3rem, 7vw, 7.2rem); line-height: .98; text-shadow: 0 2px 30px rgb(20 38 26 / .35); }
+.hero-copy { padding: calc(var(--top-h) + clamp(20px, 4vh, 48px)) var(--gutter) clamp(32px, 6vh, 64px); }
+.hero h1 { color: var(--white); font-size: clamp(3rem, 7vw, 7.2rem); line-height: .98; text-shadow: 0 2px 30px rgb(20 38 26 / .35); }
 .hero h1 em { color: var(--orange-light); font-style: normal; }
 .hero p { max-width: 24em; margin-top: 20px; font-size: clamp(1.2rem, 2vw, 1.65rem); line-height: 1.3; text-wrap: balance; }
 .hero .btn { margin-top: clamp(20px, 2.6vw, 32px); }
 
 /* ---------- Početna: poziv na webshop ---------- */
 
-.cta { position: relative; z-index: 1; margin-top: clamp(-72px, -6vw, -44px); padding: 0 var(--gutter); }
+.cta { margin-top: clamp(16px, 2.2vw, 32px); padding: 0 var(--gutter); }
 .cta-card {
-  --ring: var(--cream);
+  --ring: var(--white);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -206,11 +223,11 @@ a { color: inherit; }
   padding: clamp(26px, 3.6vw, 52px) clamp(22px, 4vw, 60px);
   border-radius: var(--radius-big);
   background: var(--forest) var(--eggs-light);
-  color: var(--cream);
+  color: var(--white);
   box-shadow: var(--shadow);
 }
 .cta-text { flex: 1 1 420px; max-width: 40em; }
-.cta h2 { color: var(--cream); font-size: clamp(2.2rem, 4vw, 3.8rem); }
+.cta h2 { color: var(--orange-light); font-size: clamp(2.2rem, 4vw, 3.8rem); }
 .cta p { margin-top: 12px; font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.35; }
 
 /* ---------- Početna: o nama ---------- */
@@ -244,14 +261,39 @@ a { color: inherit; }
   mask-image: linear-gradient(to right, transparent 0, #000 30%);
   pointer-events: none;
 }
-.about-photo { position: relative; }
-.about-frame { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius-big); box-shadow: var(--shadow); }
+/* Dvije fotografije u obliku jajeta, manja preko veće, i narandžasti obris iza njih */
+.about-photo { --egg: 50% 50% 50% 50% / 60% 60% 40% 40%; position: relative; width: 100%; max-width: 560px; aspect-ratio: 1 / 1.08; margin-inline: auto; }
+.about-photo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 3%;
+  width: 80%;
+  aspect-ratio: 4 / 5;
+  border: 2px solid var(--orange);
+  border-radius: var(--egg);
+  transform: rotate(-8deg);
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1);
+}
+.about-photo:hover::before { transform: rotate(-14deg); }
+.about-frame { position: absolute; display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--egg); }
+.about-frame-big { top: 0; left: 0; width: 80%; box-shadow: var(--shadow); }
+.about-frame-small {
+  right: 0;
+  bottom: 0;
+  width: 44%;
+  border: clamp(5px, .6vw, 8px) solid var(--white);
+  box-shadow: 0 14px 34px rgb(20 38 26 / .25);
+  transform: rotate(12deg);
+  transition: transform .45s cubic-bezier(.3, 1.5, .6, 1);
+}
+.about-photo:hover .about-frame-small { transform: rotate(4deg) translateY(-6px); }
 .about-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s cubic-bezier(.2, .7, .2, 1); }
 .about-photo:hover img { transform: scale(1.06); }
 .about-badge {
   position: absolute;
-  right: -14px;
-  bottom: 28px;
+  top: 10%;
+  right: 6%;
   padding: 12px 20px;
   border-radius: 18px;
   background: var(--orange);
@@ -272,29 +314,33 @@ a { color: inherit; }
 
 .gallery { padding: clamp(48px, 7vw, 96px) var(--gutter) 0; }
 .gallery h2 { margin-bottom: clamp(20px, 3vw, 36px); font-size: clamp(2.6rem, 5.4vw, 5.4rem); }
-.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 1.2vw, 18px); }
+.gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: clamp(48px, 7vw, 108px); gap: clamp(10px, 1.2vw, 18px); }
 
 .g-item {
   position: relative;
   display: block;
-  width: 100%;
+  grid-column: span 5;
+  grid-row: span 3;
   padding: 0;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
   border: 0;
   background: var(--sand);
-  color: var(--cream);
+  color: var(--white);
   font: inherit;
   text-align: left;
   cursor: zoom-in;
 }
-.g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
+.g-item:nth-child(1) { grid-column: span 7; grid-row: span 4; }
+.g-item:nth-child(4) { grid-column: span 3; grid-row: span 4; }
+.g-item:nth-child(5) { grid-column: span 4; grid-row: span 4; }
+.g-item:nth-child(6) { grid-row: span 2; }
+.g-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
 .g-item:hover img, .g-item:focus-visible img { transform: scale(1.08); }
 .g-item:focus-visible { outline-offset: 3px; }
 
 .lightbox {
   --lb-edge: clamp(16px, 2.6vw, 36px);
-  --ring: var(--cream);
+  --ring: var(--white);
   inset: 0;
   width: 100%;
   height: 100%;
@@ -305,7 +351,7 @@ a { color: inherit; }
   overflow: hidden;
   border: 0;
   background: transparent;
-  color: var(--cream);
+  color: var(--white);
 }
 .lightbox::backdrop { background: rgb(20 38 26 / .94); }
 .lightbox figure {
@@ -328,7 +374,7 @@ a { color: inherit; }
   padding: 0;
   border: 0;
   background: var(--forest);
-  color: var(--cream);
+  color: var(--white);
   font-size: 1.3rem;
   cursor: pointer;
   transition: background-color .18s, color .18s, transform .2s;
@@ -341,7 +387,7 @@ a { color: inherit; }
 /* ---------- Početna: kontakt ---------- */
 
 .contact {
-  --ring: var(--cream);
+  --ring: var(--white);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
   align-items: center;
@@ -350,7 +396,7 @@ a { color: inherit; }
   padding: clamp(36px, 5vw, 72px) clamp(20px, 4vw, 56px);
   border-radius: var(--radius-big);
   background: var(--forest) var(--eggs-light);
-  color: var(--cream);
+  color: var(--white);
 }
 .contact h2 { color: var(--orange-light); font-size: clamp(2.6rem, 5.4vw, 5.4rem); }
 .contact-phones { display: grid; justify-items: start; margin-top: 14px; }
@@ -365,7 +411,7 @@ a { color: inherit; }
   transition: background-size .35s ease-out, color .2s;
 }
 .contact-phones a:hover { background-size: 100% .06em; color: var(--orange-light); }
-.contact-address { display: flex; align-items: center; gap: 8px; margin-top: 16px; color: rgb(247 241 227 / .85); font-size: 1.1rem; font-style: normal; }
+.contact-address { display: flex; align-items: center; gap: 8px; margin-top: 16px; color: rgb(255 255 255 / .85); font-size: 1.1rem; font-style: normal; }
 .contact-map { min-width: 0; }
 .contact-map iframe {
   display: block;
@@ -384,7 +430,7 @@ a { color: inherit; }
   gap: 9px;
   min-height: 46px;
   padding: 6px 18px;
-  border: 1.5px solid rgb(247 241 227 / .32);
+  border: 1.5px solid rgb(255 255 255 / .32);
   border-radius: 999px;
   text-decoration: none;
   transition: background-color .2s, border-color .2s, color .2s, transform .2s;
@@ -411,7 +457,7 @@ a { color: inherit; }
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--cream);
+  background: var(--white);
   transition: transform .25s ease-out, box-shadow .25s, border-color .25s;
 }
 .pcard:hover { border-color: transparent; box-shadow: var(--shadow); transform: translateY(-6px); }
@@ -439,7 +485,7 @@ a { color: inherit; }
   padding: 4px 14px;
   border-radius: 999px;
   background: var(--forest);
-  color: var(--cream);
+  color: var(--white);
   font-weight: 500;
   text-align: center;
 }
@@ -467,7 +513,7 @@ a { color: inherit; }
   overflow: hidden;
   border: 2px solid var(--forest);
   border-radius: 999px;
-  background: var(--cream);
+  background: var(--white);
 }
 .stepper button {
   border: 0;
@@ -496,7 +542,7 @@ a { color: inherit; }
 
 .noscript { padding: 16px 0; }
 
-.panel { padding: clamp(20px, 2.4vw, 32px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--cream); }
+.panel { padding: clamp(20px, 2.4vw, 32px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
 
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 20px; }
 .field { min-width: 0; margin: 0; padding: 0; border: 0; }
@@ -511,7 +557,7 @@ a { color: inherit; }
   padding: 10px 14px;
   border: 1.5px solid #c4b695;
   border-radius: 14px;
-  background-color: var(--cream);
+  background-color: var(--white);
   color: inherit;
   font: inherit;
   font-size: 1.1rem;
@@ -549,7 +595,7 @@ a { color: inherit; }
   overflow-y: auto;
   border-left: 1px solid var(--line);
   border-radius: var(--radius-big) 0 0 var(--radius-big);
-  background: var(--cream);
+  background: var(--white);
 }
 .cart h2:focus { outline: 0; }
 .cart-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
@@ -622,7 +668,7 @@ a { color: inherit; }
 /* ---------- Potvrda nakon slanja ---------- */
 
 .sent {
-  --ring: var(--cream);
+  --ring: var(--white);
   width: min(460px, calc(100vw - 32px));
   max-height: calc(100dvh - 32px);
   padding: clamp(20px, 5vw, 36px);
@@ -630,11 +676,11 @@ a { color: inherit; }
   border: 0;
   border-radius: var(--radius-big);
   background: var(--forest) var(--eggs-light);
-  color: var(--cream);
+  color: var(--white);
   text-align: center;
 }
 .sent::backdrop { background: rgb(20 38 26 / .6); }
-.sent h2 { color: var(--cream); font-size: clamp(2rem, 6vw, 2.6rem); }
+.sent h2 { color: var(--white); font-size: clamp(2rem, 6vw, 2.6rem); }
 .sent p { margin-top: 10px; line-height: 1.35; }
 .sent b { font-weight: 500; }
 .sent .btn { margin-top: 18px; }
@@ -707,7 +753,7 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
     gap: 16px;
     padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
     border-radius: 20px 20px 0 0;
-    background: var(--cream);
+    background: var(--white);
     box-shadow: 0 -8px 28px rgb(28 71 39 / .16);
     visibility: hidden;
     transform: translateY(110%);
@@ -724,8 +770,6 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   .about, .contact { grid-template-columns: minmax(0, 1fr); }
   .about::before { top: auto; right: 0; bottom: 3%; width: 100%; transform: none; }
   .about-photo { max-width: 460px; }
-  .about-frame { aspect-ratio: 5 / 4; }
-  .about-badge { right: 12px; bottom: 12px; }
   .about h2 { font-size: clamp(2.6rem, 9vw, 4.6rem); }
   .about-text > p { font-size: clamp(1.2rem, 3.2vw, 1.5rem); }
 }
@@ -737,8 +781,7 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   .hero::before { background: linear-gradient(180deg, rgb(20 38 26 / .72) 0%, rgb(20 38 26 / .46) 58%, rgb(20 38 26 / .2) 100%); }
   .hero { align-items: flex-start; }
   .hero-photo img { object-position: center bottom; }
-  .hero-copy { padding-top: 40px; }
-  .hero h1 { font-size: clamp(3rem, 12.4vw, 5rem); }
+  .hero h1 { font-size: clamp(2.5rem, 12vw, 5rem); }
   .cta-text { flex-basis: 100%; }
   .cta .btn-big, .about-actions .btn { width: 100%; }
   .form-grid { grid-template-columns: minmax(0, 1fr); }
@@ -763,7 +806,11 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
 }
 
 @media (max-width: 519px) {
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-grid { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 15vw; }
+  .g-item, .g-item:nth-child(4), .g-item:nth-child(5) { grid-column: span 3; grid-row: span 3; }
+  .g-item:nth-child(1) { grid-column: span 6; grid-row: span 3; }
+  .g-item:nth-child(2), .g-item:nth-child(4) { grid-row: span 4; }
+  .g-item:nth-child(6) { grid-column: span 6; grid-row: span 2; }
   .contact-phones a { font-size: clamp(2.4rem, 13vw, 4rem); }
   .contact-more a { width: 100%; }
   .contact-more li { width: 100%; }

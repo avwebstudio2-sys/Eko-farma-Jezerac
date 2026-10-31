@@ -6,6 +6,13 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
+  /* ---------- Zaglavlje dobija pozadinu tek na skrolu ---------- */
+
+  const top = $('.top');
+  const markScrolled = () => top.classList.toggle('is-scrolled', window.scrollY > 10);
+  markScrolled();
+  window.addEventListener('scroll', markScrolled, { passive: true });
+
   /* ---------- Galerija ---------- */
 
   const lightbox = $('#lightbox');

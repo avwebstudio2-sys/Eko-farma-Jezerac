@@ -30,9 +30,9 @@ index.html        početna: hero, poziv na webshop, o nama, galerija, kontakt s 
 webshop.html      webshop: kartice školjki, korpa, podaci za dostavu
 css/styles.css    izgled i animacije obje stranice
 js/config.js      školjke, cijene i kontakt
-js/site.js        galerija na početnoj, najniža cijena, broj u korpi
+js/site.js        zaglavlje na skrolu, galerija na početnoj, broj u korpi
 js/shop.js        kartice, korpa, forma i poruka za WhatsApp
-assets/img/       logo, sivi logo za pozadinu, fotografije i ikone
+assets/img/       logo, svijetli logo za hero, sivi logo za pozadinu, fotografije i ikone
 ```
 
 ## Objavljivanje
@@ -49,5 +49,6 @@ Sve fotografije su privremeno preuzete s Facebook stranice farme, dok vlasnik ne
 | --- | --- |
 | Hero, pozadina na računaru | `assets/img/hero-siroka.webp` (položena, oko 16:9) |
 | Hero, pozadina na telefonu | `assets/img/hero-farma.webp` (uspravna, oko 5:6) |
-| O nama | `assets/img/o-nama.webp` (uspravna, oko 4:5) |
+| O nama, veće jaje | `assets/img/o-nama.webp` (uspravna, oko 4:5) |
+| O nama, manje jaje | `assets/img/galerija/pilici.webp` |
 | Galerija | `assets/img/galerija/`, jedan `button.g-item` po slici u `index.html` |

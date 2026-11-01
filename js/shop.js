@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  const { products, whatsapp, orderWhatsapp, email, deliveryHours } = window.FARMA;
+  const { products, whatsapp, email, deliveryHours } = window.FARMA;
   const byId = Object.fromEntries(products.map((p) => [p.id, p]));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -439,7 +439,7 @@
     return out.join('\n');
   }
 
-  const whatsappUrl = (text) => `https://wa.me/${orderWhatsapp || whatsapp}?text=${encodeURIComponent(text)}`;
+  const whatsappUrl = (text) => `https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`;
 
   function openExternal(url) {
     const link = document.createElement('a');

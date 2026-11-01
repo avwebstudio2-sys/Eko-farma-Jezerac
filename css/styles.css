@@ -221,9 +221,9 @@ a { color: inherit; }
     radial-gradient(ellipse 78% 82% at 50% 48%, rgb(28 71 39 / .22) 45%, rgb(28 71 39 / .94) 100%);
 }
 .hero:hover .hero-photo img { transform: scale(1.05); }
-/* Grad oko ceste: krovovi prate polukrug, pa zgrade zatvaraju donje ćoškove fotografije. */
-.skyline { position: absolute; right: 0; bottom: var(--road-h); left: 0; z-index: -1; pointer-events: none; }
-.skyline img { display: block; width: 100%; height: auto; }
+/* Brda oko ceste u polukrugu: lijevo farma, desno kuće u koje kombi dostavlja. */
+.hills { position: absolute; right: 0; bottom: var(--road-h); left: 0; z-index: -1; pointer-events: none; }
+.hills img { display: block; width: 100%; height: auto; }
 /* Donji razmak ostavlja mjesta kombiju, da nikad ne pređe preko teksta. */
 .hero-copy {
   display: flex;

@@ -186,7 +186,7 @@ a { color: inherit; }
 }
 .bottom-credit { display: inline-flex; align-items: center; gap: 8px; padding-block: 8px; margin-block: -8px; text-decoration: none; transition: color .2s; }
 .bottom-credit b { padding-bottom: 2px; background: linear-gradient(var(--orange), var(--orange)) left bottom / 0 2px no-repeat; color: var(--forest); font-weight: 700; transition: background-size .3s ease-out; }
-.bottom-credit img { width: auto; height: 21px; transition: transform .25s ease-out; }
+.bottom-credit img { width: auto; height: 30px; padding: 4px 6px; border-radius: 8px; background: var(--white); transition: transform .25s ease-out; }
 .bottom-credit:hover b, .bottom-credit:focus-visible b { background-size: 100% 2px; }
 .bottom-credit:hover img { transform: scale(1.12); }
 
@@ -219,25 +219,6 @@ a { color: inherit; }
     linear-gradient(180deg, rgb(28 71 39 / .6) 0, rgb(28 71 39 / 0) 150px),
     radial-gradient(ellipse 78% 82% at 50% 48%, rgb(28 71 39 / .22) 45%, rgb(28 71 39 / .94) 100%);
 }
-
-/* Ukrasi u ćoškovima: šara jaja kao na ostatku stranice i ikonice jaja i koke */
-.hero-deco { position: absolute; inset: 0 0 var(--road-h); z-index: -1; overflow: hidden; pointer-events: none; }
-.hero-deco::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.3' stroke-width='1.5'%3E%3Cpath d='M30 12c9 0 16 14 16 25 0 9-7 15-16 15s-16-6-16-15c0-11 7-25 16-25Z'/%3E%3Cpath transform='rotate(24 90 88)' d='M90 62c8 0 14 12 14 22 0 8-6 14-14 14s-14-6-14-14c0-10 6-22 14-22Z'/%3E%3C/g%3E%3C/svg%3E");
-  -webkit-mask-image: radial-gradient(ellipse 72% 76% at 50% 48%, transparent 62%, #000 100%);
-  mask-image: radial-gradient(ellipse 72% 76% at 50% 48%, transparent 62%, #000 100%);
-}
-.deco { position: absolute; width: clamp(78px, 10.5vw, 160px); height: auto; overflow: visible; fill: none; stroke: var(--white); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.6; animation: deco-float 5s ease-in-out infinite alternate; }
-.deco * { vector-effect: non-scaling-stroke; }
-.deco .deco-fill { fill: var(--orange); stroke: none; }
-.deco .deco-dot { fill: var(--white); stroke: none; }
-.deco-tl { top: calc(var(--top-h) + 14px); left: var(--gutter); }
-.deco-tr { top: calc(var(--top-h) + 14px); right: var(--gutter); animation-delay: -2s; }
-.deco-bl { bottom: 16px; left: var(--gutter); animation-delay: -3.5s; }
-@keyframes deco-float { to { transform: translateY(-8px) rotate(-2deg); } }
 .hero:hover .hero-photo img { transform: scale(1.05); }
 /* Donji razmak ostavlja mjesta kombiju, da nikad ne pređe preko teksta. */
 .hero-copy {
@@ -1075,11 +1056,6 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   .phone { font-size: clamp(1.6rem, 8.4vw, 2.4rem); }
   .contact-more { gap: 8px; }
   .contact-more a { flex-direction: column; gap: 2px; min-height: 62px; padding: 6px 4px; border-radius: 18px; font-size: .88rem; }
-}
-
-/* Na niskim ekranima nema mjesta za ukrase pored teksta. */
-@media (max-height: 560px) {
-  .deco { display: none; }
 }
 
 /* Na dodir nema hovera, pa kartice ne smiju ostati podignute. */

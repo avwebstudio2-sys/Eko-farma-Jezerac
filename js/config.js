@@ -3,8 +3,10 @@
  * Nakon izmjene dovoljno je osvježiti stranicu, nema dodatnog koraka.
  */
 window.FARMA = {
-  // Broj na koji stižu narudžbe: međunarodni format, bez "+" i razmaka.
+  // Broj farme za kontakt i narudžbe: međunarodni format, bez "+" i razmaka.
   whatsapp: '38761366168',
+  // PRIVREMENO, za test dostave narudžbi. Poslije testa obrisati ovaj red, pa narudžbe opet idu na broj iznad.
+  orderWhatsapp: '38762287834',
   email: 'ekofarma.jezerac@gmail.com',
 
   // Sati koji se nude u polju "Vrijeme dostave".

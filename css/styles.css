@@ -221,6 +221,9 @@ a { color: inherit; }
     radial-gradient(ellipse 78% 82% at 50% 48%, rgb(28 71 39 / .22) 45%, rgb(28 71 39 / .94) 100%);
 }
 .hero:hover .hero-photo img { transform: scale(1.05); }
+/* Grad oko ceste: krovovi prate polukrug, pa zgrade zatvaraju donje ćoškove fotografije. */
+.skyline { position: absolute; right: 0; bottom: var(--road-h); left: 0; z-index: -1; pointer-events: none; }
+.skyline img { display: block; width: 100%; height: auto; }
 /* Donji razmak ostavlja mjesta kombiju, da nikad ne pređe preko teksta. */
 .hero-copy {
   display: flex;
@@ -273,7 +276,7 @@ a { color: inherit; }
 .van-sun { fill: var(--orange); }
 .van-sand { fill: var(--sand); }
 .van-spoke { stroke: var(--ink); stroke-width: 2.4; }
-.van-label { fill: var(--white); font-family: var(--font-head); font-size: 28px; font-weight: 700; transition: fill .2s; }
+.van-label { fill: var(--white); font-family: var(--font-head); font-size: 26px; font-weight: 700; transition: fill .2s; }
 .van:hover .van-label, .van:focus-visible .van-label { fill: var(--ink); }
 .van-go-dot { fill: var(--white); }
 /* Strelica se stalno lagano pomjera, da se vidi da je kombi za klik. */
@@ -400,7 +403,6 @@ a { color: inherit; }
   transition: transform .45s cubic-bezier(.3, 1.5, .6, 1);
 }
 .about-photo:hover .about-frame-small { transform: rotate(4deg) translateY(-6px); }
-.about-frame-small img { object-position: 18% 88%; }
 .about-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s cubic-bezier(.2, .7, .2, 1); }
 .about-photo:hover img { transform: scale(1.06); }
 .about-badge {

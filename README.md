@@ -19,7 +19,8 @@ Sve je u [`js/config.js`](js/config.js):
 
 | Šta | Polje |
 | --- | --- |
-| Broj na koji stižu narudžbe | `whatsapp` (međunarodni format, bez `+` i razmaka) |
+| Broj farme za kontakt i narudžbe | `whatsapp` (međunarodni format, bez `+` i razmaka) |
+| Privremeni broj za test narudžbi | `orderWhatsapp` (poslije testa obrisati, pa narudžbe idu na `whatsapp`) |
 | Cijene školjki | `price` kod proizvoda |
 | Sati u polju za dostavu | `deliveryHours` |
 
@@ -51,5 +52,6 @@ Sve fotografije je poslao vlasnik farme.
 | --- | --- |
 | Hero | `assets/img/hero.webp` (položena, 4:3) |
 | O nama, pravougaona slika | `assets/img/o-nama.webp` (uspravna, oko 4:5) |
-| O nama, slika u obliku jajeta | `assets/img/galerija/pilici.webp` |
+| O nama, slika u obliku jajeta | `assets/img/o-nama-pile.webp` |
+| Grad oko ceste u heroju | `assets/img/grad.svg`, a na telefonu `assets/img/grad-telefon.svg` |
 | Galerija | `assets/img/galerija/`, jedan `button.g-item` po slici u `index.html` |

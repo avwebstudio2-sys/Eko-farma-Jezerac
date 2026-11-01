@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Eko farma "Jezerac" | Domaća jaja s Velike Bukovice, Travnik</title>
-  <meta name="description" content="Domaća, konzumna jaja s Velike Bukovice kod Travnika. Besplatna dostava na području Travnika, plaćanje pouzećem.">
+  <title>Eko farma "Jezerac" | Domaća jaja sa Velike Bukovice, Travnik</title>
+  <meta name="description" content="Domaća, konzumna jaja sa Velike Bukovice kod Travnika. Besplatna dostava na području Travnika, plaćanje pouzećem.">
   <meta name="theme-color" content="#f1e9d8">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Eko farma &quot;Jezerac&quot;">
-  <meta property="og:description" content="Domaća, konzumna jaja s Velike Bukovice kod Travnika. Besplatna dostava na području Travnika.">
+  <meta property="og:description" content="Domaća, konzumna jaja sa Velike Bukovice kod Travnika. Besplatna dostava na području Travnika.">
   <meta property="og:image" content="https://eko-farma-jezerac.vercel.app/assets/img/og.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -22,8 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="preload" as="image" href="assets/img/hero-siroka.webp" media="(min-width: 760px)">
-  <link rel="preload" as="image" href="assets/img/hero-farma.webp" media="(max-width: 759px)">
+  <link rel="preload" as="image" href="assets/img/hero.webp">
 
   <script type="application/ld+json">
   {
@@ -64,7 +63,6 @@
   <header class="top top-over">
     <a class="top-logo" href="index.html" aria-label='Eko farma "Jezerac", početna'>
       <img src="assets/img/logo.webp" alt="" width="480" height="266">
-      <img class="top-logo-light" src="assets/img/logo-svijetli.webp" alt="" width="480" height="266">
     </a>
     <nav class="top-nav" aria-label="Glavna navigacija">
       <a class="nav-link" href="#o-nama">O nama</a>
@@ -80,14 +78,13 @@
 
   <main>
     <section class="hero">
-      <picture class="hero-photo">
-        <source media="(min-width: 760px)" srcset="assets/img/hero-siroka.webp" width="1536" height="900">
-        <img src="assets/img/hero-farma.webp" width="960" height="1148" fetchpriority="high" alt="Farma na Velikoj Bukovici, iznad magle koja prekriva dolinu">
-      </picture>
+      <div class="hero-photo">
+        <img src="assets/img/hero.webp" width="1600" height="1200" fetchpriority="high" alt="Farma na Velikoj Bukovici: objekti, puteljak kroz livadu i planine pod oblacima">
+      </div>
       <div class="hero-copy">
-        <h1>Domaća <em>jaja</em><br>s&nbsp;Velike Bukovice</h1>
+        <h1>Domaća <em>jaja</em><br>sa&nbsp;Velike Bukovice</h1>
         <p>Proizvodnja, prodaja i dostava domaćih, konzumnih jaja na području Travnika.</p>
-        <a class="btn btn-big btn-light" href="#kontakt">
+        <a class="btn btn-big btn-orange" href="#kontakt">
           <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
           Kontaktirajte nas
         </a>
@@ -96,7 +93,6 @@
         <div class="van-lane">
           <a class="van" href="webshop.html" aria-label="Naručite jaja u webshopu">
             <svg viewBox="-30 0 328 146" aria-hidden="true" focusable="false">
-              <ellipse class="van-shadow" cx="148" cy="140" rx="150" ry="4"/>
               <circle class="puff" cx="-14" cy="110" r="6"/>
               <circle class="puff" cx="-14" cy="110" r="6"/>
               <g class="van-tilt">
@@ -120,8 +116,8 @@
                   <circle class="van-dark" cx="232" cy="118" r="26"/>
                 </g>
               </g>
-              <g transform="translate(66 118)"><g class="wheel"><circle class="van-dark" r="21"/><circle class="van-sand" r="10.500"/><path class="van-spoke" d="M-10.500 0H10.500M0-10.500V10.500"/><circle class="van-sand" cy="-16" r="2.200"/></g></g>
-              <g transform="translate(232 118)"><g class="wheel"><circle class="van-dark" r="21"/><circle class="van-sand" r="10.500"/><path class="van-spoke" d="M-10.500 0H10.500M0-10.500V10.500"/><circle class="van-sand" cy="-16" r="2.200"/></g></g>
+              <g transform="translate(66 118)"><g class="wheel"><circle class="van-tyre" r="21"/><circle class="van-sand" r="10.500"/><path class="van-spoke" d="M-10.500 0H10.500M0-10.500V10.500"/><circle class="van-sand" cy="-16" r="2.200"/></g></g>
+              <g transform="translate(232 118)"><g class="wheel"><circle class="van-tyre" r="21"/><circle class="van-sand" r="10.500"/><path class="van-spoke" d="M-10.500 0H10.500M0-10.500V10.500"/><circle class="van-sand" cy="-16" r="2.200"/></g></g>
             </svg>
           </a>
         </div>
@@ -131,8 +127,8 @@
     <section class="about" id="o-nama" aria-labelledby="about-title">
       <figure class="about-photo">
         <svg class="mascot" aria-hidden="true" focusable="false"><use href="#chick"/></svg>
-        <span class="about-frame about-frame-big"><img src="assets/img/o-nama.webp" width="800" height="1065" loading="lazy" alt="Sunce iznad magle, pogled s farme"></span>
-        <span class="about-frame about-frame-small"><img src="assets/img/galerija/pilici.webp" width="1000" height="750" loading="lazy" alt="Tek izleženi pilići u žičanoj korpi"></span>
+        <span class="about-frame about-frame-big"><img src="assets/img/o-nama.webp" width="800" height="1067" loading="lazy" alt="Smeđa jaja u kartonskim podlošcima i naše pakovanje s natpisom Svježa jaja"></span>
+        <span class="about-frame about-frame-small"><img src="assets/img/galerija/pilici.webp" width="1400" height="1054" loading="lazy" alt="Tek izleženi pilići u žičanim korpama"></span>
         <figcaption class="about-badge"><b>2025.</b> godina osnivanja</figcaption>
       </figure>
       <div class="about-text">
@@ -170,19 +166,30 @@
     <section class="gallery" id="galerija" aria-labelledby="gallery-title">
       <h2 id="gallery-title">Galerija</h2>
       <div class="gallery-grid" data-gallery>
-        <button class="g-item" type="button" data-full="assets/img/galerija/farma.webp" data-caption="Farma iznad magle"><img src="assets/img/galerija/farma.webp" width="1300" height="887" loading="lazy" alt="Objekti farme sa snijegom na krovu, iznad magle u dolini"></button>
-        <button class="g-item" type="button" data-full="assets/img/galerija/pilici.webp" data-caption="Tek izleženi pilići"><img src="assets/img/galerija/pilici.webp" width="1000" height="750" loading="lazy" alt="Tek izleženi pilići u žičanoj korpi"></button>
-        <button class="g-item" type="button" data-full="assets/img/galerija/koke.webp" data-caption="Koke na farmi"><img src="assets/img/galerija/koke.webp" width="800" height="601" loading="lazy" alt="Smeđe koke na podu objekta"></button>
-        <button class="g-item" type="button" data-full="assets/img/galerija/objekat.webp" data-caption="Objekat za koke"><img src="assets/img/galerija/objekat.webp" width="800" height="601" loading="lazy" alt="Dugi objekat od blokova s kokama na podu"></button>
-        <button class="g-item" type="button" data-full="assets/img/galerija/pilici-grijanje.webp" data-caption="Pilići pod grijanjem"><img src="assets/img/galerija/pilici-grijanje.webp" width="800" height="600" loading="lazy" alt="Pilići oko pojilice pod toplom svjetlošću"></button>
-        <button class="g-item" type="button" data-full="assets/img/galerija/jaja-inkubator.webp" data-caption="Jaja u inkubatoru"><img src="assets/img/galerija/jaja-inkubator.webp" width="1000" height="750" loading="lazy" alt="Smeđa jaja u žičanoj korpi inkubatora"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/farma.webp" data-caption="Farma na Velikoj Bukovici"><img src="assets/img/galerija/farma.webp" width="1400" height="1050" loading="lazy" alt="Dugi objekat farme sa zelenim krovom, ograda i planine u daljini"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/koke-hranilica.webp" data-caption="Koke oko hranilice"><img src="assets/img/galerija/koke-hranilica.webp" width="1050" height="1400" loading="lazy" alt="Smeđe i bijele koke oko žute hranilice"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/pijetao.webp" data-caption="Pijetao"><img src="assets/img/galerija/pijetao.webp" width="1050" height="1400" loading="lazy" alt="Bijeli pijetao na metalnoj prečki"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/pilici.webp" data-caption="Tek izleženi pilići"><img src="assets/img/galerija/pilici.webp" width="1400" height="1054" loading="lazy" alt="Žuti pilići u žičanim korpama"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/pogled.webp" data-caption="Pogled s farme"><img src="assets/img/galerija/pogled.webp" width="1050" height="1400" loading="lazy" alt="Pogled s farme na planine i dolinu pod oblacima"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/pile-na-ruci.webp" data-caption="Pile na dlanu"><img src="assets/img/galerija/pile-na-ruci.webp" width="1050" height="1400" loading="lazy" alt="Malo bijelo pile na dlanu"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/konj.webp" data-caption="Konj na farmi"><img src="assets/img/galerija/konj.webp" width="1050" height="1400" loading="lazy" alt="Tamni konj na livadi ispred objekta farme"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/gnijezda-kanistri.webp" data-caption="Gnijezda za koke"><img src="assets/img/galerija/gnijezda-kanistri.webp" width="1050" height="1400" loading="lazy" alt="Gnijezda od plavih kanistara na polici, ispod nje koke"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/objekat-koke.webp" data-caption="Koke u objektu"><img src="assets/img/galerija/objekat-koke.webp" width="1400" height="1050" loading="lazy" alt="Unutrašnjost objekta s mnogo koka, hranilicama i kolicima"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/koke-pijetao.webp" data-caption="Koke i pijetlovi"><img src="assets/img/galerija/koke-pijetao.webp" width="1050" height="1400" loading="lazy" alt="Koke i bijeli pijetlovi oko hranilice s crvenim krovom"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/mladi-pilici.webp" data-caption="Mladi pilići"><img src="assets/img/galerija/mladi-pilici.webp" width="1050" height="1400" loading="lazy" alt="Mladi bijeli pilići oko crvene hranilice"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/gnijezda-jaja.webp" data-caption="Jaja u gnijezdima"><img src="assets/img/galerija/gnijezda-jaja.webp" width="1050" height="1400" loading="lazy" alt="Smeđa jaja u limenim gnijezdima"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/prostorija.webp" data-caption="Prostorija s paletama"><img src="assets/img/galerija/prostorija.webp" width="1050" height="1400" loading="lazy" alt="Betonska prostorija sa stubom i paletama na podu"></button>
+        <button class="g-item" type="button" data-full="assets/img/galerija/kucica.webp" data-caption="Kućica na livadi"><img src="assets/img/galerija/kucica.webp" width="1400" height="1050" loading="lazy" alt="Mala kućica sa zelenim krovom na livadi, ispod drveća"></button>
       </div>
     </section>
 
     <section class="contact" id="kontakt" aria-labelledby="contact-title">
       <div class="contact-info">
-        <h2 id="contact-title">Kontakt</h2>
-        <p class="contact-lead">Za narudžbe i sva pitanja slobodno nas kontaktirajte.</p>
+        <div>
+          <h2 id="contact-title">Kontakt</h2>
+          <p class="contact-lead">Za narudžbe i sva pitanja slobodno nas kontaktirajte.</p>
+        </div>
+        <div>
         <div class="contact-phones">
           <a class="phone phone-main" href="tel:+38761366168"><span class="phone-icon"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span>061 366 168</a>
           <a class="phone" href="tel:+38761278300"><span class="phone-icon"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span>061 278 300</a>
@@ -192,6 +199,7 @@
           <li><a href="mailto:ekofarma.jezerac@gmail.com" title="ekofarma.jezerac@gmail.com" aria-label="E-mail: ekofarma.jezerac@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>E-mail</a></li>
           <li><a href="https://www.facebook.com/p/Eko-farma-Jezerac-61575950756251/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg>Facebook</a></li>
         </ul>
+        </div>
       </div>
       <figure class="contact-map">
         <svg class="mascot" aria-hidden="true" focusable="false"><use href="#chick"/></svg>

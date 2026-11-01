@@ -186,9 +186,10 @@ a { color: inherit; }
 }
 .bottom-credit { display: inline-flex; align-items: center; gap: 8px; padding-block: 8px; margin-block: -8px; text-decoration: none; transition: color .2s; }
 .bottom-credit b { padding-bottom: 2px; background: linear-gradient(var(--orange), var(--orange)) left bottom / 0 2px no-repeat; color: var(--forest); font-weight: 700; transition: background-size .3s ease-out; }
-.bottom-credit img { width: 28px; height: 28px; padding: 5px; border-radius: 50%; background: var(--forest); object-fit: contain; transition: transform .25s ease-out; }
+.bottom-credit-logo { display: grid; flex: none; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--forest); transition: transform .35s cubic-bezier(.3, 1.5, .6, 1); }
+.bottom-credit img { width: 17px; height: auto; }
 .bottom-credit:hover b, .bottom-credit:focus-visible b { background-size: 100% 2px; }
-.bottom-credit:hover img { transform: scale(1.12); }
+.bottom-credit:hover .bottom-credit-logo, .bottom-credit:focus-visible .bottom-credit-logo { transform: rotate(-20deg); }
 
 /* ---------- Početna: hero s fotografijom u pozadini ---------- */
 

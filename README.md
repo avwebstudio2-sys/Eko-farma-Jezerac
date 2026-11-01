@@ -26,14 +26,15 @@ Sve je u [`js/config.js`](js/config.js):
 ## Struktura
 
 ```
-favicon.ico       ikona za starije preglednike (izvor je assets/img/favicon.svg)
+favicon.ico       ikona preglednika, amblem iz logotipa farme (i favicon-32.png, favicon-192.png u assets/img)
 index.html        početna: hero s kamionom koji vodi u webshop, pokretna traka, o nama, galerija, kontakt s mapom
 webshop.html      webshop: kartice školjki, korpa, podaci za dostavu
 css/styles.css    izgled i animacije obje stranice
 js/config.js      školjke, cijene i kontakt
 js/site.js        zaglavlje na skrolu, galerija na početnoj, broj u korpi
+js/pickers.js     iskočni meniji za datum i sat, na bosanskom
 js/shop.js        kartice, korpa, forma i poruka za WhatsApp
-assets/img/       logo, sivi logo za pozadinu, fotografije i ikone
+assets/img/       logo, svijetli logo za hero, sivi logo za pozadinu, logo studija, fotografije i ikone
 ```
 
 ## Objavljivanje

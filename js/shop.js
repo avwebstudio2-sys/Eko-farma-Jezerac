@@ -298,17 +298,31 @@
     return `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`;
   }
 
-  function fillHours() {
-    const options = ['<option value="">Sat</option>'];
-    for (let h = deliveryHours.from; h <= deliveryHours.to; h += 1) {
-      options.push(`<option value="${h}">${pad2(h)}:00</option>`);
-    }
-    $('#vrijemeOd').innerHTML = options.join('');
-    $('#vrijemeDo').innerHTML = options.join('');
-  }
+  const { createDatePicker, createHourSelect } = window.FarmaPickers;
 
-  fillHours();
-  form.elements.datum.min = localToday();
+  const datePicker = createDatePicker($('[data-date-picker]'), {
+    min: localToday,
+    format(iso) {
+      const text = formatDate(iso);
+      return text[0].toUpperCase() + text.slice(1);
+    },
+  });
+
+  const hours = [];
+  for (let h = deliveryHours.from; h <= deliveryHours.to; h += 1) hours.push(h);
+
+  const hourTo = createHourSelect($('[data-hour-to]'), {
+    hours,
+    isDisabled: (hour) => hour <= (Number(form.elements.vrijemeOd.value) || deliveryHours.from),
+  });
+
+  const hourFrom = createHourSelect($('[data-hour-from]'), {
+    hours,
+    isDisabled: (hour) => hour === deliveryHours.to,
+    onChange(hour) {
+      if (Number(form.elements.vrijemeDo.value) <= hour) hourTo.clear();
+    },
+  });
 
   const customer = store.get(STORE_CUSTOMER);
   if (customer) {
@@ -352,7 +366,7 @@
     const field = $(`[data-field="${name}"]`);
     field.classList.toggle('is-invalid', Boolean(message));
     $(`#err-${name}`).textContent = message;
-    $$('input, select', field).forEach((control) => {
+    $$('input:not([type="hidden"]), .picker-btn', field).forEach((control) => {
       if (message) control.setAttribute('aria-invalid', 'true');
       else control.removeAttribute('aria-invalid');
     });
@@ -362,7 +376,7 @@
     return lines().length > 0 && REQUIRED.every((name) => !validateField(name));
   }
 
-  const isUntouched = () => $$('input, select', form).every((control) => !control.value);
+  const isUntouched = () => $$('input', form).every((control) => !control.value);
 
   form.addEventListener('focusout', (event) => {
     const field = event.target.closest('[data-field]');
@@ -393,7 +407,7 @@
   }
 
   function goToField(name) {
-    const control = $(`[data-field="${name}"] input, [data-field="${name}"] select`);
+    const control = $(`[data-field="${name}"] input:not([type="hidden"]), [data-field="${name}"] .picker-btn`);
     control.focus({ preventScroll: true });
     control.closest('[data-field]').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'center' });
   }
@@ -483,9 +497,9 @@
 
   $('[data-sent-new]').addEventListener('click', () => {
     lines().forEach((p) => setQty(p.id, 0, { announce: false }));
-    form.elements.datum.value = '';
-    form.elements.vrijemeOd.value = '';
-    form.elements.vrijemeDo.value = '';
+    datePicker.clear();
+    hourFrom.clear();
+    hourTo.clear();
     form.elements.napomena.value = '';
     renderSend();
     sentDialog.close();

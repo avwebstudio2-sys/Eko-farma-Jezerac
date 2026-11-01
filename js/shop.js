@@ -1,4 +1,4 @@
-/* Webshop: kartice, korpa, forma i slanje narudžbe na WhatsApp. */
+/* Webshop: kartice, korpa, forma i slanje narudžbe (SMS, a bez njega WhatsApp). */
 (function () {
   'use strict';
 
@@ -193,10 +193,15 @@
 
   // Dugme vodi kroz korake: prvo do podataka, a kad su popunjeni, šalje.
   function renderSend() {
+    if (sending) return;
     const ready = isReady();
+    const fine = $('[data-send-fine]');
     sendButton.classList.toggle('btn-send', ready);
-    $('[data-send-icon]').hidden = !ready;
-    $('[data-send-fine]').hidden = !ready;
+    $('[data-send-icon]').toggleAttribute('hidden', !ready || smsReady);
+    fine.hidden = !ready;
+    fine.textContent = smsReady
+      ? 'Narudžba odmah stiže na farmu, ništa drugo ne morate raditi.'
+      : 'Otvorit će se WhatsApp s gotovom porukom. Vi samo pritisnete „Pošalji”.';
     $('[data-send-label]').textContent = ready ? 'Naruči' : 'Nastavi: podaci za dostavu';
   }
 
@@ -293,10 +298,18 @@
   const REQUIRED = ['ime', 'telefon', 'adresa', 'datum', 'vrijeme'];
   const pad2 = (n) => String(n).padStart(2, '0');
 
-  function localToday() {
-    const now = new Date();
-    return `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`;
+  const isoDate = (date) => `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+  const localToday = () => isoDate(new Date());
+
+  // Danas, a poslije zadnjeg termina sutra, jer se današnja dostava više ne može obaviti.
+  function defaultDate() {
+    const date = new Date();
+    if (date.getHours() >= deliveryHours.to - 1) date.setDate(date.getDate() + 1);
+    return isoDate(date);
   }
+
+  // Sat koji je danas već prošao ne može biti vrijeme dostave.
+  const isPast = (hour) => form.elements.datum.value === localToday() && hour <= new Date().getHours();
 
   const { createDatePicker, createHourSelect } = window.FarmaPickers;
 
@@ -313,12 +326,12 @@
 
   const hourTo = createHourSelect($('[data-hour-to]'), {
     hours,
-    isDisabled: (hour) => hour <= (Number(form.elements.vrijemeOd.value) || deliveryHours.from),
+    isDisabled: (hour) => hour <= (Number(form.elements.vrijemeOd.value) || deliveryHours.from) || isPast(hour),
   });
 
   const hourFrom = createHourSelect($('[data-hour-from]'), {
     hours,
-    isDisabled: (hour) => hour === deliveryHours.to,
+    isDisabled: (hour) => hour === deliveryHours.to || isPast(hour),
     onChange(hour) {
       if (Number(form.elements.vrijemeDo.value) <= hour) hourTo.clear();
     },
@@ -353,6 +366,7 @@
         const from = form.elements.vrijemeOd.value;
         const to = form.elements.vrijemeDo.value;
         if (!from || !to) return 'Odaberite vrijeme dostave';
+        if (isPast(Number(from))) return 'Odabrani sat je danas već prošao';
         return Number(to) > Number(from) ? '' : 'Krajnji sat mora biti veći od početnog';
       }
       default:
@@ -374,7 +388,8 @@
     return lines().length > 0 && REQUIRED.every((name) => !validateField(name));
   }
 
-  const isUntouched = () => $$('input', form).every((control) => !control.value);
+  // Datum je popunjen unaprijed, pa se ne računa kao da je kupac već nešto unio.
+  const isUntouched = () => $$('input:not(#datum)', form).every((control) => !control.value);
 
   form.addEventListener('focusout', (event) => {
     const field = event.target.closest('[data-field]');
@@ -385,6 +400,11 @@
   });
 
   function onFormChange(event) {
+    if (event.target.name === 'datum') {
+      const { vrijemeOd, vrijemeDo } = form.elements;
+      if (vrijemeOd.value && isPast(Number(vrijemeOd.value))) hourFrom.clear();
+      if (vrijemeDo.value && isPast(Number(vrijemeDo.value))) hourTo.clear();
+    }
     const field = event.target.closest('[data-field]');
     if (field && field.classList.contains('is-invalid')) {
       showFieldError(field.dataset.field, validateField(field.dataset.field));
@@ -454,10 +474,75 @@
   /* ---------- Slanje ---------- */
 
   const sentDialog = $('#sent-dialog');
+  let smsReady = false;
+  let sending = false;
 
-  form.addEventListener('submit', (event) => {
+  const SENT_STATES = {
+    sms: { title: 'Narudžba je poslana', text: 'Hvala! Narudžba je otišla na farmu, a plaćate pri preuzimanju.', chick: true, whatsapp: '', other: false, back: false },
+    failed: { title: 'Narudžba nije poslana', text: 'Slanje nije uspjelo. Pošaljite je preko WhatsAppa, poruka je već spremna, ili nas pozovite.', chick: false, whatsapp: 'Pošalji preko WhatsAppa', other: true, back: true },
+    whatsapp: { title: 'Još samo jedan klik', text: 'U WhatsAppu vas čeka gotova poruka. Pritisnite „Pošalji” da narudžba stigne na farmu.', chick: true, whatsapp: 'Otvori WhatsApp ponovo', other: true, back: true },
+  };
+
+  function showSent(name) {
+    const state = SENT_STATES[name];
+    $('[data-sent-title]').textContent = state.title;
+    $('[data-sent-text]').textContent = state.text;
+    $('[data-sent-chick]').toggleAttribute('hidden', !state.chick);
+    $('[data-sent-wa]').hidden = !state.whatsapp;
+    $('[data-sent-wa-label]').textContent = state.whatsapp;
+    $('[data-sent-other]').hidden = !state.other;
+    $('[data-sent-close]').hidden = !state.back;
+    sentDialog.showModal();
+  }
+
+  function setSending(on) {
+    sending = on;
+    sendButton.disabled = on;
+    if (on) $('[data-send-label]').textContent = 'Šaljem narudžbu…';
+    else renderSend();
+  }
+
+  function resetOrder() {
+    lines().forEach((p) => setQty(p.id, 0, { announce: false }));
+    datePicker.set(defaultDate());
+    hourFrom.clear();
+    hourTo.clear();
+    form.elements.napomena.value = '';
+    renderSend();
+  }
+
+  async function postOrder() {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch('api/narudzba', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+        body: JSON.stringify({
+          provjera: form.elements.provjera.value,
+          items: Object.fromEntries(lines().map((p) => [p.id, qtyOf(p.id)])),
+          ime: clean('ime'),
+          telefon: clean('telefon'),
+          adresa: clean('adresa'),
+          naselje: clean('naselje'),
+          napomena: clean('napomena'),
+          datum: form.elements.datum.value,
+          vrijemeOd: Number(form.elements.vrijemeOd.value),
+          vrijemeDo: Number(form.elements.vrijemeDo.value),
+        }),
+      });
+      return response.ok;
+    } catch {
+      return false;
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }
+
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (lines().length === 0) return;
+    if (lines().length === 0 || sending) return;
     hideSendError();
 
     const invalid = REQUIRED.filter((name) => validateField(name));
@@ -480,26 +565,34 @@
       adresa: clean('adresa'),
       naselje: clean('naselje'),
     });
-    // Korpa ostaje do "Nova narudžba", ali poslije osvježavanja stranice kreće se ispočetka.
-    store.remove(STORE_CART);
-
-    openExternal(url);
 
     $('[data-sent-wa]').href = url;
     const subject = `Nova narudžba (${eggCount()} jaja, ${money(total())})`;
     $('[data-sent-mail]').href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text.replace(/\*/g, ''))}`;
-    sentDialog.showModal();
+
+    if (smsReady) {
+      setSending(true);
+      const sent = await postOrder();
+      setSending(false);
+      if (sent) {
+        store.remove(STORE_CART);
+        resetOrder();
+      }
+      // Ako slanje ne uspije, korpa ostaje, a kupac dobija WhatsApp i brojeve za poziv.
+      showSent(sent ? 'sms' : 'failed');
+      return;
+    }
+
+    // Korpa ostaje do "Nova narudžba", ali poslije osvježavanja stranice kreće se ispočetka.
+    store.remove(STORE_CART);
+    openExternal(url);
+    showSent('whatsapp');
   });
 
   $('[data-sent-close]').addEventListener('click', () => sentDialog.close());
 
   $('[data-sent-new]').addEventListener('click', () => {
-    lines().forEach((p) => setQty(p.id, 0, { announce: false }));
-    datePicker.clear();
-    hourFrom.clear();
-    hourTo.clear();
-    form.elements.napomena.value = '';
-    renderSend();
+    resetOrder();
     sentDialog.close();
     window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
   });
@@ -510,6 +603,16 @@
 
   /* ---------- Početno iscrtavanje ---------- */
 
+  datePicker.set(defaultDate());
   products.forEach(renderCard);
   renderCart();
+
+  // SMS se koristi samo kad je telefon povezan, a inače narudžba ide preko WhatsAppa.
+  fetch('api/narudzba')
+    .then((response) => (response.ok ? response.json() : null))
+    .then((status) => {
+      smsReady = Boolean(status && status.sms);
+      renderSend();
+    })
+    .catch(() => {});
 })();

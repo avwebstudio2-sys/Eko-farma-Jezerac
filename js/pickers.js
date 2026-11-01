@@ -179,6 +179,11 @@
     });
 
     return {
+      set(iso) {
+        input.value = iso;
+        text.textContent = format(iso);
+        button.classList.remove('is-empty');
+      },
       clear() {
         input.value = '';
         text.textContent = placeholder;

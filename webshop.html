@@ -94,11 +94,10 @@
               <input id="adresa" name="adresa" type="text" autocomplete="street-address" maxlength="200" required placeholder="Ulica i kućni broj" aria-describedby="err-adresa">
               <p class="field-error" id="err-adresa"></p>
             </div>
-            <div class="field" data-field="naselje">
-              <label for="naselje">Naselje u Travniku</label>
-              <input id="naselje" name="naselje" type="text" autocomplete="address-level3" maxlength="80" required placeholder="npr. Kalibunar, Dolac, Turbe" aria-describedby="hint-naselje err-naselje">
+            <div class="field">
+              <label for="naselje">Naselje u Travniku <small>(nije obavezno)</small></label>
+              <input id="naselje" name="naselje" type="text" autocomplete="address-level3" maxlength="80" placeholder="npr. Kalibunar, Dolac, Turbe" aria-describedby="hint-naselje">
               <p class="field-hint" id="hint-naselje">Dostavljamo samo na području Travnika.</p>
-              <p class="field-error" id="err-naselje"></p>
             </div>
             <div class="field" data-field="datum">
               <label for="datum-btn" id="datum-label">Datum dostave</label>
@@ -136,7 +135,7 @@
               </div>
               <p class="field-error" id="err-vrijeme"></p>
             </fieldset>
-            <div class="field field-full" data-field="napomena">
+            <div class="field field-full">
               <label for="napomena">Napomena <small>(nije obavezno)</small></label>
               <textarea id="napomena" name="napomena" rows="3" maxlength="500" placeholder="npr. sprat, ulaz ili kada ste kod kuće"></textarea>
             </div>

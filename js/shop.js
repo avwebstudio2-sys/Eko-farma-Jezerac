@@ -197,7 +197,7 @@
     sendButton.classList.toggle('btn-send', ready);
     $('[data-send-icon]').hidden = !ready;
     $('[data-send-fine]').hidden = !ready;
-    $('[data-send-label]').textContent = ready ? `Pošalji na WhatsApp · ${money(total())}` : 'Nastavi: podaci za dostavu';
+    $('[data-send-label]').textContent = ready ? 'Naruči' : 'Nastavi: podaci za dostavu';
   }
 
   /* ---------- Animacije ---------- */
@@ -290,7 +290,7 @@
 
   /* ---------- Forma ---------- */
 
-  const REQUIRED = ['ime', 'telefon', 'adresa', 'naselje', 'datum', 'vrijeme'];
+  const REQUIRED = ['ime', 'telefon', 'adresa', 'datum', 'vrijeme'];
   const pad2 = (n) => String(n).padStart(2, '0');
 
   function localToday() {
@@ -344,8 +344,6 @@
       }
       case 'adresa':
         return clean('adresa').length >= 5 ? '' : 'Unesite kućnu adresu';
-      case 'naselje':
-        return clean('naselje').length >= 2 ? '' : 'Unesite naselje';
       case 'datum': {
         const value = form.elements.datum.value;
         if (!value) return 'Odaberite datum dostave';
@@ -432,7 +430,7 @@
     out.push('*Podaci kupca*');
     out.push(`Ime: ${clean('ime')}`);
     out.push(`Telefon: ${clean('telefon')}`);
-    out.push(`Adresa: ${clean('adresa')}, ${clean('naselje')}, Travnik`);
+    out.push(`Adresa: ${[clean('adresa'), clean('naselje'), 'Travnik'].filter(Boolean).join(', ')}`);
     out.push(`Datum dostave: ${formatDate(form.elements.datum.value)}`);
     out.push(`Vrijeme dostave: ${pad2(form.elements.vrijemeOd.value)}:00 do ${pad2(form.elements.vrijemeDo.value)}:00`);
     const note = form.elements.napomena.value.trim();

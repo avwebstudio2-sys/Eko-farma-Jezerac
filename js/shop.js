@@ -290,7 +290,7 @@
 
   /* ---------- Forma ---------- */
 
-  const REQUIRED = ['ime', 'telefon', 'adresa', 'grad', 'datum', 'vrijeme'];
+  const REQUIRED = ['ime', 'telefon', 'adresa', 'naselje', 'datum', 'vrijeme'];
   const pad2 = (n) => String(n).padStart(2, '0');
 
   function localToday() {
@@ -312,7 +312,7 @@
 
   const customer = store.get(STORE_CUSTOMER);
   if (customer) {
-    ['ime', 'telefon', 'adresa', 'grad'].forEach((name) => {
+    ['ime', 'telefon', 'adresa', 'naselje'].forEach((name) => {
       if (typeof customer[name] === 'string') form.elements[name].value = customer[name];
     });
   }
@@ -330,8 +330,8 @@
       }
       case 'adresa':
         return clean('adresa').length >= 5 ? '' : 'Unesite kućnu adresu';
-      case 'grad':
-        return clean('grad').length >= 2 ? '' : 'Unesite grad';
+      case 'naselje':
+        return clean('naselje').length >= 2 ? '' : 'Unesite naselje';
       case 'datum': {
         const value = form.elements.datum.value;
         if (!value) return 'Odaberite datum dostave';
@@ -418,7 +418,7 @@
     out.push('*Podaci kupca*');
     out.push(`Ime: ${clean('ime')}`);
     out.push(`Telefon: ${clean('telefon')}`);
-    out.push(`Adresa: ${clean('adresa')}, ${clean('grad')}`);
+    out.push(`Adresa: ${clean('adresa')}, ${clean('naselje')}, Travnik`);
     out.push(`Datum dostave: ${formatDate(form.elements.datum.value)}`);
     out.push(`Vrijeme dostave: ${pad2(form.elements.vrijemeOd.value)}:00 do ${pad2(form.elements.vrijemeDo.value)}:00`);
     const note = form.elements.napomena.value.trim();
@@ -466,7 +466,7 @@
       ime: clean('ime'),
       telefon: clean('telefon'),
       adresa: clean('adresa'),
-      grad: clean('grad'),
+      naselje: clean('naselje'),
     });
     // Korpa ostaje do "Nova narudžba", ali poslije osvježavanja stranice kreće se ispočetka.
     store.remove(STORE_CART);

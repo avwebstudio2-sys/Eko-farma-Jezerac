@@ -13,8 +13,7 @@
   --ink: #14261a;
   --grey: #4f5c53;
   --line: #ddd0b6;
-  --orange: #b9560a;
-  --straw: #f0cf8f;
+  --orange: #e8862b;
   --error: #a8360a;
   --rule: rgb(28 71 39 / .07);
   --shadow: 0 16px 44px rgb(28 71 39 / .12);
@@ -98,11 +97,12 @@ a { color: inherit; }
   cursor: pointer;
   transition: background-size .3s ease-out, color .18s, transform .2s, box-shadow .2s;
 }
-.btn:hover, .btn:active { background-size: 100% 100%, auto; color: var(--white); }
+.btn:hover, .btn:active { background-size: 100% 100%, auto; color: var(--ink); }
 .btn:active { transform: scale(.98); }
 .btn-wide { width: 100%; }
-.btn-send { background: linear-gradient(var(--forest), var(--forest)) left / 0 100% no-repeat, var(--orange); }
-.btn-orange { background: linear-gradient(var(--white), var(--white)) left / 0 100% no-repeat, var(--orange); }
+.btn-send { background: linear-gradient(var(--forest), var(--forest)) left / 0 100% no-repeat, var(--orange); color: var(--ink); }
+.btn-send:hover, .btn-send:active { color: var(--white); }
+.btn-orange { background: linear-gradient(var(--white), var(--white)) left / 0 100% no-repeat, var(--orange); color: var(--ink); }
 .btn-orange:hover, .btn-orange:active { color: var(--forest); }
 .btn-ghost { background: linear-gradient(var(--orange), var(--orange)) left / 0 100% no-repeat, transparent; box-shadow: inset 0 0 0 2px var(--forest); color: var(--forest); }
 .btn-ghost:hover, .btn-ghost:active { box-shadow: inset 0 0 0 2px var(--orange); }
@@ -155,7 +155,7 @@ a { color: inherit; }
   .top-over:not(.is-scrolled) { --ring: var(--white); color: var(--white); }
   .top-over:not(.is-scrolled) .nav-link { background-image: linear-gradient(var(--white), var(--white)); }
   .top-over:not(.is-scrolled) .btn-nav { background-color: var(--white); color: var(--forest); }
-  .top-over:not(.is-scrolled) .btn-nav:hover { color: var(--white); }
+  .top-over:not(.is-scrolled) .btn-nav:hover { color: var(--ink); }
   .top-over:not(.is-scrolled) .top-logo img { opacity: 0; }
   .top-over:not(.is-scrolled) .top-logo .top-logo-light { opacity: 1; }
 }
@@ -168,7 +168,7 @@ a { color: inherit; }
   padding: 0 7px;
   border-radius: 999px;
   background: var(--orange);
-  color: var(--white);
+  color: var(--ink);
   font-size: .95rem;
   font-weight: 600;
 }
@@ -185,9 +185,9 @@ a { color: inherit; }
   font-size: 1rem;
 }
 .bottom-credit { display: inline-flex; align-items: center; gap: 8px; padding-block: 8px; margin-block: -8px; text-decoration: none; transition: color .2s; }
-.bottom-credit b { color: var(--forest); font-weight: 700; text-underline-offset: .2em; }
-.bottom-credit img { width: auto; height: 26px; transition: transform .25s ease-out; }
-.bottom-credit:hover b { text-decoration: underline; text-decoration-color: var(--orange); }
+.bottom-credit b { padding-bottom: 2px; background: linear-gradient(var(--orange), var(--orange)) left bottom / 0 2px no-repeat; color: var(--forest); font-weight: 700; transition: background-size .3s ease-out; }
+.bottom-credit img { width: auto; height: 21px; transition: transform .25s ease-out; }
+.bottom-credit:hover b, .bottom-credit:focus-visible b { background-size: 100% 2px; }
 .bottom-credit:hover img { transform: scale(1.12); }
 
 /* ---------- Početna: hero s fotografijom u pozadini ---------- */
@@ -195,7 +195,7 @@ a { color: inherit; }
 /* Fotografija i cesta zajedno zauzimaju cijeli prvi ekran. */
 .hero {
   --road-h: clamp(46px, 6.5vh, 64px);
-  --van-w: clamp(280px, min(27vw, 44vh), 430px);
+  --van-w: clamp(310px, min(32vw, 52vh), 520px);
   --van-h: calc(var(--van-w) * .445);
   position: relative;
   isolation: isolate;
@@ -207,30 +207,51 @@ a { color: inherit; }
   color: var(--white);
 }
 .hero-photo { position: absolute; inset: 0 0 var(--road-h); z-index: -2; overflow: hidden; }
-.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 70%; transition: transform 1.6s cubic-bezier(.2, .7, .2, 1); }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; transition: transform 1.6s cubic-bezier(.2, .7, .2, 1); }
 .hero::before {
   content: "";
   position: absolute;
   inset: 0 0 var(--road-h);
   z-index: -1;
-  /* Zelena sjena iza teksta i zaglavlja, da se svijetla slova čitaju na fotografiji */
+  /* Zelena sjena: tamna u ćoškovima, blaga oko teksta, a pod samim tekstom toliko da se slova čitaju */
   background:
-    linear-gradient(180deg, rgb(28 71 39 / .72) 0, rgb(28 71 39 / 0) 170px),
-    linear-gradient(95deg, rgb(28 71 39 / .92) 0%, rgb(28 71 39 / .78) 44%, rgb(28 71 39 / .08) 100%);
+    radial-gradient(ellipse 50% 38% at 50% 46%, rgb(28 71 39 / .74) 0%, rgb(28 71 39 / .62) 60%, rgb(28 71 39 / 0) 100%),
+    linear-gradient(180deg, rgb(28 71 39 / .6) 0, rgb(28 71 39 / 0) 150px),
+    radial-gradient(ellipse 78% 82% at 50% 48%, rgb(28 71 39 / .22) 45%, rgb(28 71 39 / .94) 100%);
 }
+
+/* Ukrasi u ćoškovima: šara jaja kao na ostatku stranice i ikonice jaja i koke */
+.hero-deco { position: absolute; inset: 0 0 var(--road-h); z-index: -1; overflow: hidden; pointer-events: none; }
+.hero-deco::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.3' stroke-width='1.5'%3E%3Cpath d='M30 12c9 0 16 14 16 25 0 9-7 15-16 15s-16-6-16-15c0-11 7-25 16-25Z'/%3E%3Cpath transform='rotate(24 90 88)' d='M90 62c8 0 14 12 14 22 0 8-6 14-14 14s-14-6-14-14c0-10 6-22 14-22Z'/%3E%3C/g%3E%3C/svg%3E");
+  -webkit-mask-image: radial-gradient(ellipse 72% 76% at 50% 48%, transparent 62%, #000 100%);
+  mask-image: radial-gradient(ellipse 72% 76% at 50% 48%, transparent 62%, #000 100%);
+}
+.deco { position: absolute; width: clamp(78px, 10.5vw, 160px); height: auto; overflow: visible; fill: none; stroke: var(--white); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.6; animation: deco-float 5s ease-in-out infinite alternate; }
+.deco * { vector-effect: non-scaling-stroke; }
+.deco .deco-fill { fill: var(--orange); stroke: none; }
+.deco .deco-dot { fill: var(--white); stroke: none; }
+.deco-tl { top: calc(var(--top-h) + 14px); left: var(--gutter); }
+.deco-tr { top: calc(var(--top-h) + 14px); right: var(--gutter); animation-delay: -2s; }
+.deco-bl { bottom: 16px; left: var(--gutter); animation-delay: -3.5s; }
+@keyframes deco-float { to { transform: translateY(-8px) rotate(-2deg); } }
 .hero:hover .hero-photo img { transform: scale(1.05); }
 /* Donji razmak ostavlja mjesta kombiju, da nikad ne pređe preko teksta. */
 .hero-copy {
   display: flex;
   flex: 1;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: calc(var(--top-h) + clamp(12px, 3vh, 40px)) var(--gutter) calc(var(--van-h) - var(--road-h) * .8 + 12px);
+  text-align: center;
 }
-.hero h1 { color: var(--white); font-size: clamp(3rem, 7vw, 7.2rem); line-height: .98; }
-.hero h1 em { color: var(--straw); font-style: normal; }
-.hero-copy p { max-width: 24em; margin-top: 20px; font-size: clamp(1.2rem, 2vw, 1.65rem); line-height: 1.3; text-wrap: balance; }
+.hero h1 { color: var(--white); font-size: clamp(3rem, 7vw, 7.2rem); line-height: .98; text-shadow: 0 2px 16px rgb(15 35 20 / .55); }
+.hero h1 em { color: var(--orange); font-style: normal; }
+.hero-copy p { max-width: 24em; margin-top: 20px; font-size: clamp(1.2rem, 2vw, 1.65rem); line-height: 1.3; text-shadow: 0 1px 10px rgb(15 35 20 / .6); text-wrap: balance; }
 .hero-copy .btn { margin-top: clamp(20px, 2.6vw, 32px); }
 
 /* ---------- Početna: cesta i kombi koji vodi u webshop ---------- */
@@ -270,14 +291,14 @@ a { color: inherit; }
 .van-sun { fill: var(--orange); }
 .van-sand { fill: var(--sand); }
 .van-spoke { stroke: var(--ink); stroke-width: 2.4; }
-.van-label { fill: var(--white); font-family: var(--font-head); font-size: 28px; font-weight: 700; }
+.van-label { fill: var(--white); font-family: var(--font-head); font-size: 28px; font-weight: 700; transition: fill .2s; }
+.van:hover .van-label, .van:focus-visible .van-label { fill: var(--ink); }
 .van-go-dot { fill: var(--white); }
 /* Strelica se stalno lagano pomjera, da se vidi da je kombi za klik. */
-.van-go-arrow { fill: none; stroke: var(--forest); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke .2s; animation: arrow-nudge 1.1s ease-in-out infinite; }
+.van-go-arrow { fill: none; stroke: var(--forest); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; animation: arrow-nudge 1.1s ease-in-out infinite; }
 @keyframes arrow-nudge { 50% { transform: translateX(3px); } }
 .van:hover .van-paint, .van:focus-visible .van-paint { fill: var(--orange); }
 .van:hover .van-stripe, .van:focus-visible .van-stripe { fill: var(--forest); }
-.van:hover .van-go-arrow, .van:focus-visible .van-go-arrow { stroke: var(--orange); }
 .puff { fill: var(--grey); transform-box: fill-box; transform-origin: center; animation: puff 1.3s ease-out infinite; }
 .puff + .puff { animation-delay: .6s; }
 .van-tilt { transform-box: fill-box; transform-origin: 50% 100%; animation: van-tilt var(--van-time) var(--van-delay) infinite; }
@@ -391,7 +412,7 @@ a { color: inherit; }
   right: 0;
   bottom: 0;
   width: 44%;
-  border: 5px solid var(--white);
+  border: 5px solid var(--orange);
   box-shadow: 0 14px 34px rgb(20 38 26 / .25);
   transform: rotate(12deg);
   transition: transform .45s cubic-bezier(.3, 1.5, .6, 1);
@@ -407,7 +428,7 @@ a { color: inherit; }
   padding: 7px 14px;
   border-radius: 14px;
   background: var(--orange);
-  color: var(--white);
+  color: var(--ink);
   font-size: .85rem;
   line-height: 1.15;
   box-shadow: 0 10px 26px rgb(20 38 26 / .22);
@@ -416,7 +437,8 @@ a { color: inherit; }
 .about-badge b { display: block; font-size: 1.25rem; font-weight: 700; }
 .about-photo:hover .about-badge { transform: translateY(-8px) rotate(-3deg); }
 
-.about h2 { font-size: clamp(2.1rem, 3.4vw, 3.4rem); }
+.about h2 { font-size: clamp(2.3rem, 3.9vw, 3.9rem); }
+.about h2 em { color: var(--orange); font-style: normal; }
 .about-text > p { max-width: 36em; margin-top: 10px; font-size: clamp(1.05rem, 1.3vw, 1.25rem); line-height: 1.4; }
 .about-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(16px, 1.6vw, 24px); }
 
@@ -503,7 +525,7 @@ a { color: inherit; }
   cursor: pointer;
   transition: background-color .18s, color .18s, transform .2s;
 }
-.lb-btn:hover { background: var(--orange); transform: scale(1.08); }
+.lb-btn:hover { background: var(--orange); color: var(--ink); transform: scale(1.08); }
 .lb-close { top: var(--lb-edge); right: var(--lb-edge); }
 .lb-prev { top: calc(50% - 28px); left: var(--lb-edge); }
 .lb-next { top: calc(50% - 28px); right: var(--lb-edge); }
@@ -523,7 +545,7 @@ a { color: inherit; }
 }
 /* Lijeva strana je visoka kao mapa: naslov gore, dugmad dole */
 .contact-info { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; min-width: 0; }
-.contact h2 { color: var(--straw); font-size: clamp(2.6rem, 5.4vw, 5.4rem); }
+.contact h2 { color: var(--orange); font-size: clamp(2.6rem, 5.4vw, 5.4rem); }
 .contact-lead { margin-top: 8px; font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.35; }
 
 /* Brojevi kao velika dugmad: glavni je narandžast, drugi bijeli */
@@ -545,8 +567,8 @@ a { color: inherit; }
   box-shadow: 0 10px 26px rgb(10 24 15 / .28);
   transition: transform .3s cubic-bezier(.3, 1.5, .6, 1), background-color .2s, color .2s;
 }
-.phone-main { background: var(--orange); color: var(--white); }
-.phone:hover { background: var(--orange); color: var(--white); transform: translateX(8px); }
+.phone-main { background: var(--orange); color: var(--ink); }
+.phone:hover { background: var(--orange); color: var(--ink); transform: translateX(8px); }
 .phone-main:hover { background: var(--white); color: var(--forest); }
 .phone-icon { display: grid; flex: none; place-items: center; width: 1.45em; height: 1.45em; border-radius: 50%; background: var(--forest); color: var(--white); }
 .phone-icon .icon { width: .62em; height: .62em; }
@@ -608,7 +630,7 @@ a { color: inherit; }
   text-decoration: none;
   transition: background-color .2s, border-color .2s, color .2s, transform .2s;
 }
-.contact-more a:hover { border-color: var(--orange); background: var(--orange); transform: translateY(-3px); }
+.contact-more a:hover { border-color: var(--orange); background: var(--orange); color: var(--ink); transform: translateY(-3px); }
 
 /* ---------- Webshop ---------- */
 
@@ -669,7 +691,7 @@ a { color: inherit; }
   padding: 4px 12px;
   border-radius: 999px;
   background: var(--orange);
-  color: var(--white);
+  color: var(--ink);
   font-weight: 600;
 }
 .pcard-body { display: flex; flex: 1; flex-direction: column; padding: 16px 18px 18px; }
@@ -699,7 +721,7 @@ a { color: inherit; }
   cursor: pointer;
   transition: background-color .18s, color .18s;
 }
-.stepper button:hover { background: var(--orange); color: var(--white); }
+.stepper button:hover { background: var(--orange); color: var(--ink); }
 .stepper input {
   width: 100%;
   min-width: 0;
@@ -740,7 +762,7 @@ a { color: inherit; }
 .field textarea { resize: vertical; }
 .field ::placeholder { color: var(--grey); opacity: .85; }
 .field input:hover, .field textarea:hover, .picker-btn:hover { border-color: var(--orange); }
-.field input:focus, .field textarea:focus, .picker-btn:focus-visible, .picker-btn[aria-expanded="true"] { outline: 0; border-color: var(--forest); box-shadow: 0 0 0 3px rgb(185 86 10 / .3); }
+.field input:focus, .field textarea:focus, .picker-btn:focus-visible, .picker-btn[aria-expanded="true"] { outline: 0; border-color: var(--forest); box-shadow: 0 0 0 3px rgb(232 134 43 / .35); }
 
 .time-range { display: flex; align-items: center; gap: 8px; }
 .time-range .picker { flex: 1; }
@@ -934,7 +956,7 @@ a { color: inherit; }
   cursor: pointer;
   transition: color .18s;
 }
-.sent-actions button:hover { color: var(--straw); }
+.sent-actions button:hover { color: var(--orange); }
 
 .hatch { display: block; width: 136px; margin: 0 auto 6px; overflow: visible; }
 .hatch-all { transform-origin: 80px 142px; }
@@ -1005,7 +1027,7 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   .about, .contact { grid-template-columns: minmax(0, 1fr); }
   .about::before { top: auto; right: 0; bottom: 3%; width: 100%; transform: none; }
   .about-photo { width: min(58vw, 230px); }
-  .about h2 { font-size: clamp(2rem, 7vw, 3rem); }
+  .about h2 { font-size: clamp(2.2rem, 7.6vw, 3.2rem); }
   .about-text > p { font-size: clamp(1.02rem, 2.6vw, 1.2rem); }
   .contact-map { margin-top: 44px; }
 }
@@ -1014,10 +1036,14 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   :root { --top-h: 68px; }
   .top-nav .nav-link { display: none; }
   .top-logo img { height: 50px; }
-  .hero::before { background: linear-gradient(180deg, rgb(28 71 39 / .92) 0%, rgb(28 71 39 / .84) 46%, rgb(28 71 39 / 0) 66%); }
+  .hero::before {
+    background:
+      radial-gradient(ellipse 95% 34% at 50% 44%, rgb(28 71 39 / .88) 0%, rgb(28 71 39 / .78) 62%, rgb(28 71 39 / 0) 100%),
+      linear-gradient(180deg, rgb(28 71 39 / .6) 0, rgb(28 71 39 / 0) 130px),
+      radial-gradient(ellipse 90% 80% at 50% 46%, rgb(28 71 39 / .2) 45%, rgb(28 71 39 / .9) 100%);
+  }
   .hero-photo img { object-position: 16% bottom; }
   .hero h1 { font-size: clamp(2rem, 10vw, 5rem); }
-  .hero-copy { justify-content: flex-start; }
   .van-lane { --wheel-turns: 1000deg; }
   .about-actions .btn { flex: 1 1 auto; padding-inline: 16px; }
   .form-grid { grid-template-columns: minmax(0, 1fr); }
@@ -1049,6 +1075,11 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   .phone { font-size: clamp(1.6rem, 8.4vw, 2.4rem); }
   .contact-more { gap: 8px; }
   .contact-more a { flex-direction: column; gap: 2px; min-height: 62px; padding: 6px 4px; border-radius: 18px; font-size: .88rem; }
+}
+
+/* Na niskim ekranima nema mjesta za ukrase pored teksta. */
+@media (max-height: 560px) {
+  .deco { display: none; }
 }
 
 /* Na dodir nema hovera, pa kartice ne smiju ostati podignute. */

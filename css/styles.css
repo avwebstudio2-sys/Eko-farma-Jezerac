@@ -254,6 +254,24 @@ a { color: inherit; }
 .bottom-credit img { width: 17px; height: auto; }
 .bottom-credit:hover b, .bottom-credit:focus-visible b { background-size: 100% 2px; }
 .bottom-credit:hover .bottom-credit-logo, .bottom-credit:focus-visible .bottom-credit-logo { transform: rotate(-20deg); }
+.bottom-link { margin-left: 6px; padding-bottom: 2px; background: linear-gradient(var(--orange), var(--orange)) left bottom / 0 2px no-repeat; color: var(--forest); font-weight: 600; text-decoration: none; white-space: nowrap; transition: background-size .3s ease-out; }
+.bottom-link:hover, .bottom-link:focus-visible { background-size: 100% 2px; }
+
+/* ---------- Politika privatnosti ---------- */
+
+.legal { max-width: 46rem; margin: 0 auto; padding: clamp(24px, 4vw, 48px) var(--gutter) clamp(48px, 7vw, 96px); }
+.legal h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+.legal h2 { margin-top: clamp(28px, 3vw, 40px); font-size: clamp(1.45rem, 2.2vw, 1.9rem); }
+.legal p, .legal ul { margin-top: 10px; line-height: 1.5; }
+.legal ul { padding-left: 1.2em; list-style: disc; }
+.legal li + li { margin-top: 8px; }
+.legal li::marker { color: var(--orange); }
+.legal a { color: var(--forest); text-decoration-color: var(--orange); text-underline-offset: .18em; transition: color .18s; }
+.legal a:hover { color: var(--green); }
+.legal-date { color: var(--grey); font-size: 1rem; }
+.legal-lead { padding: 14px 18px; border-radius: var(--radius); background: var(--mint); color: var(--forest); font-weight: 600; }
+/* Mjesta koja vlasnik još treba popuniti */
+.legal-fill { padding: 0 4px; border-radius: 4px; background: rgb(232 134 43 / .22); color: inherit; }
 
 /* ---------- Početna: hero s fotografijom u pozadini ---------- */
 

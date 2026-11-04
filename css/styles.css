@@ -1048,7 +1048,6 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   .cart-empty { flex: none; }
   .cart-list { min-height: 0; margin-right: 0; padding-right: 0; overflow-y: visible; scrollbar-gutter: auto; }
 
-  body[data-shop] { padding-bottom: 84px; }
 
   .bar {
     position: fixed;

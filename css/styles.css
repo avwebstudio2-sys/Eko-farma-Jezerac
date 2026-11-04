@@ -1017,7 +1017,8 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
 
 @media (max-width: 859px) {
   .about, .contact { grid-template-columns: minmax(0, 1fr); }
-  .about::before { top: auto; right: 0; bottom: 3%; width: 100%; transform: none; }
+  /* Logo u pozadini stoji iza naslova i teksta. */
+  .about::before { top: clamp(96px, 26vw, 150px); right: 0; width: min(100%, 440px); transform: none; }
   /* Naslov i tekst prvi, pa položena slika od margine do margine, a dugmad ostaju na dnu. */
   .about { gap: 0; }
   .about-text { display: contents; }

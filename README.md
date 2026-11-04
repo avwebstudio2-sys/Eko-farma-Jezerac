@@ -52,7 +52,7 @@ Novi vanjski sadržaj (skripta, font, iframe, analitika) neće raditi dok se nje
 favicon.ico        ikona preglednika, amblem iz logotipa farme (i favicon-32.png, favicon-192.png u assets/img)
 index.html         početna: hero s kombijem koji vodi u webshop, o nama, pokretna traka, galerija, kontakt s mapom
 webshop.html       webshop: kartice školjki, korpa, podaci za dostavu
-privatnost.html    politika privatnosti (noindex); mjesta označena s [ ] popunjava vlasnik
+privatnost.html    politika privatnosti (noindex): obrt, vlasnik, šta se radi s podacima, rok čuvanja
 robots.txt         pravi ga scripts/prerender.js
 sitemap.xml        pravi ga scripts/prerender.js
 vercel.json        sigurnosna zaglavlja, preusmjerenje /index.html na / i keširanje

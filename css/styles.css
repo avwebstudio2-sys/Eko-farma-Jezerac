@@ -270,8 +270,6 @@ a { color: inherit; }
 .legal a:hover { color: var(--green); }
 .legal-date { color: var(--grey); font-size: 1rem; }
 .legal-lead { padding: 14px 18px; border-radius: var(--radius); background: var(--mint); color: var(--forest); font-weight: 600; }
-/* Mjesta koja vlasnik još treba popuniti */
-.legal-fill { padding: 0 4px; border-radius: 4px; background: rgb(232 134 43 / .22); color: inherit; }
 
 /* ---------- Početna: hero s fotografijom u pozadini ---------- */
 

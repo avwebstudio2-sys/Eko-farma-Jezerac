@@ -268,22 +268,25 @@ a { color: inherit; }
 .van svg { display: block; width: 100%; height: auto; overflow: visible; }
 .van-dark { fill: var(--ink); }
 .van-tyre { fill: #2f3531; }
-.van-paint { fill: var(--green); transition: fill .2s; }
+/* Bijeli kombi s narandžastim i zelenim detaljima, tanak zeleni obris da se odvoji od svijetlog brda. */
+.van-paint { fill: var(--white); stroke: var(--forest); stroke-width: 2.5; stroke-linejoin: round; transition: fill .2s; }
 .van-stripe { fill: var(--orange); transition: fill .2s; }
-.van-line { fill: none; stroke: rgb(255 255 255 / .35); stroke-width: 1.5; }
-.van-window { fill: var(--mint); }
-.van-shine { fill: rgb(255 255 255 / .6); }
+.van-stripe-green { fill: var(--green); transition: fill .2s; }
+.van-line { fill: none; stroke: rgb(28 71 39 / .2); stroke-width: 1.5; }
+.van-window { fill: var(--green); }
+.van-shine { fill: rgb(255 255 255 / .3); }
 .van-sun { fill: var(--orange); }
 .van-sand { fill: var(--sand); }
 .van-spoke { stroke: var(--ink); stroke-width: 2.4; }
-.van-label { fill: var(--white); font-family: var(--font-head); font-size: 26px; font-weight: 700; transition: fill .2s; }
-.van:hover .van-label, .van:focus-visible .van-label { fill: var(--ink); }
-.van-go-dot { fill: var(--white); }
+.van-label { fill: var(--forest); font-family: var(--font-head); font-size: 26px; font-weight: 700; transition: fill .2s; }
+.van-go-dot { fill: var(--orange); transition: fill .2s; }
 /* Strelica se stalno lagano pomjera, da se vidi da je kombi za klik. */
-.van-go-arrow { fill: none; stroke: var(--forest); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; animation: arrow-nudge 1.1s ease-in-out infinite; }
+.van-go-arrow { fill: none; stroke: var(--white); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; animation: arrow-nudge 1.1s ease-in-out infinite; }
 @keyframes arrow-nudge { 50% { transform: translateX(3px); } }
 .van:hover .van-paint, .van:focus-visible .van-paint { fill: var(--orange); }
 .van:hover .van-stripe, .van:focus-visible .van-stripe { fill: var(--forest); }
+.van:hover .van-stripe-green, .van:focus-visible .van-stripe-green { fill: var(--white); }
+.van:hover .van-go-dot, .van:focus-visible .van-go-dot { fill: var(--forest); }
 .puff { fill: var(--grey); transform-box: fill-box; transform-origin: center; animation: puff 1.3s ease-out infinite; }
 .puff + .puff { animation-delay: .6s; }
 .van-tilt { transform-box: fill-box; transform-origin: 50% 100%; animation: van-tilt var(--van-time) var(--van-delay) infinite; }
@@ -332,11 +335,11 @@ a { color: inherit; }
 .ticker li {
   display: flex;
   align-items: center;
-  gap: clamp(20px, 2.6vw, 40px);
-  padding: clamp(12px, 1.2vw, 18px) 0 clamp(14px, 1.4vw, 20px) clamp(20px, 2.6vw, 40px);
-  font-size: clamp(.95rem, 1.2vw, 1.1rem);
+  gap: clamp(16px, 2vw, 32px);
+  padding: clamp(8px, .8vw, 12px) 0 clamp(9px, .9vw, 13px) clamp(16px, 2vw, 32px);
+  font-size: clamp(.78rem, .95vw, .9rem);
   font-weight: 700;
-  letter-spacing: .12em;
+  letter-spacing: .1em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -357,9 +360,11 @@ a { color: inherit; }
   padding: clamp(40px, 3vw, 44px) clamp(20px, 4vw, 64px) clamp(24px, 3vw, 44px);
   overflow: hidden;
   border-radius: var(--radius-big);
-  background: var(--beige) var(--eggs-dark);
+  background: var(--forest) var(--eggs-light);
+  color: var(--white);
+  --ring: var(--white);
 }
-/* Sivi logo stopljen s pozadinom sekcije */
+/* Svijetli logo stopljen sa zelenom pozadinom sekcije */
 .about::before {
   content: "";
   position: absolute;
@@ -367,9 +372,9 @@ a { color: inherit; }
   top: 50%;
   right: 1%;
   width: min(46vw, 640px);
-  aspect-ratio: 1300 / 721;
-  background: url("../assets/img/logo-sivi.webp") center / contain no-repeat;
-  opacity: .13;
+  aspect-ratio: 480 / 266;
+  background: url("../assets/img/logo-svijetli.webp") center / contain no-repeat;
+  opacity: .1;
   transform: translateY(-50%);
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 30%);
   mask-image: linear-gradient(to right, transparent 0, #000 30%);
@@ -421,10 +426,12 @@ a { color: inherit; }
 .about-badge b { display: block; font-size: 1.25rem; font-weight: 700; }
 .about-photo:hover .about-badge { transform: translateY(-8px) rotate(-3deg); }
 
-.about h2 { font-size: clamp(2.3rem, 3.9vw, 3.9rem); }
+.about h2 { color: var(--white); font-size: clamp(2.3rem, 3.9vw, 3.9rem); }
 .about h2 em { color: var(--orange); font-style: normal; }
 .about-text > p { max-width: 36em; margin-top: 10px; font-size: clamp(1.05rem, 1.3vw, 1.25rem); line-height: 1.4; }
 .about-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(16px, 1.6vw, 24px); }
+.about .btn-ghost { box-shadow: inset 0 0 0 2px var(--white); color: var(--white); }
+.about .btn-ghost:hover, .about .btn-ghost:active { box-shadow: inset 0 0 0 2px var(--orange); color: var(--ink); }
 
 /* ---------- Početna: galerija i pregled slika, namjerno bez zaobljenih ivica ---------- */
 
@@ -1010,9 +1017,13 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
 @media (max-width: 859px) {
   .about, .contact { grid-template-columns: minmax(0, 1fr); }
   .about::before { top: auto; right: 0; bottom: 3%; width: 100%; transform: none; }
-  .about-photo { width: min(58vw, 230px); }
-  .about h2 { font-size: clamp(2.2rem, 7.6vw, 3.2rem); }
-  .about-text > p { font-size: clamp(1.02rem, 2.6vw, 1.2rem); }
+  /* Naslov i tekst prvi, pa slika, a dugmad ostaju na dnu. */
+  .about { gap: 0; }
+  .about-text { display: contents; }
+  .about-photo { order: 1; width: min(58vw, 230px); margin-top: 58px; }
+  .about-actions { order: 2; margin-top: 28px; }
+  .about h2 { font-size: clamp(2.7rem, 11.5vw, 3.8rem); }
+  .about-text > p { margin-top: 12px; font-size: clamp(1.02rem, 2.6vw, 1.2rem); }
   .contact-map { margin-top: 44px; }
 }
 
@@ -1028,7 +1039,9 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
   }
   .hero-photo img { object-position: 16% bottom; }
   .hero h1 { font-size: clamp(2rem, 10vw, 5rem); }
+  .hero { --van-w: clamp(190px, 56vw, 300px); }
   .van-lane { --wheel-turns: 1000deg; }
+  .bottom { flex-direction: column; align-items: center; text-align: center; }
   .about-actions .btn { flex: 1 1 auto; padding-inline: 16px; }
   .form-grid { grid-template-columns: minmax(0, 1fr); }
 

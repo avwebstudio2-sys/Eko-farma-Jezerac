@@ -13,6 +13,26 @@
   markScrolled();
   window.addEventListener('scroll', markScrolled, { passive: true });
 
+  /* ---------- Dijalozi se zatvaraju blagim nestajanjem, i na Escape ---------- */
+
+  function closeDialog(dialog) {
+    if (!dialog.open || dialog.classList.contains('is-closing')) return;
+    dialog.classList.add('is-closing');
+    window.setTimeout(() => {
+      dialog.classList.remove('is-closing');
+      dialog.close();
+    }, 180);
+  }
+
+  $$('dialog').forEach((dialog) => {
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closeDialog(dialog);
+    });
+  });
+
+  window.FarmaUI = { closeDialog };
+
   /* ---------- Galerija ---------- */
 
   const lightbox = $('#lightbox');
@@ -21,6 +41,13 @@
     const caption = $('[data-lb-caption]', lightbox);
     const items = $$('[data-gallery] .g-item');
     let current = 0;
+
+    // Svaka nova fotografija se blago pojavi, umjesto da naglo zamijeni prethodnu.
+    image.addEventListener('load', () => {
+      image.classList.remove('is-in');
+      void image.offsetWidth;
+      image.classList.add('is-in');
+    });
 
     const show = (index) => {
       current = (index + items.length) % items.length;
@@ -36,11 +63,11 @@
       });
     });
 
-    $('[data-lb-close]', lightbox).addEventListener('click', () => lightbox.close());
+    $('[data-lb-close]', lightbox).addEventListener('click', () => closeDialog(lightbox));
     $('[data-lb-prev]', lightbox).addEventListener('click', () => show(current - 1));
     $('[data-lb-next]', lightbox).addEventListener('click', () => show(current + 1));
     lightbox.addEventListener('click', (event) => {
-      if (event.target === lightbox || event.target.matches('figure')) lightbox.close();
+      if (event.target === lightbox || event.target.matches('figure')) closeDialog(lightbox);
     });
     lightbox.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft') show(current - 1);

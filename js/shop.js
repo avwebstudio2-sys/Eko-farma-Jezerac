@@ -147,11 +147,12 @@
     const current = lines();
     const empty = current.length === 0;
 
-    // Redovi se ažuriraju po proizvodu, da fokus i animacije ostanu netaknuti.
+    // Redovi se ažuriraju po proizvodu, da fokus i animacije ostanu netaknuti. Uklonjeni red prvo blago nestane.
     for (const [id, row] of rows) {
       if (qtyOf(id) === 0) {
         rows.delete(id);
-        row.remove();
+        row.classList.add('is-out');
+        window.setTimeout(() => row.remove(), 200);
       }
     }
     current.forEach((p, index) => {
@@ -162,12 +163,15 @@
         row.innerHTML = `<span class="cart-name">${p.name}<small>${p.desc} · ${money(p.price)}</small></span>
           <b data-row-price></b>
           ${stepperMarkup(p)}
-          <button class="cart-remove" type="button" data-remove aria-label="Ukloni: ${p.name}" title="Ukloni"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg></button>`;
+          <button class="cart-remove" type="button" data-remove aria-label="Ukloni: ${p.name}" data-tip="Ukloni"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg></button>`;
         rows.set(p.id, row);
       }
       const next = current[index + 1] ? rows.get(current[index + 1].id) : null;
       const anchor = next && next.parentNode === itemsEl ? next : null;
-      if (row.parentNode !== itemsEl || row.nextSibling !== anchor) itemsEl.insertBefore(row, anchor);
+      // Red koji upravo nestaje se ne broji, da se susjedni red ne premješta i ne animira ponovo.
+      let after = row.nextSibling;
+      while (after && after.classList.contains('is-out')) after = after.nextSibling;
+      if (row.parentNode !== itemsEl || after !== anchor) itemsEl.insertBefore(row, anchor);
       $('[data-qty]', row).value = qtyOf(p.id);
       $('[data-row-price]', row).textContent = money(p.price * qtyOf(p.id));
     });
@@ -515,16 +519,18 @@
     sentDialog.showModal();
   });
 
-  $('[data-sent-close]').addEventListener('click', () => sentDialog.close());
+  const { closeDialog } = window.FarmaUI;
+
+  $('[data-sent-close]').addEventListener('click', () => closeDialog(sentDialog));
 
   $('[data-sent-new]').addEventListener('click', () => {
     resetOrder();
-    sentDialog.close();
+    closeDialog(sentDialog);
     window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
   });
 
   sentDialog.addEventListener('click', (event) => {
-    if (event.target === sentDialog) sentDialog.close();
+    if (event.target === sentDialog) closeDialog(sentDialog);
   });
 
   /* ---------- Početno iscrtavanje ---------- */

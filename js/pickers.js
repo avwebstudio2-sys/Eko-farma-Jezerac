@@ -36,30 +36,41 @@
     const button = root.querySelector('.picker-btn');
     const pop = root.querySelector('.picker-pop');
 
+    let hideTimer = 0;
+    const isOpen = () => button.getAttribute('aria-expanded') === 'true';
+
     const menu = {
       root,
+      isOpen,
       open() {
         if (current) current.close();
         current = menu;
+        window.clearTimeout(hideTimer);
+        pop.classList.remove('is-closing');
         pop.hidden = false;
         button.setAttribute('aria-expanded', 'true');
         onOpen();
         place(button, pop);
       },
+      // Meni prvo blago nestane, pa se tek onda sakrije.
       close(refocus = false) {
-        if (pop.hidden) return;
-        pop.hidden = true;
+        if (!isOpen()) return;
         button.setAttribute('aria-expanded', 'false');
         if (current === menu) current = null;
+        pop.classList.add('is-closing');
+        hideTimer = window.setTimeout(() => {
+          pop.hidden = true;
+          pop.classList.remove('is-closing');
+        }, 120);
         if (refocus) button.focus({ preventScroll: true });
       },
     };
 
     button.addEventListener('click', () => {
-      if (pop.hidden) menu.open(); else menu.close(true);
+      if (isOpen()) menu.close(true); else menu.open();
     });
     root.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !pop.hidden) {
+      if (event.key === 'Escape' && isOpen()) {
         event.stopPropagation();
         menu.close(true);
       }
@@ -237,7 +248,7 @@
     });
 
     button.addEventListener('keydown', (event) => {
-      if ((event.key === 'ArrowDown' || event.key === 'ArrowUp') && pop.hidden) {
+      if ((event.key === 'ArrowDown' || event.key === 'ArrowUp') && !menu.isOpen()) {
         event.preventDefault();
         menu.open();
       }

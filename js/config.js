@@ -8,7 +8,7 @@ window.FARMA = {
   email: 'ekofarma.jezerac@gmail.com',
 
   // Sati koji se nude u polju "Vrijeme dostave".
-  deliveryHours: { from: 7, to: 21 },
+  deliveryHours: { from: 7, to: 23 },
 
   // badge = oznaka na kartici, tray = [kolona, redova] i eggScale = veličina jajeta na crtežu školjke.
   products: [

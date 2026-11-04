@@ -1017,30 +1017,15 @@ dialog[open] .hatch-top { animation: hatch-top .55s cubic-bezier(.3, 1.4, .5, 1)
 
 @media (max-width: 859px) {
   .about, .contact { grid-template-columns: minmax(0, 1fr); }
-  /* Naslov i tekst prvi, pa široka slika od ruba do ruba, logo ispod nje, a dugmad na dnu. */
+  .about::before { top: auto; right: 0; bottom: 3%; width: 100%; transform: none; }
+  /* Naslov i tekst prvi, pa položena slika od margine do margine, a dugmad ostaju na dnu. */
   .about { gap: 0; }
   .about-text { display: contents; }
-  .about-photo { order: 1; width: auto; aspect-ratio: auto; margin: 52px calc(var(--pad-x) * -1) 0; }
-  .about-photo::before { display: none; }
-  .about-photo .mascot { top: -40px; left: var(--pad-x); }
-  .about-frame-big { position: relative; width: 100%; aspect-ratio: 16 / 10; border-radius: 0; box-shadow: none; }
+  .about-photo { order: 1; width: 100%; aspect-ratio: 1.47; margin-top: 58px; }
+  .about-photo::before, .about-frame-big { aspect-ratio: 4 / 3; }
   .about-frame-big img { object-position: center 58%; }
-  .about-frame-small { right: var(--pad-x); bottom: -18px; width: clamp(92px, 26%, 170px); }
-  .about-badge { top: 14px; right: var(--pad-x); }
-  .about::before { display: none; }
-  .about-actions { position: relative; order: 2; margin-top: calc(clamp(170px, 52vw, 260px) * .554 + 40px); }
-  .about-actions::before {
-    content: "";
-    position: absolute;
-    bottom: calc(100% + 14px);
-    left: 50%;
-    width: clamp(170px, 52vw, 260px);
-    aspect-ratio: 480 / 266;
-    background: url("../assets/img/logo-svijetli.webp") center / contain no-repeat;
-    opacity: .16;
-    transform: translateX(-50%);
-    pointer-events: none;
-  }
+  .about-frame-small { width: 34%; }
+  .about-actions { order: 2; margin-top: 44px; }
   .about h2 { font-size: clamp(2.7rem, 11.5vw, 3.8rem); }
   .about-text > p { margin-top: 12px; font-size: clamp(1.02rem, 2.6vw, 1.2rem); }
   .contact-map { margin-top: 44px; }

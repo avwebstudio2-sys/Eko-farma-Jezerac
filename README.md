@@ -23,16 +23,6 @@ Sve je u [`js/config.js`](js/config.js):
 | Cijene školjki | `price` kod proizvoda |
 | Sati u polju za dostavu | `deliveryHours` |
 
-## Narudžbe preko SMS-a
-
-Kupac klikne "Naruči", a `api/narudzba.js` pošalje SMS vlasniku preko Android telefona s aplikacijom [TextBee](https://textbee.dev/docs). SMS se plaća sa SIM kartice u tom telefonu.
-
-1. Na Android telefon s SIM karticom instalirati TextBee, napraviti nalog i povezati uređaj.
-2. Na Vercelu u Settings, Environment Variables dodati `TEXTBEE_API_KEY`, pa ponovo objaviti stranicu.
-3. Po želji dodati `ORDER_SMS_TO` (broj koji prima narudžbe, npr. `+38761366168`; bez njega se koristi `whatsapp` iz `js/config.js`) i `TEXTBEE_DEVICE_ID` (ako je povezano više telefona).
-
-Telefon mora biti upaljen i na internetu, a TextBee izuzet od štednje baterije. Bez ključa, webshop šalje narudžbe preko WhatsAppa.
-
 ## Struktura
 
 ```
@@ -43,8 +33,7 @@ css/styles.css    izgled i animacije obje stranice
 js/config.js      školjke, cijene i kontakt
 js/site.js        zaglavlje na skrolu, galerija na početnoj, broj u korpi
 js/pickers.js     iskočni meniji za datum i sat, na bosanskom
-js/shop.js        kartice, korpa, forma i slanje narudžbe
-api/narudzba.js   provjera narudžbe i slanje SMS-a na serveru
+js/shop.js        kartice, korpa, forma i poruka za WhatsApp
 assets/img/       logo, svijetli logo za hero, sivi logo za pozadinu, logo studija, fotografije i ikone
 ```
 

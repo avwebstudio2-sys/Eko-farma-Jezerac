@@ -137,11 +137,7 @@
             </fieldset>
             <div class="field field-full">
               <label for="napomena">Napomena <small>(nije obavezno)</small></label>
-              <textarea id="napomena" name="napomena" rows="3" maxlength="200" placeholder="npr. sprat, ulaz ili kada ste kod kuće"></textarea>
-            </div>
-            <div class="form-trap" aria-hidden="true">
-              <label for="provjera">Ovo polje ostavite prazno</label>
-              <input id="provjera" name="provjera" type="text" tabindex="-1" autocomplete="off">
+              <textarea id="napomena" name="napomena" rows="3" maxlength="500" placeholder="npr. sprat, ulaz ili kada ste kod kuće"></textarea>
             </div>
           </div>
           <p class="form-privacy">Ime, telefon i adresu pamtimo samo na vašem uređaju, da ih sljedeći put ne morate ponovo unositi.</p>
@@ -189,7 +185,7 @@
 
   <!-- Potvrda nakon slanja -->
   <dialog class="sent" id="sent-dialog" aria-labelledby="sent-title">
-    <svg class="hatch" viewBox="0 -28 160 188" aria-hidden="true" data-sent-chick>
+    <svg class="hatch" viewBox="0 -28 160 188" aria-hidden="true">
       <g class="hatch-all">
         <g class="hatch-chick">
           <circle cx="80" cy="84" r="31" fill="#e8862b"/>
@@ -201,12 +197,12 @@
         <path class="hatch-top" d="M42 94 52 82 62 94 72 82 82 94 92 82 102 94 112 82 118 94C118 60 100 34 80 34S42 60 42 94Z" fill="#fff"/>
       </g>
     </svg>
-    <h2 id="sent-title" data-sent-title>Još samo jedan klik</h2>
-    <p data-sent-text>U WhatsAppu vas čeka gotova poruka. Pritisnite „Pošalji” da narudžba stigne na farmu.</p>
+    <h2 id="sent-title">Još samo jedan klik</h2>
+    <p>U WhatsAppu vas čeka gotova poruka. <b>Pritisnite „Pošalji” da narudžba stigne na farmu.</b></p>
     <a class="btn btn-wide btn-send" data-sent-wa target="_blank" rel="noopener">
-      <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg> <span data-sent-wa-label>Otvori WhatsApp ponovo</span>
+      <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg> Otvori WhatsApp ponovo
     </a>
-    <p class="sent-alt" data-sent-other>Nemate WhatsApp? <a data-sent-mail>Pošaljite e-mailom</a> ili pozovite <a href="tel:+38761366168">061 366 168</a>.</p>
+    <p class="sent-alt">Nemate WhatsApp? <a data-sent-mail>Pošaljite e-mailom</a> ili pozovite <a href="tel:+38761366168">061 366 168</a>.</p>
     <div class="sent-actions">
       <button type="button" data-sent-close>Nazad</button>
       <button type="button" data-sent-new>Nova narudžba</button>
@@ -218,6 +214,6 @@
   <script src="js/config.js" defer></script>
   <script src="js/site.js" defer></script>
   <script src="js/pickers.js?v=2" defer></script>
-  <script src="js/shop.js" defer></script>
+  <script src="js/shop.js?v=2" defer></script>
 </body>
 </html>

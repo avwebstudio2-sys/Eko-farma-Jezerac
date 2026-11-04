@@ -1,4 +1,4 @@
-/* Webshop: kartice, korpa, forma i slanje narudžbe (SMS, a bez njega WhatsApp). */
+/* Webshop: kartice, korpa, forma i slanje narudžbe preko WhatsAppa. */
 (function () {
   'use strict';
 
@@ -193,15 +193,10 @@
 
   // Dugme vodi kroz korake: prvo do podataka, a kad su popunjeni, šalje.
   function renderSend() {
-    if (sending) return;
     const ready = isReady();
-    const fine = $('[data-send-fine]');
     sendButton.classList.toggle('btn-send', ready);
-    $('[data-send-icon]').toggleAttribute('hidden', !ready || smsReady);
-    fine.hidden = !ready;
-    fine.textContent = smsReady
-      ? 'Narudžba odmah stiže na farmu, ništa drugo ne morate raditi.'
-      : 'Otvorit će se WhatsApp s gotovom porukom. Vi samo pritisnete „Pošalji”.';
+    $('[data-send-icon]').toggleAttribute('hidden', !ready);
+    $('[data-send-fine]').hidden = !ready;
     $('[data-send-label]').textContent = ready ? 'Naruči' : 'Nastavi: podaci za dostavu';
   }
 
@@ -474,33 +469,6 @@
   /* ---------- Slanje ---------- */
 
   const sentDialog = $('#sent-dialog');
-  let smsReady = false;
-  let sending = false;
-
-  const SENT_STATES = {
-    sms: { title: 'Narudžba je poslana', text: 'Hvala! Narudžba je otišla na farmu, a plaćate pri preuzimanju.', chick: true, whatsapp: '', other: false, back: false },
-    failed: { title: 'Narudžba nije poslana', text: 'Slanje nije uspjelo. Pošaljite je preko WhatsAppa, poruka je već spremna, ili nas pozovite.', chick: false, whatsapp: 'Pošalji preko WhatsAppa', other: true, back: true },
-    whatsapp: { title: 'Još samo jedan klik', text: 'U WhatsAppu vas čeka gotova poruka. Pritisnite „Pošalji” da narudžba stigne na farmu.', chick: true, whatsapp: 'Otvori WhatsApp ponovo', other: true, back: true },
-  };
-
-  function showSent(name) {
-    const state = SENT_STATES[name];
-    $('[data-sent-title]').textContent = state.title;
-    $('[data-sent-text]').textContent = state.text;
-    $('[data-sent-chick]').toggleAttribute('hidden', !state.chick);
-    $('[data-sent-wa]').hidden = !state.whatsapp;
-    $('[data-sent-wa-label]').textContent = state.whatsapp;
-    $('[data-sent-other]').hidden = !state.other;
-    $('[data-sent-close]').hidden = !state.back;
-    sentDialog.showModal();
-  }
-
-  function setSending(on) {
-    sending = on;
-    sendButton.disabled = on;
-    if (on) $('[data-send-label]').textContent = 'Šaljem narudžbu…';
-    else renderSend();
-  }
 
   function resetOrder() {
     lines().forEach((p) => setQty(p.id, 0, { announce: false }));
@@ -511,38 +479,9 @@
     renderSend();
   }
 
-  async function postOrder() {
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 15000);
-    try {
-      const response = await fetch('api/narudzba', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-        body: JSON.stringify({
-          provjera: form.elements.provjera.value,
-          items: Object.fromEntries(lines().map((p) => [p.id, qtyOf(p.id)])),
-          ime: clean('ime'),
-          telefon: clean('telefon'),
-          adresa: clean('adresa'),
-          naselje: clean('naselje'),
-          napomena: clean('napomena'),
-          datum: form.elements.datum.value,
-          vrijemeOd: Number(form.elements.vrijemeOd.value),
-          vrijemeDo: Number(form.elements.vrijemeDo.value),
-        }),
-      });
-      return response.ok;
-    } catch {
-      return false;
-    } finally {
-      window.clearTimeout(timer);
-    }
-  }
-
-  form.addEventListener('submit', async (event) => {
+  form.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (lines().length === 0 || sending) return;
+    if (lines().length === 0) return;
     hideSendError();
 
     const invalid = REQUIRED.filter((name) => validateField(name));
@@ -570,23 +509,10 @@
     const subject = `Nova narudžba (${eggCount()} jaja, ${money(total())})`;
     $('[data-sent-mail]').href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text.replace(/\*/g, ''))}`;
 
-    if (smsReady) {
-      setSending(true);
-      const sent = await postOrder();
-      setSending(false);
-      if (sent) {
-        store.remove(STORE_CART);
-        resetOrder();
-      }
-      // Ako slanje ne uspije, korpa ostaje, a kupac dobija WhatsApp i brojeve za poziv.
-      showSent(sent ? 'sms' : 'failed');
-      return;
-    }
-
     // Korpa ostaje do "Nova narudžba", ali poslije osvježavanja stranice kreće se ispočetka.
     store.remove(STORE_CART);
     openExternal(url);
-    showSent('whatsapp');
+    sentDialog.showModal();
   });
 
   $('[data-sent-close]').addEventListener('click', () => sentDialog.close());
@@ -606,13 +532,4 @@
   datePicker.set(defaultDate());
   products.forEach(renderCard);
   renderCart();
-
-  // SMS se koristi samo kad je telefon povezan, a inače narudžba ide preko WhatsAppa.
-  fetch('api/narudzba')
-    .then((response) => (response.ok ? response.json() : null))
-    .then((status) => {
-      smsReady = Boolean(status && status.sms);
-      renderSend();
-    })
-    .catch(() => {});
 })();

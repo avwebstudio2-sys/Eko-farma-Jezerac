@@ -34,7 +34,9 @@
   <link rel="preload" href="assets/fonts/quicksand-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/quicksand-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/styles.css?v=4">
-  <link rel="preload" as="image" href="assets/img/hero.webp?v=2" fetchpriority="high">
+  <!-- Na telefonu je hero pod gustom zelenom sjenom, pa mu je dovoljna lakša verzija. -->
+  <link rel="preload" as="image" href="assets/img/hero-telefon.webp" media="(max-width: 759px)" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/img/hero.webp?v=2" media="(min-width: 760px)" fetchpriority="high">
 
   <!-- json-ld:start -->
   <script type="application/ld+json">
@@ -231,9 +233,10 @@
 
   <main>
     <section class="hero">
-      <div class="hero-photo">
+      <picture class="hero-photo">
+        <source media="(max-width: 759px)" srcset="assets/img/hero-telefon.webp" width="1100" height="825">
         <img src="assets/img/hero.webp?v=2" width="1600" height="1200" fetchpriority="high" alt="Farma na Velikoj Bukovici: objekti, puteljak kroz livadu i planine pod oblacima">
-      </div>
+      </picture>
       <picture class="hills">
         <source media="(min-width: 760px)" srcset="assets/img/brda.svg" width="1440" height="460">
         <img src="assets/img/brda-telefon.svg?v=3" width="375" height="200" alt="">

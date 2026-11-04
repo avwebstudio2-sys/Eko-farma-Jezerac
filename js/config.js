@@ -5,7 +5,7 @@
 window.FARMA = {
   // Javna adresa stranice, bez "/" na kraju. Nakon promjene (npr. prelazak na vlastitu domenu)
   // pokrenuti "node scripts/prerender.js", koji je upiše u HTML, robots.txt i sitemap.xml.
-  siteUrl: 'https://eko-farma-jezerac.vercel.app',
+  siteUrl: 'https://ekofarmajezerac.com',
 
   // Broj na koji stižu narudžbe: međunarodni format, bez "+" i razmaka.
   whatsapp: '38761366168',

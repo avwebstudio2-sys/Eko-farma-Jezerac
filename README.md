@@ -37,7 +37,14 @@ Skripta upisuje kartice školjki u `webshop.html` (da ih pretraživači vide bez
 - Naslov, opis, canonical, robots, Open Graph i Twitter oznake su u `<head>` obje stranice.
 - Podaci o farmi (adresa, telefoni, područje dostave, način plaćanja, cijene) su u JSON-LD bloku između oznaka `json-ld:start` i `json-ld:end`. Ne mijenjati ih ručno, nego kroz `scripts/prerender.js`.
 - `vercel.json` preusmjerava `/index.html` na `/` i postavlja keširanje za slike i fontove.
-- Fontovi (Quicksand i Nunito) su u `assets/fonts`, bez učitavanja s Google Fonts.
+- Fontovi (Quicksand i Nunito, licenca SIL OFL u `assets/fonts`) su na samoj stranici, bez učitavanja s Google Fonts.
+- Slika za dijeljenje (`assets/img/og.jpg`) je prvi ekran početne. Kad se promijeni, povećati `?v=` u `OG_IMAGE` u `scripts/prerender.js` i pokrenuti skriptu, da je Facebook i WhatsApp preuzmu ponovo.
+
+## Sigurnost
+
+`vercel.json` šalje sigurnosna zaglavlja za sve stranice: Content-Security-Policy (skripte, stilovi, fontovi i slike samo sa stranice, mapa samo s Googlea, bez ugrađivanja stranice u tuđi okvir), X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy i Cross-Origin-Opener-Policy.
+
+Novi vanjski sadržaj (skripta, font, iframe, analitika) neće raditi dok se njegova adresa ne doda u Content-Security-Policy.
 
 ## Struktura
 
@@ -47,7 +54,7 @@ index.html         početna: hero s kombijem koji vodi u webshop, o nama, pokret
 webshop.html       webshop: kartice školjki, korpa, podaci za dostavu
 robots.txt         pravi ga scripts/prerender.js
 sitemap.xml        pravi ga scripts/prerender.js
-vercel.json        preusmjerenje /index.html na / i keširanje
+vercel.json        sigurnosna zaglavlja, preusmjerenje /index.html na / i keširanje
 css/styles.css     izgled i animacije obje stranice, s fontovima
 js/config.js       domena, školjke, cijene i kontakt
 js/site.js         zaglavlje na skrolu, galerija, dijalozi, broj u korpi
@@ -61,9 +68,11 @@ assets/img/        logo, svijetli logo, logo studija, fotografije, ikone i slika
 
 ## Objavljivanje
 
-Glavna adresa stranice je https://eko-farma-jezerac.vercel.app (Vercel, grana `main`).
+Stranica se objavljuje na Vercelu iz grane `main`. Glavna (kanonska) adresa je https://ekofarmajezerac.com, a privremena https://eko-farma-jezerac.vercel.app.
 
-Kad stranica dobije vlastitu domenu: promijeniti `siteUrl` u `js/config.js`, pokrenuti `node scripts/prerender.js` i objaviti. Na Vercelu staru adresu preusmjeriti na novu.
+Domena je registrovana kod Hostingera. Da bi radila, na Vercelu (Project, Settings, Domains) dodati `ekofarmajezerac.com` i `www.ekofarmajezerac.com`, u Hostingerovom DNS-u upisati zapise koje Vercel tada prikaže, pa na Vercelu podesiti da www i vercel.app adresa preusmjeravaju na `ekofarmajezerac.com`.
+
+Za promjenu domene: promijeniti `siteUrl` u `js/config.js`, pokrenuti `node scripts/prerender.js` i objaviti.
 
 ## Fotografije
 

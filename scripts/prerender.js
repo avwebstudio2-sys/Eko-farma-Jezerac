@@ -20,7 +20,8 @@ const SITE = siteUrl.replace(/\/$/, '');
 const NAME = 'Eko farma "Jezerac"';
 const FARM_ID = `${SITE}/#farma`;
 const SITE_ID = `${SITE}/#web`;
-const OG_IMAGE = `${SITE}/assets/img/og.jpg`;
+// Broj verzije natjera Facebook i WhatsApp da preuzmu novu sliku umjesto zapamćene.
+const OG_IMAGE = `${SITE}/assets/img/og.jpg?v=2`;
 
 // Stranice koje se indeksiraju, s putanjom kakva ide u canonical i sitemap.
 const PAGES = [

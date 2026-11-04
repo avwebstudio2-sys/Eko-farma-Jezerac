@@ -34,67 +34,18 @@
   const eggCount = () => lines().reduce((sum, p) => sum + p.eggs * qtyOf(p.id), 0);
   const itemCount = () => lines().reduce((sum, p) => sum + qtyOf(p.id), 0);
 
-  const money = (n) => `${Number.isInteger(n) ? n : n.toFixed(2).replace('.', ',')} KM`;
-  const perEgg = (p) => `${(p.price / p.eggs).toFixed(2).replace('.', ',')} KM po jajetu`;
+  const { money, perEgg, stepperMarkup, cardsMarkup, productsKey } = window.FarmaCards;
   const shellsLabel = (n) => {
     if (n % 10 === 1 && n % 100 !== 11) return `${n} školjka`;
     if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) return `${n} školjke`;
     return `${n} školjki`;
   };
 
-  /* ---------- Crtež školjke s jajima ---------- */
-
-  const EGG_TONES = ['cream', 'tan', 'brown', 'tan', 'cream'];
-
-  function trayMarkup(p) {
-    const [cols, rows] = p.tray;
-    const cell = 24;
-    const pad = 8;
-    const width = cols * cell + pad * 2;
-    const height = rows * cell + pad * 2;
-    let eggs = '';
-    for (let i = 0; i < cols * rows; i += 1) {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      const x = pad + cell * col + cell / 2;
-      const y = pad + cell * row + cell / 2;
-      const tone = EGG_TONES[(i * 7 + row * 3) % EGG_TONES.length];
-      const tilt = ((i * 47) % 50) - 25;
-      eggs += `<circle class="tray-well" cx="${x}" cy="${y}" r="11"/>`
-        + `<g transform="translate(${x} ${y})"><g class="tray-egg" style="--i:${i}">`
-        + `<use href="#egg-${tone}" transform="rotate(${tilt}) scale(${p.eggScale})"/></g></g>`;
-    }
-    return `<svg class="tray" viewBox="0 0 ${width} ${height}" aria-hidden="true">`
-      + `<rect class="tray-base" width="${width}" height="${height}" rx="12"/>${eggs}</svg>`;
-  }
-
   /* ---------- Kartice proizvoda ---------- */
 
-  function stepperMarkup(p) {
-    return `<div class="stepper" role="group" aria-label="Količina: ${p.name}" data-stepper>
-      <button type="button" data-step="-1" aria-label="Smanji količinu: ${p.name}">−</button>
-      <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="0" aria-label="Količina: ${p.name}" data-qty>
-      <button type="button" data-step="1" aria-label="Povećaj količinu: ${p.name}">+</button>
-    </div>`;
-  }
-
-  $('[data-products]').innerHTML = products.map((p) => `
-    <article class="pcard" data-product="${p.id}">
-      <div class="pcard-media">
-        ${trayMarkup(p)}
-        <span class="pcard-badge">${p.badge}</span>
-        <span class="pcard-count" aria-hidden="true" data-badge hidden></span>
-      </div>
-      <div class="pcard-body">
-        <h2>${p.name}</h2>
-        <p class="pcard-desc">${p.desc}</p>
-        <p class="pcard-price">${money(p.price)}<small>${perEgg(p)}</small></p>
-        <div class="pcard-action">
-          <button class="btn btn-wide" type="button" data-add>Dodaj u korpu<span class="sr-only">: ${p.name}</span></button>
-          ${stepperMarkup(p)}
-        </div>
-      </div>
-    </article>`).join('');
+  // Kartice su već u HTML-u (scripts/prerender.js). Iscrtavaju se ponovo samo ako se config.js u međuvremenu promijenio.
+  const productList = $('[data-products]');
+  if (productList.dataset.key !== productsKey(products)) productList.innerHTML = cardsMarkup(products);
 
   /* ---------- Reference na elemente ---------- */
 

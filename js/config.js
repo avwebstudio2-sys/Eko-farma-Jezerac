@@ -1,8 +1,12 @@
 /*
  * Sve što se najčešće mijenja nalazi se ovdje: broj za WhatsApp, cijene i školjke.
- * Nakon izmjene dovoljno je osvježiti stranicu, nema dodatnog koraka.
+ * Nakon izmjene pokrenuti "node scripts/prerender.js", da i HTML za pretraživače dobije nove cijene.
  */
 window.FARMA = {
+  // Javna adresa stranice, bez "/" na kraju. Nakon promjene (npr. prelazak na vlastitu domenu)
+  // pokrenuti "node scripts/prerender.js", koji je upiše u HTML, robots.txt i sitemap.xml.
+  siteUrl: 'https://eko-farma-jezerac.vercel.app',
+
   // Broj na koji stižu narudžbe: međunarodni format, bez "+" i razmaka.
   whatsapp: '38761366168',
   email: 'ekofarma.jezerac@gmail.com',

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eko-farma-jezerac.vercel.app/sitemap.xml
